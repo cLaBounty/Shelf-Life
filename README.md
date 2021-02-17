@@ -1,1 +1,3 @@
-# Shelf-Life
+# Shelf Life
+
+## Team Members
