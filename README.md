@@ -4,3 +4,4 @@
 - Cameron LaBounty
 - Ben Roberts
 - Adam Cerutti
+- William Kloppenberg
