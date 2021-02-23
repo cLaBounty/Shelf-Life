@@ -5,7 +5,7 @@ import { StyleSheet, Text, View } from 'react-native';
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Base Shelf Life App</Text>
+      <Text style={styles.title}>Shelf Life</Text>
       <StatusBar style="auto" />
     </View>
   );
@@ -16,6 +16,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
+  title: {
+    fontSize: 50,
+    fontFamily: "Baskerville-Italic",
+    fontWeight: "300",
+    letterSpacing: 3
+  }
 });
