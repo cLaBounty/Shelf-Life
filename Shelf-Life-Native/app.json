@@ -1,0 +1,12 @@
+{
+  "name": "Shelf-Life-Native",
+  "displayName": "Shelf-Life-Native",
+  "expo": {
+    "name": "Shelf-Life-Native",
+    "slug": "Shelf-Life-Native",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
