@@ -25,6 +25,8 @@ function Cam() {
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
     alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+
+    // TODO: EXTEND CODE HERE WITH DATA HANDLING
   };
 
   if (hasPermission === null) {
@@ -33,12 +35,15 @@ function Cam() {
   if (hasPermission === false) {
     return <Text>No access to camera</Text>;
   }
+
+  // Can add barCodeTypes={[BarCodeScanner.Constants.BarCodeType.ean13]} to BarCodeScanner
+  // for efficiency
+
   return (
     <View style={styles.container}>
       <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={StyleSheet.absoluteFillObject}
-        barCodeTypes={[BarCodeScanner.Constants.BarCodeType.ean13]}
       />
       <View style={styles.overlay}>
         <View style={styles.unfocusedContainer}></View>

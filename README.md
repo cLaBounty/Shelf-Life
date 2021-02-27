@@ -11,8 +11,10 @@
 - Based off of https://reactnative.dev/docs/environment-setup
 
 1. Install node / npm from https://nodejs.org/en/
-2. npm install -g expo-cli
-3. Install Expo client app on your iOS or Android device
+2. cd Shelf-Life-Native/
+3. npm install -g expo-cli
+4. expo install expo-barcode-scanner
+5. Install Expo client app on your iOS or Android device
 
 
 ## Run Instructions
