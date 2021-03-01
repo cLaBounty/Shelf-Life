@@ -10,6 +10,7 @@ const Stack = createStackNavigator();
 
 
 export default function App() {
+  return (
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
@@ -100,12 +101,14 @@ const AddItemScreen = ({ navigation }) => {
 };
 
 const ScanItemScreen = ({ navigation }) => {
-  return (
+  // TODO: Merge Cam class with this, could maybe done through props?
+  
+  return (<Cam/>);
+
+
+  return (  
     <View style={styles.container}>
       <StatusBar style="auto" />
-
-      {/* Temporary */}
-      <Cam/>
       <Text style={tempStyles.text}>Scan Item Screen</Text>
       <TouchableOpacity style={tempStyles.btn} onPress={() => navigation.navigate('Item Information', { itemName: "Peanut Butter" })}>
         <Text style={tempStyles.btnText}>Take Picture</Text>
