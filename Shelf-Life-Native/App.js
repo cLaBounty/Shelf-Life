@@ -1,11 +1,13 @@
 import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
+import Cam from './components/barcodeScanner'
 import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, View, ImageBackground, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 const Stack = createStackNavigator();
+
 
 export default function App() {
   return (
@@ -99,11 +101,14 @@ const AddItemScreen = ({ navigation }) => {
 };
 
 const ScanItemScreen = ({ navigation }) => {
-  return (
+  // TODO: Merge Cam class with this, could maybe done through props?
+  
+  return (<Cam/>);
+
+
+  return (  
     <View style={styles.container}>
       <StatusBar style="auto" />
-
-      {/* Temporary */}
       <Text style={tempStyles.text}>Scan Item Screen</Text>
       <TouchableOpacity style={tempStyles.btn} onPress={() => navigation.navigate('Item Information', { itemName: "Peanut Butter" })}>
         <Text style={tempStyles.btnText}>Take Picture</Text>
