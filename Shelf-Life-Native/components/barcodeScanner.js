@@ -1,7 +1,7 @@
 // Code Written by Rhys Sullivan
 
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Button, Animated} from 'react-native';
+import { Text, View, StyleSheet, Button, Animated } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
 
@@ -62,37 +62,28 @@ function Cam() {
   // the elements after the && will be added to the screen
   // https://reactjs.org/docs/conditional-rendering.html
   return (
-    <View style={styles.container}>
+    <View style={styles.container}>      
       <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-        style={StyleSheet.absoluteFillObject}/>
-      <View style={styles.overlay}>
-        <View style={styles.unfocusedContainer}></View>
-        <View style={styles.middleContainer}>
-          <View style={styles.unfocusedContainer}></View>
-          <View
-            style={styles.focusedContainer}>
-            {!scanned && (
-              <Animated.View
-                style={[
-                  styles.animationLineStyle,
+        style={StyleSheet.absoluteFillObject} />
+      <View style={styles.focusedContainer}>
+        {!scanned && (
+          <Animated.View
+            style={[
+              styles.animationLineStyle,
+              {
+                transform: [
                   {
-                    transform: [
-                      {
-                        translateY: 225
-                      },
-                    ],
+                    translateY: 225
                   },
-                ]}
-              />
-            )}
-            {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
-          </View>
-          <View style={styles.unfocusedContainer}></View>
-        </View>
-        <View style={styles.unfocusedContainer}></View>
-      </View>
-    </View >
+                ],
+              },
+            ]}
+          />
+        )}
+        {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
+      </View>      
+    </View>
   );
 }
 
