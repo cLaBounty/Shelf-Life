@@ -1,19 +1,29 @@
 {
   "images" : [
     {
-      "filename" : "200.png",
-      "idiom" : "universal",
+      "filename" : "Splash 1x.png",
+      "idiom" : "iphone",
       "scale" : "1x"
     },
     {
-      "filename" : "400.png",
-      "idiom" : "universal",
+      "filename" : "Splash 2x.png",
+      "idiom" : "iphone",
       "scale" : "2x"
     },
     {
-      "filename" : "600.png",
-      "idiom" : "universal",
+      "filename" : "Splash 3x-1.png",
+      "idiom" : "iphone",
       "scale" : "3x"
+    },
+    {
+      "filename" : "Splash 2x-1.png",
+      "idiom" : "ipad",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "Splash 3x.png",
+      "idiom" : "ipad",
+      "scale" : "2x"
     }
   ],
   "info" : {
