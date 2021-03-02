@@ -1,19 +1,29 @@
 {
   "images" : [
     {
-      "filename" : "background.jpg",
-      "idiom" : "universal",
+      "filename" : "1x.png",
+      "idiom" : "iphone",
       "scale" : "1x"
     },
     {
-      "filename" : "background-1.jpg",
-      "idiom" : "universal",
+      "filename" : "2x.png",
+      "idiom" : "iphone",
       "scale" : "2x"
     },
     {
-      "filename" : "background-2.jpg",
-      "idiom" : "universal",
+      "filename" : "3x.png",
+      "idiom" : "iphone",
       "scale" : "3x"
+    },
+    {
+      "filename" : "iPad 1x.jpg",
+      "idiom" : "ipad",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "iPad 2x.jpg",
+      "idiom" : "ipad",
+      "scale" : "2x"
     }
   ],
   "info" : {
