@@ -1,5 +1,4 @@
 #! /bin/bash
-cd /Users/benroberts/Desktop/Shelf-Life/Shelf-Life-Native
 npm install -g expo-cli
 npm install @react-navigation/native @react-navigation/stack
 expo install expo-barcode-scanner
