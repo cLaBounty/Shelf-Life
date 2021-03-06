@@ -1,0 +1,1067 @@
+{
+    "code": "0071300350041",
+    "product": {
+        "nutrition_score_beverage": 0,
+        "nucleotides_prev_tags": [],
+        "image_nutrition_small_url": "https://static.openfoodfacts.org/images/products/007/130/035/0041/nutrition_en.8.200.jpg",
+        "product_name_en": "Ronzoni, thin spaghetti",
+        "data_sources_tags": [
+            "databases",
+            "database-usda"
+        ],
+        "selected_images": {
+            "nutrition": {
+                "thumb": {
+                    "en": "https://static.openfoodfacts.org/images/products/007/130/035/0041/nutrition_en.8.100.jpg"
+                },
+                "small": {
+                    "en": "https://static.openfoodfacts.org/images/products/007/130/035/0041/nutrition_en.8.200.jpg"
+                },
+                "display": {
+                    "en": "https://static.openfoodfacts.org/images/products/007/130/035/0041/nutrition_en.8.400.jpg"
+                }
+            },
+            "front": {
+                "display": {
+                    "en": "https://static.openfoodfacts.org/images/products/007/130/035/0041/front_en.4.400.jpg"
+                },
+                "small": {
+                    "en": "https://static.openfoodfacts.org/images/products/007/130/035/0041/front_en.4.200.jpg"
+                },
+                "thumb": {
+                    "en": "https://static.openfoodfacts.org/images/products/007/130/035/0041/front_en.4.100.jpg"
+                }
+            },
+            "ingredients": {
+                "display": {
+                    "en": "https://static.openfoodfacts.org/images/products/007/130/035/0041/ingredients_en.6.400.jpg"
+                },
+                "thumb": {
+                    "en": "https://static.openfoodfacts.org/images/products/007/130/035/0041/ingredients_en.6.100.jpg"
+                },
+                "small": {
+                    "en": "https://static.openfoodfacts.org/images/products/007/130/035/0041/ingredients_en.6.200.jpg"
+                }
+            }
+        },
+        "data_quality_tags": [
+            "en:ingredients-percent-analysis-ok",
+            "en:nutrition-value-very-high-for-category-fiber",
+            "en:serving-quantity-defined-but-quantity-undefined"
+        ],
+        "allergens_hierarchy": [
+            "en:gluten"
+        ],
+        "countries_tags": [
+            "en:united-states"
+        ],
+        "allergens": "",
+        "traces_from_user": "(en) ",
+        "lang": "en",
+        "nova_group_debug": " -- ingredients/en:starch : 3",
+        "ingredients_text_en": "Semolina (wheat), durum flour (wheat), modified wheat starch, wheat flour, niacin, ferrous sulfate (iron), thiamin mononitrate, riboflavin, folic acid.",
+        "image_url": "https://static.openfoodfacts.org/images/products/007/130/035/0041/front_en.4.400.jpg",
+        "additives_original_tags": [],
+        "categories_properties_tags": [
+            "all-products",
+            "categories-known",
+            "agribalyse-food-code-unknown",
+            "agribalyse-proxy-food-code-unknown",
+            "ciqual-food-code-unknown",
+            "agribalyse-unknown"
+        ],
+        "additives_old_n": 0,
+        "checkers_tags": [],
+        "ingredients_ids_debug": [
+            "semolina",
+            "wheat",
+            "durum-flour",
+            "wheat",
+            "modified-wheat-starch",
+            "wheat-flour",
+            "niacin",
+            "ferrous-sulfate",
+            "iron",
+            "thiamin-mononitrate",
+            "riboflavin",
+            "folic-acid"
+        ],
+        "editors_tags": [
+            "clockwerx",
+            "org-database-usda",
+            "usda-ndb-import",
+            "giovannib"
+        ],
+        "nova_groups_tags": [
+            "en:3-processed-foods"
+        ],
+        "nutrition_grades_tags": [
+            "a"
+        ],
+        "ingredients_n": 12,
+        "product_name_en_imported": "Ronzoni, thin spaghetti",
+        "traces_from_ingredients": "",
+        "ingredients_text_debug": "Semolina (wheat), durum flour (wheat), modified wheat starch, wheat flour, niacin, ferrous sulfate (iron), thiamin mononitrate, riboflavin, folic acid.",
+        "ingredients_percent_analysis": 1,
+        "update_key": "ecoscore20210125",
+        "ingredients": [
+            {
+                "percent_estimate": 55.5555555555556,
+                "percent_min": 11.1111111111111,
+                "has_sub_ingredients": "yes",
+                "percent_max": 100,
+                "vegan": "yes",
+                "id": "en:semolina",
+                "rank": 1,
+                "text": "Semolina",
+                "vegetarian": "yes"
+            },
+            {
+                "id": "en:durum-wheat-flour",
+                "rank": 2,
+                "text": "durum flour",
+                "vegetarian": "yes",
+                "percent_estimate": 22.2222222222222,
+                "percent_min": 0,
+                "has_sub_ingredients": "yes",
+                "percent_max": 50,
+                "vegan": "yes"
+            },
+            {
+                "vegan": "yes",
+                "percent_max": 33.3333333333333,
+                "percent_estimate": 11.1111111111111,
+                "percent_min": 0,
+                "text": "modified wheat starch",
+                "vegetarian": "yes",
+                "id": "en:modified-wheat-starch",
+                "rank": 3
+            },
+            {
+                "rank": 4,
+                "id": "en:wheat-flour",
+                "vegetarian": "yes",
+                "text": "wheat flour",
+                "percent_min": 0,
+                "percent_estimate": 5.55555555555556,
+                "vegan": "yes",
+                "percent_max": 25
+            },
+            {
+                "vegetarian": "yes",
+                "text": "niacin",
+                "rank": 5,
+                "id": "en:e375",
+                "percent_max": 20,
+                "vegan": "yes",
+                "percent_min": 0,
+                "percent_estimate": 2.77777777777778
+            },
+            {
+                "text": "ferrous sulfate",
+                "id": "en:ferrous-sulfate",
+                "rank": 6,
+                "has_sub_ingredients": "yes",
+                "percent_max": 16.6666666666667,
+                "percent_estimate": 1.38888888888889,
+                "percent_min": 0
+            },
+            {
+                "percent_max": 14.2857142857143,
+                "text": "thiamin mononitrate",
+                "rank": 7,
+                "percent_min": 0,
+                "id": "en:thiamin-mononitrate",
+                "percent_estimate": 0.694444444444443
+            },
+            {
+                "percent_max": 12.5,
+                "vegan": "maybe",
+                "percent_min": 0,
+                "percent_estimate": 0.347222222222221,
+                "vegetarian": "yes",
+                "text": "riboflavin",
+                "rank": 8,
+                "id": "en:e101"
+            },
+            {
+                "percent_estimate": 0.347222222222229,
+                "percent_min": 0,
+                "vegan": "yes",
+                "percent_max": 11.1111111111111,
+                "id": "en:folic-acid",
+                "rank": 9,
+                "text": "folic acid",
+                "vegetarian": "yes"
+            },
+            {
+                "percent_estimate": 55.5555555555556,
+                "id": "en:wheat",
+                "percent_min": 11.1111111111111,
+                "text": "wheat",
+                "percent_max": 100,
+                "vegetarian": "yes",
+                "vegan": "yes"
+            },
+            {
+                "percent_min": 0,
+                "id": "en:wheat",
+                "percent_estimate": 22.2222222222222,
+                "vegan": "yes",
+                "percent_max": 50,
+                "vegetarian": "yes",
+                "text": "wheat"
+            },
+            {
+                "percent_estimate": 1.38888888888889,
+                "id": "en:iron",
+                "percent_min": 0,
+                "text": "iron",
+                "percent_max": 16.6666666666667
+            }
+        ],
+        "nutrition_data_per": "100g",
+        "ingredients_from_palm_oil_n": 0,
+        "nutrition_score_warning_fruits_vegetables_nuts_estimate_from_ingredients": 1,
+        "image_ingredients_thumb_url": "https://static.openfoodfacts.org/images/products/007/130/035/0041/ingredients_en.6.100.jpg",
+        "amino_acids_prev_tags": [],
+        "image_ingredients_url": "https://static.openfoodfacts.org/images/products/007/130/035/0041/ingredients_en.6.400.jpg",
+        "code": "0071300350041",
+        "other_nutritional_substances_tags": [],
+        "traces": "",
+        "countries_imported": "United States",
+        "additives_prev_original_tags": [
+            "en:e375"
+        ],
+        "sources_fields": {
+            "org-database-usda": {
+                "publication_date": "2019-04-01T00:00:00Z",
+                "fdc_id": "470338",
+                "modified_date": "2017-10-16T00:00:00Z",
+                "fdc_category": "Pasta by Shape & Type",
+                "fdc_data_source": "LI",
+                "available_date": "2017-10-16T00:00:00Z"
+            }
+        },
+        "nutrition_data_per_imported": "100g",
+        "ingredients_tags": [
+            "en:semolina",
+            "en:cereal",
+            "en:wheat",
+            "en:durum-wheat-flour",
+            "en:flour",
+            "en:cereal-flour",
+            "en:wheat-flour",
+            "en:modified-wheat-starch",
+            "en:starch",
+            "en:modified-starch",
+            "en:wheat-starch",
+            "en:e375",
+            "en:ferrous-sulfate",
+            "en:minerals",
+            "en:iron",
+            "en:thiamin-mononitrate",
+            "en:thiamin",
+            "en:e101",
+            "en:folic-acid",
+            "en:folate",
+            "en:vitamins"
+        ],
+        "allergens_from_ingredients": "wheat, wheat, wheat flour",
+        "_id": "0071300350041",
+        "data_quality_bugs_tags": [],
+        "last_image_dates_tags": [
+            "2019-10-18",
+            "2019-10",
+            "2019"
+        ],
+        "lc_imported": "en",
+        "data_quality_info_tags": [
+            "en:ingredients-percent-analysis-ok"
+        ],
+        "ingredients_n_tags": [
+            "12",
+            "11-20"
+        ],
+        "ingredients_analysis_tags": [
+            "en:palm-oil-free",
+            "en:vegan-status-unknown",
+            "en:vegetarian-status-unknown"
+        ],
+        "created_t": 1489133402,
+        "misc_tags": [
+            "en:nutrition-fruits-vegetables-nuts-estimate-from-ingredients",
+            "en:nutrition-all-nutriscore-values-known",
+            "en:nutriscore-computed",
+            "en:ecoscore-not-computed"
+        ],
+        "allergens_from_user": "(en) ",
+        "completeness": 0.6,
+        "informers_tags": [
+            "usda-ndb-import",
+            "clockwerx",
+            "giovannib",
+            "org-database-usda"
+        ],
+        "data_quality_errors_tags": [],
+        "brand_owner": "New World Pasta Company",
+        "languages_codes": {
+            "en": 5
+        },
+        "nutriments": {
+            "carbohydrates": 75,
+            "vitamin-pp": 0.005357,
+            "cholesterol_unit": "mg",
+            "energy_100g": 1121,
+            "salt_value": 177.5,
+            "energy_unit": "kcal",
+            "fiber": 23.2,
+            "calcium_value": 36,
+            "calcium_serving": 0.0202,
+            "iron_serving": 0.00144,
+            "carbohydrates_serving": 42,
+            "trans-fat_unit": "g",
+            "monounsaturated-fat_unit": "g",
+            "calcium_100g": 0.036,
+            "calcium_unit": "mg",
+            "nutrition-score-fr_100g": -7,
+            "potassium_value": 161,
+            "nova-group_serving": 3,
+            "energy-kcal_100g": 268,
+            "energy_value": 268,
+            "folates_unit": "µg",
+            "fat_100g": 1.79,
+            "cholesterol_value": 0,
+            "fat": 1.79,
+            "sugars_serving": 2,
+            "potassium": 0.161,
+            "fiber_unit": "g",
+            "iron_value": 2.57,
+            "proteins_100g": 10.71,
+            "proteins_value": 10.71,
+            "polyunsaturated-fat_value": 0,
+            "sodium_100g": 0.071,
+            "fat_unit": "g",
+            "vitamin-b2": 0.000304,
+            "saturated-fat_serving": 0,
+            "nutrition-score-fr": -7,
+            "salt": 0.1775,
+            "salt_100g": 0.1775,
+            "salt_serving": 0.0994,
+            "fiber_100g": 23.2,
+            "iron_unit": "mg",
+            "sodium_unit": "mg",
+            "trans-fat_value": 0,
+            "sugars_value": 3.57,
+            "polyunsaturated-fat": 0,
+            "vitamin-b1": 0.001,
+            "carbohydrates_unit": "g",
+            "monounsaturated-fat_value": 0,
+            "fiber_serving": 13,
+            "saturated-fat": 0,
+            "sodium": 0.071,
+            "monounsaturated-fat_serving": 0,
+            "polyunsaturated-fat_100g": 0,
+            "vitamin-b2_serving": 0.00017,
+            "vitamin-b1_unit": "mg",
+            "nova-group": 3,
+            "folates_serving": 0.00012,
+            "potassium_unit": "mg",
+            "sodium_serving": 0.0398,
+            "vitamin-pp_value": 5.357,
+            "sugars": 3.57,
+            "cholesterol_100g": 0,
+            "fat_value": 1.79,
+            "vitamin-b2_100g": 0.000304,
+            "fiber_value": 23.2,
+            "energy-kcal_unit": "kcal",
+            "calcium": 0.036,
+            "cholesterol_serving": 0,
+            "energy-kcal_serving": 150,
+            "salt_unit": "mg",
+            "trans-fat_serving": 0,
+            "vitamin-b2_value": 0.304,
+            "vitamin-b2_unit": "mg",
+            "trans-fat_100g": 0,
+            "polyunsaturated-fat_serving": 0,
+            "trans-fat": 0,
+            "nova-group_100g": 3,
+            "monounsaturated-fat_100g": 0,
+            "vitamin-pp_100g": 0.005357,
+            "iron_100g": 0.00257,
+            "vitamin-b1_value": 1,
+            "vitamin-b1_100g": 0.001,
+            "energy-kcal": 268,
+            "fat_serving": 1,
+            "saturated-fat_value": 0,
+            "cholesterol": 0,
+            "carbohydrates_value": 75,
+            "proteins_unit": "g",
+            "vitamin-pp_serving": 0.003,
+            "sugars_100g": 3.57,
+            "monounsaturated-fat": 0,
+            "potassium_serving": 0.0902,
+            "saturated-fat_100g": 0,
+            "vitamin-pp_unit": "mg",
+            "sodium_value": 71,
+            "carbohydrates_100g": 75,
+            "folates_value": 214,
+            "energy-kcal_value": 268,
+            "iron": 0.00257,
+            "fruits-vegetables-nuts-estimate-from-ingredients_100g": 0,
+            "vitamin-b1_serving": 0.00056,
+            "energy": 1121,
+            "sugars_unit": "g",
+            "polyunsaturated-fat_unit": "g",
+            "folates_100g": 0.000214,
+            "proteins_serving": 6,
+            "proteins": 10.71,
+            "saturated-fat_unit": "g",
+            "folates": 0.000214,
+            "potassium_100g": 0.161,
+            "energy_serving": 628
+        },
+        "ingredients_debug": [
+            "Semolina ",
+            "(",
+            "(",
+            null,
+            null,
+            "wheat)",
+            ",",
+            null,
+            null,
+            null,
+            " durum flour ",
+            "(",
+            "(",
+            null,
+            null,
+            "wheat)",
+            ",",
+            null,
+            null,
+            null,
+            " modified wheat starch",
+            ",",
+            null,
+            null,
+            null,
+            " wheat flour",
+            ",",
+            null,
+            null,
+            null,
+            " niacin",
+            ",",
+            null,
+            null,
+            null,
+            " ferrous sulfate ",
+            "(",
+            "(",
+            null,
+            null,
+            "iron)",
+            ",",
+            null,
+            null,
+            null,
+            " thiamin mononitrate",
+            ",",
+            null,
+            null,
+            null,
+            " riboflavin",
+            ",",
+            null,
+            null,
+            null,
+            " folic acid."
+        ],
+        "additives_debug_tags": [
+            "en-e375-removed"
+        ],
+        "data_sources_imported": "Databases, database-usda",
+        "category_properties": {},
+        "countries_debug_tags": [],
+        "additives_tags": [],
+        "ingredients_that_may_be_from_palm_oil_tags": [],
+        "nova_groups": "3",
+        "brands_debug_tags": [],
+        "codes_tags": [
+            "code-13",
+            "0071300350xxx",
+            "007130035xxxx",
+            "00713003xxxxx",
+            "0071300xxxxxx",
+            "007130xxxxxxx",
+            "00713xxxxxxxx",
+            "0071xxxxxxxxx",
+            "007xxxxxxxxxx",
+            "00xxxxxxxxxxx",
+            "0xxxxxxxxxxxx"
+        ],
+        "nutrient_levels": {
+            "fat": "low",
+            "sugars": "low",
+            "salt": "low",
+            "saturated-fat": "low"
+        },
+        "interface_version_modified": "20150316.jqm2",
+        "ingredients_text_with_allergens_en": "Semolina (<span class=\"allergen\">wheat</span>), durum flour (<span class=\"allergen\">wheat</span>), modified wheat starch, <span class=\"allergen\">wheat flour</span>, niacin, ferrous sulfate (iron), thiamin mononitrate, riboflavin, folic acid.",
+        "interface_version_created": "import_us_ndb.pl - version 2017/03/04",
+        "popularity_key": 0,
+        "sortkey": 1587596445,
+        "ingredients_from_or_that_may_be_from_palm_oil_n": 0,
+        "nutriscore_data": {
+            "sodium": 71,
+            "fruits_vegetables_nuts_colza_walnut_olive_oils_value": 0,
+            "sodium_points": 0,
+            "proteins": 10.71,
+            "energy": 1121,
+            "proteins_points": 5,
+            "fruits_vegetables_nuts_colza_walnut_olive_oils": 0,
+            "grade": "a",
+            "is_cheese": 0,
+            "saturated_fat_ratio_value": 0,
+            "is_water": 0,
+            "sodium_value": 71,
+            "sugars_value": 3.57,
+            "energy_value": 1121,
+            "is_beverage": 0,
+            "energy_points": 3,
+            "score": -7,
+            "proteins_value": 10.71,
+            "saturated_fat_ratio": 0,
+            "sugars": 3.57,
+            "fiber": 23.2,
+            "fiber_value": 23.2,
+            "saturated_fat_points": 0,
+            "saturated_fat": 0,
+            "sugars_points": 0,
+            "fiber_points": 5,
+            "fruits_vegetables_nuts_colza_walnut_olive_oils_points": 0,
+            "is_fat": 0,
+            "negative_points": 3,
+            "positive_points": 10,
+            "saturated_fat_ratio_points": 0,
+            "saturated_fat_value": 0
+        },
+        "id": "0071300350041",
+        "image_front_thumb_url": "https://static.openfoodfacts.org/images/products/007/130/035/0041/front_en.4.100.jpg",
+        "unknown_ingredients_n": 0,
+        "image_nutrition_url": "https://static.openfoodfacts.org/images/products/007/130/035/0041/nutrition_en.8.400.jpg",
+        "nutrition_score_warning_fruits_vegetables_nuts_estimate_from_ingredients_value": 0,
+        "nova_group": 3,
+        "last_edit_dates_tags": [
+            "2020-04-23",
+            "2020-04",
+            "2020"
+        ],
+        "data_sources": "Databases, database-usda",
+        "lc": "en",
+        "image_nutrition_thumb_url": "https://static.openfoodfacts.org/images/products/007/130/035/0041/nutrition_en.8.100.jpg",
+        "nutrition_grade_fr": "a",
+        "vitamins_prev_tags": [
+            "en:thiamin-mononitrate",
+            "en:riboflavin",
+            "en:folic-acid"
+        ],
+        "languages_hierarchy": [
+            "en:english"
+        ],
+        "image_front_small_url": "https://static.openfoodfacts.org/images/products/007/130/035/0041/front_en.4.200.jpg",
+        "states_hierarchy": [
+            "en:to-be-completed",
+            "en:nutrition-facts-completed",
+            "en:ingredients-completed",
+            "en:expiration-date-to-be-completed",
+            "en:packaging-code-to-be-completed",
+            "en:characteristics-to-be-completed",
+            "en:categories-completed",
+            "en:brands-completed",
+            "en:packaging-to-be-completed",
+            "en:quantity-to-be-completed",
+            "en:product-name-completed",
+            "en:photos-validated",
+            "en:photos-uploaded"
+        ],
+        "last_modified_t": 1587596445,
+        "categories_imported": "Plant-based foods and beverages, Plant-based foods, Cereals and potatoes, Cereals and their products, Pastas",
+        "last_modified_by": "org-database-usda",
+        "nucleotides_tags": [],
+        "ecoscore_grade": "unknown",
+        "image_thumb_url": "https://static.openfoodfacts.org/images/products/007/130/035/0041/front_en.4.100.jpg",
+        "rev": 10,
+        "last_image_t": 1571421929,
+        "pnns_groups_2": "Cereals",
+        "pnns_groups_1_tags": [
+            "cereals-and-potatoes",
+            "known"
+        ],
+        "categories": "Plant-based foods and beverages, Plant-based foods, Cereals and potatoes, Cereals and their products, Pastas, Spaghetti",
+        "pnns_groups_2_tags": [
+            "cereals",
+            "known"
+        ],
+        "product_name": "Ronzoni, thin spaghetti",
+        "image_small_url": "https://static.openfoodfacts.org/images/products/007/130/035/0041/front_en.4.200.jpg",
+        "languages": {
+            "en:english": 5
+        },
+        "vitamins_tags": [
+            "en:niacin",
+            "en:thiamin-mononitrate",
+            "en:riboflavin",
+            "en:folic-acid"
+        ],
+        "entry_dates_tags": [
+            "2017-03-10",
+            "2017-03",
+            "2017"
+        ],
+        "traces_tags": [],
+        "unknown_nutrients_tags": [],
+        "image_front_url": "https://static.openfoodfacts.org/images/products/007/130/035/0041/front_en.4.400.jpg",
+        "additives_n": 0,
+        "max_imgid": "4",
+        "image_ingredients_small_url": "https://static.openfoodfacts.org/images/products/007/130/035/0041/ingredients_en.6.200.jpg",
+        "nova_group_tags": [
+            "not-applicable"
+        ],
+        "images": {
+            "1": {
+                "uploaded_t": 1571421802,
+                "uploader": "giovannib",
+                "sizes": {
+                    "400": {
+                        "w": 104,
+                        "h": 400
+                    },
+                    "full": {
+                        "w": 1046,
+                        "h": 4032
+                    },
+                    "100": {
+                        "w": 26,
+                        "h": 100
+                    }
+                }
+            },
+            "3": {
+                "uploader": "giovannib",
+                "uploaded_t": 1571421876,
+                "sizes": {
+                    "400": {
+                        "h": 400,
+                        "w": 133
+                    },
+                    "full": {
+                        "h": 3840,
+                        "w": 1274
+                    },
+                    "100": {
+                        "w": 33,
+                        "h": 100
+                    }
+                }
+            },
+            "2": {
+                "sizes": {
+                    "100": {
+                        "h": 27,
+                        "w": 100
+                    },
+                    "400": {
+                        "w": 400,
+                        "h": 108
+                    },
+                    "full": {
+                        "h": 529,
+                        "w": 1960
+                    }
+                },
+                "uploader": "giovannib",
+                "uploaded_t": 1571421839
+            },
+            "4": {
+                "sizes": {
+                    "100": {
+                        "h": 100,
+                        "w": 25
+                    },
+                    "full": {
+                        "w": 922,
+                        "h": 3744
+                    },
+                    "400": {
+                        "w": 99,
+                        "h": 400
+                    }
+                },
+                "uploader": "giovannib",
+                "uploaded_t": 1571421928
+            },
+            "front_en": {
+                "x2": "-1",
+                "white_magic": null,
+                "y1": "-1",
+                "x1": "-1",
+                "y2": "-1",
+                "angle": 0,
+                "rev": "4",
+                "geometry": "0x0--10--10",
+                "sizes": {
+                    "100": {
+                        "w": 26,
+                        "h": 100
+                    },
+                    "400": {
+                        "w": 104,
+                        "h": 400
+                    },
+                    "200": {
+                        "w": 52,
+                        "h": 200
+                    },
+                    "full": {
+                        "w": 1046,
+                        "h": 4032
+                    }
+                },
+                "normalize": null,
+                "imgid": "1"
+            },
+            "ingredients_en": {
+                "y1": "-1",
+                "x1": "-1",
+                "white_magic": null,
+                "x2": "-1",
+                "imgid": "2",
+                "normalize": null,
+                "sizes": {
+                    "100": {
+                        "w": 100,
+                        "h": 27
+                    },
+                    "full": {
+                        "w": 1960,
+                        "h": 529
+                    },
+                    "400": {
+                        "h": 108,
+                        "w": 400
+                    },
+                    "200": {
+                        "h": 54,
+                        "w": 200
+                    }
+                },
+                "y2": "-1",
+                "rev": "6",
+                "angle": 0,
+                "geometry": "0x0--4--4"
+            },
+            "nutrition_en": {
+                "white_magic": null,
+                "x1": "-1",
+                "y1": "-1",
+                "x2": "-1",
+                "normalize": null,
+                "imgid": "3",
+                "geometry": "0x0--9--9",
+                "y2": "-1",
+                "rev": "8",
+                "angle": 0,
+                "sizes": {
+                    "400": {
+                        "w": 133,
+                        "h": 400
+                    },
+                    "200": {
+                        "w": 66,
+                        "h": 200
+                    },
+                    "full": {
+                        "h": 3840,
+                        "w": 1274
+                    },
+                    "100": {
+                        "w": 33,
+                        "h": 100
+                    }
+                }
+            }
+        },
+        "nutrition_data_prepared_per": "100g",
+        "ingredients_text": "Semolina (wheat), durum flour (wheat), modified wheat starch, wheat flour, niacin, ferrous sulfate (iron), thiamin mononitrate, riboflavin, folic acid.",
+        "ingredients_that_may_be_from_palm_oil_n": 0,
+        "ingredients_original_tags": [
+            "en:semolina",
+            "en:durum-wheat-flour",
+            "en:modified-wheat-starch",
+            "en:wheat-flour",
+            "en:e375",
+            "en:ferrous-sulfate",
+            "en:thiamin-mononitrate",
+            "en:e101",
+            "en:folic-acid",
+            "en:wheat",
+            "en:wheat",
+            "en:iron"
+        ],
+        "compared_to_category": "en:spaghetti",
+        "ingredients_text_en_imported": "Semolina (wheat), durum flour (wheat), modified wheat starch, wheat flour, niacin, ferrous sulfate (iron), thiamin mononitrate, riboflavin, folic acid.",
+        "nutriscore_score": -7,
+        "traces_hierarchy": [],
+        "sources": [
+            {
+                "fields": [
+                    "product_name_en",
+                    "brands",
+                    "countries",
+                    "serving_size",
+                    "ingredients_text_en",
+                    "nutrients.energy",
+                    "nutrients.proteins",
+                    "nutrients.fat",
+                    "nutrients.carbohydrates",
+                    "nutrients.fiber",
+                    "nutrients.sugars",
+                    "nutrients.calcium",
+                    "nutrients.iron",
+                    "nutrients.potassium",
+                    "nutrients.sodium",
+                    "nutrients.vitamin-b1",
+                    "nutrients.vitamin-b2",
+                    "nutrients.vitamin-pp",
+                    "nutrients.folates",
+                    "nutrients.saturated-fat",
+                    "nutrients.monounsaturated-fat",
+                    "nutrients.polyunsaturated-fat",
+                    "nutrients.trans-fat",
+                    "nutrients.cholesterol"
+                ],
+                "url": "https://api.nal.usda.gov/ndb/reports/?ndbno=45207038&type=f&format=json&api_key=DEMO_KEY",
+                "images": [],
+                "import_t": 1489133402,
+                "id": "usda-ndb"
+            },
+            {
+                "name": "database-usda",
+                "images": [],
+                "import_t": 1587596445,
+                "id": "database-usda",
+                "manufacturer": null,
+                "url": null,
+                "fields": [
+                    "product_name_en",
+                    "brand_owner",
+                    "data_sources",
+                    "serving_size",
+                    "nutrients.salt_unit",
+                    "nutrients.salt_value",
+                    "nutrients.vitamin-b1_value",
+                    "nutrients.vitamin-b2_value"
+                ]
+            }
+        ],
+        "categories_properties": {},
+        "states_tags": [
+            "en:to-be-completed",
+            "en:nutrition-facts-completed",
+            "en:ingredients-completed",
+            "en:expiration-date-to-be-completed",
+            "en:packaging-code-to-be-completed",
+            "en:characteristics-to-be-completed",
+            "en:categories-completed",
+            "en:brands-completed",
+            "en:packaging-to-be-completed",
+            "en:quantity-to-be-completed",
+            "en:product-name-completed",
+            "en:photos-validated",
+            "en:photos-uploaded"
+        ],
+        "brands": "Ronzoni,  New World Pasta Company",
+        "countries": "United States",
+        "minerals_tags": [
+            "en:ferrous-sulfate",
+            "en:iron"
+        ],
+        "brand_owner_imported": "New World Pasta Company",
+        "data_quality_warnings_tags": [
+            "en:nutrition-value-very-high-for-category-fiber",
+            "en:serving-quantity-defined-but-quantity-undefined"
+        ],
+        "known_ingredients_n": 21,
+        "categories_lc": "en",
+        "ingredients_text_with_allergens": "Semolina (<span class=\"allergen\">wheat</span>), durum flour (<span class=\"allergen\">wheat</span>), modified wheat starch, <span class=\"allergen\">wheat flour</span>, niacin, ferrous sulfate (iron), thiamin mononitrate, riboflavin, folic acid.",
+        "serving_size": "2 ONZ (56 g)",
+        "languages_tags": [
+            "en:english",
+            "en:1"
+        ],
+        "countries_lc": "en",
+        "pnns_groups_1": "Cereals and potatoes",
+        "states": "en:to-be-completed, en:nutrition-facts-completed, en:ingredients-completed, en:expiration-date-to-be-completed, en:packaging-code-to-be-completed, en:characteristics-to-be-completed, en:categories-completed, en:brands-completed, en:packaging-to-be-completed, en:quantity-to-be-completed, en:product-name-completed, en:photos-validated, en:photos-uploaded",
+        "brands_tags": [
+            "ronzoni",
+            "new-world-pasta-company"
+        ],
+        "nutrition_grades": "a",
+        "nutrition_data_prepared_per_imported": "100g",
+        "_keywords": [
+            "thin",
+            "food",
+            "ronzoni",
+            "pasta",
+            "world",
+            "their",
+            "new",
+            "product",
+            "potatoe",
+            "and",
+            "plant-based",
+            "company",
+            "cereal",
+            "beverage",
+            "spaghetti"
+        ],
+        "allergens_imported": "Gluten",
+        "last_editor": "org-database-usda",
+        "complete": 0,
+        "categories_tags": [
+            "en:plant-based-foods-and-beverages",
+            "en:plant-based-foods",
+            "en:cereals-and-potatoes",
+            "en:cereals-and-their-products",
+            "en:pastas",
+            "en:spaghetti"
+        ],
+        "countries_hierarchy": [
+            "en:united-states"
+        ],
+        "nutriscore_score_opposite": 7,
+        "categories_hierarchy": [
+            "en:plant-based-foods-and-beverages",
+            "en:plant-based-foods",
+            "en:cereals-and-potatoes",
+            "en:cereals-and-their-products",
+            "en:pastas",
+            "en:spaghetti"
+        ],
+        "ciqual_food_name_tags": [
+            "unknown"
+        ],
+        "serving_size_imported": "2 ONZ (56 g)",
+        "serving_quantity": 56,
+        "fruits-vegetables-nuts_100g_estimate": 0,
+        "ingredients_from_palm_oil_tags": [],
+        "minerals_prev_tags": [
+            "en:ferrous-sulphate",
+            "en:iron"
+        ],
+        "creator": "usda-ndb-import",
+        "additives_old_tags": [],
+        "ingredients_hierarchy": [
+            "en:semolina",
+            "en:cereal",
+            "en:wheat",
+            "en:durum-wheat-flour",
+            "en:flour",
+            "en:cereal-flour",
+            "en:wheat-flour",
+            "en:modified-wheat-starch",
+            "en:starch",
+            "en:modified-starch",
+            "en:wheat-starch",
+            "en:e375",
+            "en:ferrous-sulfate",
+            "en:minerals",
+            "en:iron",
+            "en:thiamin-mononitrate",
+            "en:thiamin",
+            "en:e101",
+            "en:folic-acid",
+            "en:folate",
+            "en:vitamins"
+        ],
+        "allergens_tags": [
+            "en:gluten"
+        ],
+        "nutriscore_grade": "a",
+        "correctors_tags": [
+            "giovannib",
+            "org-database-usda"
+        ],
+        "ecoscore_tags": [
+            "unknown"
+        ],
+        "ecoscore_data": {
+            "adjustments": {
+                "packaging": {
+                    "score": 0,
+                    "packagings": [
+                        {
+                            "ecoscore_shape_ratio": 1,
+                            "shape": "en:unknown",
+                            "material": "en:unknown",
+                            "ecoscore_material_score": 0
+                        }
+                    ],
+                    "warning": "unscored_material",
+                    "value": -10
+                },
+                "production_system": {},
+                "threatened_species": {},
+                "origins_of_ingredients": {
+                    "warning": "origins_are_100_percent_unknown",
+                    "origins_from_origins_field": [
+                        "en:unknown"
+                    ],
+                    "aggregated_origins": [
+                        {
+                            "origin": "en:unknown",
+                            "percent": 100
+                        }
+                    ],
+                    "value": -5,
+                    "transportation_score": 0,
+                    "epi_score": 0,
+                    "transportation_value": 0,
+                    "epi_value": -5
+                }
+            },
+            "missing_agribalyse_match_warning": 1,
+            "missing": {
+                "agb_category": 1,
+                "packagings": 1,
+                "origins": 1
+            },
+            "status": "unknown",
+            "agribalyse": {
+                "warning": "missing_agribalyse_match"
+            }
+        },
+        "packagings": [
+            {
+                "shape": "en:unknown",
+                "material": "en:unknown"
+            }
+        ],
+        "nutrition_data": "on",
+        "photographers_tags": [
+            "giovannib"
+        ],
+        "nutrient_levels_tags": [
+            "en:fat-in-low-quantity",
+            "en:saturated-fat-in-low-quantity",
+            "en:sugars-in-low-quantity",
+            "en:salt-in-low-quantity"
+        ],
+        "amino_acids_tags": []
+    },
+    "status": 1,
+    "status_verbose": "product found"
+}
