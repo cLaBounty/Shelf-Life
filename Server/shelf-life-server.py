@@ -28,7 +28,12 @@ class ShelfLifeServer:
                 client_message = data.decode('ascii') # Assume encoded with ASCII
                 print(client_message)
                 response = "pong"
-                connection.sendall(response.encode("ascii"))                
+                connection.sendall(response.encode("ascii"))    
+
+            user_input = input()
+            if user_input == 'quit':
+                connection.close()
+                break
 
 
 
