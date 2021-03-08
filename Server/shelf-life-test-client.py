@@ -2,7 +2,7 @@ import socket
 import sys
 
 # Set these values to match the hostname and port of your server
-HOST = "192.168.86.27"
+HOST = "184.171.155.35"
 PORT = 20500
 
 # Create a TCP/IP socket
