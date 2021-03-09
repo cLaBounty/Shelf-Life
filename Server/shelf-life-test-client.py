@@ -1,20 +1,21 @@
-import socket
-import sys
+#!/usr/bin/env python
 
-# Set these values to match the hostname and port of your server
-HOST = "184.171.155.35"
-PORT = 20500
+# WS client example
 
-# Create a TCP/IP socket
-sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+import asyncio
+import websockets
 
-# Connect the socket to the port where the server is listening
-server_address = (HOST, PORT)
-print(f'connecting to {server_address}')
-sock.connect(server_address)
+async def hello():
+    #uri = "ws://localhost:20500"
+    uri = "ws://184.171.155.35:20500"
+    async with websockets.connect(uri) as websocket:
+        print("Connected!")
+        message = input()
+        print("Sending " + message)
+        await websocket.send(message)        
+        print("Sent")
+        
+        response = await websocket.recv()
+        print("Received: " + response)
 
-test_string = "ping"
-sock.sendall(test_string.encode("ascii"))
-response_string = sock.recv(4096)
-print(response_string.decode('ascii'))
-sock.close()
+asyncio.get_event_loop().run_until_complete(hello())
