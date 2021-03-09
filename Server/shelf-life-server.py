@@ -8,8 +8,10 @@ import websockets
 async def messages(websocket, path):
     message = await websocket.recv()    
     print(message)
-    if message == 'ping':
-        await websocket.send('pong')        
+    await asyncio.sleep(10)
+    await websocket.send('pong')        
+    await asyncio.sleep(10)
+    await websocket.send('ping')        
 
 start_server = websockets.serve(messages, "", 20500)
 
