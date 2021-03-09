@@ -1,25 +1,75 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, ScrollView } from 'react-native';
+import { AlphabetList } from "react-native-section-alphabet-list";
+
+
+renderHeader = () => {
+    return (
+      <View>
+        <Text>header1</Text>
+        <Text>header2</Text>
+      </View>
+    )
+  }
 
 export default function PantryScreen({ navigation }) {
   return (
     <View style={styles.container}>
-      <StatusBar style="auto" />
+      <StatusBar style="black" />
       <ImageBackground source={require('../assets/background.jpg')} style={styles.background}/>
+	  
+		  <AlphabetList style={styles.list}
+		  	data = { foodData } // Data for list
+			indexLetterColor = {'white'} //Color of letters on right
+			renderHeader = {this.renderHeader}
+			
+			renderCustomItem = {(item) => (
+				<Text style={styles.listText}>{item.value}</Text>  //Items for list
+			)}
+			
+			renderCustomSectionHeader={(section) => (
+				<Text style={styles.seperatorText}>{section.title}</Text> //Seperators
+			)}
 
-      {/* Temporary */}
-      <Text style={styles.text}>Pantry Screen</Text>
+		  />
     </View>
+		  
   );
 }
+
+const foodData = [ /* Temp data until the database is connected */
+	{ value: "Jif Chunky Peanutbutter" }, 
+	{ value: "Jello - Raspberry" },
+	{ value: "Jello - Blue Raspberry" },
+	{ value: "Ben's Glorious Crackers" },
+	{ value: "Swedish Fish" },
+	{ value: "Gummy worms" },
+	{ value: "Act II Popcorn" },
+	{ value: "Off-brand poptarts"},
+	{ value: "Little Debbie's brownies" },
+	{ value: "React Native Bits & Bytes"},
+	{ value: "🥺 Zoomer Juice"},
+	{ value: "7up"},
+	{ value: "Tropica Orange Juice"},
+	{ value: "Boomer 💣s"},
+	{ value: "Jif Creamy Peanut Butter"},
+	{ value: "Hood Skim Milk"},
+	{ value: "Oreos Party Sized"},
+	{ value: "Chobani Mixed Berry Yogert"},
+	{ value: "Generic Chicken Noodle Soup"},
+	{ value: "Great Grandma's Awesome Tasting Thanksgiving Roasted Ham"},
+	{ value: "Canada Dry Ginger Ale"},
+]
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#000',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    width: '100%',
+    height: '100%'
   },
   background: {
     width: '100%',
@@ -45,5 +95,33 @@ const styles = StyleSheet.create({
     color:'#fff',
     padding: 8,
     letterSpacing: 1.5
+  },
+  list: {
+	  width: "95%",
+	  height: "100%",
+	  justifyContent: "center",
+	  backgroundColor:'#59595959',
+
+  },
+  listText: {
+	  width: "100%",
+	  paddingTop: 5,
+	  paddingBottom: 5,
+	  marginTop: 1,
+	  marginBottom: 1,
+      fontSize: 16,
+      color: '#fff',
+	  backgroundColor: "#00000044",
+  },
+  seperatorText: {
+	  width: "100%",
+      fontSize: 16,
+      color: '#fff',
+	  fontWeight: "bold",
+	  paddingTop: 5,
+	  paddingBottom: 5,
+	  marginTop: 2,
+	  marginBottom: 2,
+      backgroundColor: "#00000099",
   }
 });
