@@ -13,6 +13,9 @@ build/
 .idea
 .gradle
 local.properties
+/Shelf-Life-Native/android/java_pid15484.hprof
+/Shelf-Life-Native/android/gradlew
+/Shelf-Life-Native/android/java_pid17317.hprof
 
 # node.js
 #
@@ -28,10 +31,3 @@ yarn-error.log
 #
 Shelf-Life-Native/.expo/*
 web-build/
-
-# Custom
-#
-/Shelf-Life-Native/android/java_pid15484.hprof
-/Shelf-Life-Native/android/gradlew
-/Shelf-Life-Native/ios/Podfile.lock
-Shelf-Life-Native/android/java_pid17317.hprof
