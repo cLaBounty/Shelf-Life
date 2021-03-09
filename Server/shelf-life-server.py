@@ -6,12 +6,22 @@ import asyncio
 import websockets
 
 async def messages(websocket, path):
-    message = await websocket.recv()    
-    print(message)
-    await asyncio.sleep(10)
-    await websocket.send('pong')        
-    await asyncio.sleep(10)
-    await websocket.send('ping')        
+    # While true keeps the connection open
+    # This is a bit hacky
+    # TODO: Have a timeout timer that counts up between messages
+    # TODO: Look into parallization of tasks?    
+            
+    while True: 
+        try:
+            message = await websocket.recv()
+            print(message)
+        except websockets.ConnectionClosed:
+            print(f"Connection Terminated")
+            break    
+        print(message)
+        if message != '':
+            await websocket.send('pong')            
+    
 
 start_server = websockets.serve(messages, "", 20500)
 
