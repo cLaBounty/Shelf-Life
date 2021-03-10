@@ -15,10 +15,11 @@ def findCommonNameFromOfficial(broken_up_name):
 
     onlyfiles = [f for f in listdir('FoodMasterLists/') if isfile(join('FoodMasterLists/', f))]
     all_categories = []
+    all_categories_names = []
     for file in onlyfiles:
-        all_categories.append(readFileIntoArray('FoodMasterLists/'+file))
-    
-    all_categories_names = ['Decorative Pasta', 'Fruits', 'Long Noodles', 'Minute Pasta', 'Poultry', 'Ribbon Cut Noodles', 'Short Cut Extruded Pasta', 'Stuffed Pasta', 'Vegetables']
+        array_from_file = readFileIntoArray('FoodMasterLists/'+file)
+        all_categories.append(array_from_file[1:])
+        all_categories_names.append(array_from_file[0])    
     
     
     info = ['MISSING', 'MISSING']
@@ -38,6 +39,8 @@ def findCommonNameFromOfficial(broken_up_name):
     return info
 
 if __name__ == '__main__':
-    print(findCommonNameFromOfficial(['spaghetti']))
-    print(findCommonNameFromOfficial(['chickens','breasts']))
-    print(findCommonNameFromOfficial(['chicken','breats', 'boneless', 'skinless']))
+    #print(findCommonNameFromOfficial(['spaghetti']))
+    #print(findCommonNameFromOfficial(['chickens','breasts']))
+    #print(findCommonNameFromOfficial(['chicken','breats', 'boneless', 'skinless']))
+    print(findCommonNameFromOfficial(['macaroni','elbow']))
+    print(findCommonNameFromOfficial(['elbow', 'macaroni']))

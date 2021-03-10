@@ -86,7 +86,7 @@ function ScanResult(props) {
 
     
     sendSelectionToServer = () => {
-        message = 'SELECTION|'
+        message = 'SELECTION^'
         if(selected.length == 0)
         {
             // TODO: ADD PROPER ERROR HANDLING
