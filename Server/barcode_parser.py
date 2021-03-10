@@ -28,9 +28,11 @@ def findCommonNameFromOfficial(broken_up_name):
     for i in range(len(all_categories)):
         for ingredient in all_categories[i]:
             number_of_matching_name_parts = 0
+
             for name_part in broken_up_name:
                 if name_part in ingredient or ingredient in name_part:                    
                     number_of_matching_name_parts += 1
+            
             if number_of_matching_name_parts > highest_number_of_matching_name_parts:
                 info[0] = all_categories_names[i]
                 info[1] = ingredient

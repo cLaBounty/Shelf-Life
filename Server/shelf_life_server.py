@@ -66,7 +66,7 @@ async def messages(websocket, path):
             elif parseState == 'SELECTION': # client sent their selection 
                 print('======================')
                 print("Sending Official Name, Category, Common Name")
-                official_name = 'Ronzoni, thin spaghetti'
+                official_name = api_response_json["product"]["product_name_en"]
                 
                 category = "MISSING"
                 common_name = "MISSING"
