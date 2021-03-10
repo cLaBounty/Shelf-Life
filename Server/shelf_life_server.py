@@ -44,7 +44,7 @@ async def messages(websocket, path):
                 # 737628064502
                 api_response = requests.get('https://world.openfoodfacts.org/api/v0/product/{0}.json'.format(barcode))
                 api_response_json = api_response.json()
-                if api_response_json['status_verbose'] == 'product found'
+                if api_response_json['status_verbose'] == 'product found':
                     item_official_name = api_response_json["product"]["product_name_en"]
 
                     print('Item Official Name: ' + item_official_name)                
