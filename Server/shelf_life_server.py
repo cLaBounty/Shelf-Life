@@ -4,6 +4,9 @@
 
 import asyncio
 import websockets
+import requests
+import json
+from barcode_parser import findCommonNameFromOfficial
 
 # UNDERSTANDING THE CODES
 # CODE - RECEIVING BARCODE FROM CLIENT
@@ -16,6 +19,9 @@ async def messages(websocket, path):
     # TODO: Have a timeout timer that counts up between messages
     # TODO: Look into parallization of tasks?    
     # TODO: Look into using a better delimeter than | ?
+    
+    api_response_json = None
+
     while True: 
         try:
             message = await websocket.recv()            
@@ -23,19 +29,22 @@ async def messages(websocket, path):
             print(f"Connection Terminated")
             break            
         if message != '':
-            split_message = message.split('|')
+            split_message = message.split('^')
             
 
             # TODO: Add improper input handling
             parseState = split_message[0]
-
+            data = split_message[1]
             if parseState == 'CODE': # client just send barcode, respond with split official name
                 print('======================')
                 print("Sending split name")
-                barcode = split_message[1]                
+                barcode = data                
                 print('Barcode: ' + barcode)
-                
-                item_official_name = 'Ronzoni, thin spaghetti'
+                # 737628064502
+                api_response = requests.get('https://world.openfoodfacts.org/api/v0/product/{0}.json'.format(barcode))
+                api_response_json = api_response.json()
+                item_official_name = api_response_json["product"]["product_name_en"]
+
                 print('Item Official Name: ' + item_official_name)                
                 
                 # TODO: Remove any non ABC chars, (include whitespace)
@@ -50,12 +59,14 @@ async def messages(websocket, path):
             elif parseState == 'SELECTION': # client sent their selection 
                 print('======================')
                 print("Sending Official Name, Category, Common Name")
-
                 official_name = 'Ronzoni, thin spaghetti'
-                category = "Long Pasta"
-                common_name = "Spaghetti"
                 
+                category = "MISSING"
+                common_name = "MISSING"
                 
+                data = findCommonNameFromOfficial(data.split('|'))
+                category = data[0]
+                common_name = data[1]
                 
                 response = 'ALL_INFO^' + official_name + '|' + category + '|' + common_name                
                 print("Response: " + response)
