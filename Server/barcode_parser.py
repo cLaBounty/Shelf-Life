@@ -22,9 +22,9 @@ def findCommonNameFromOfficial(broken_up_name):
         all_categories_names.append(array_from_file[0])    
     
     
-    info = ['MISSING', 'MISSING']
+    info = ['NOT FOUND', 'NOT FOUND']
     
-    highest_number_of_matching_name_parts = -1
+    highest_number_of_matching_name_parts = 0
     for i in range(len(all_categories)):
         for ingredient in all_categories[i]:
             number_of_matching_name_parts = 0
