@@ -6,41 +6,41 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 
 
-export default function PantryScreen({navigation}) {
+export default function PantryScreen({ navigation }) {
 
 
-    return (
-		 <View>
-        <StatusBar style="something that causes an error so the status bar is black, thus readable on the white background :)" />
-        <ImageBackground source={require('../assets/background.jpg')} style={styles.background} />
+  return (
+    <View>
+      <StatusBar style="something that causes an error so the status bar is black, thus readable on the white background :)" />
+      <ImageBackground source={require('../assets/background.jpg')} style={styles.background} />
 
 
-        <AlphabetList style={styles.list}
-          data={foodData} // Data for list
-          indexLetterColor={'white'} //Color of letters on right
+      <AlphabetList style={styles.list}
+        data={foodData} // Data for list
+        indexLetterColor={'white'} //Color of letters on right
 
-          renderCustomListHeader={
-            <View>
-              <Text style={styles.listTextInfo}>{"\n\n"}{foodData.length} Pantry Items {"\n"}</Text>
-            </View>
-          }
+        renderCustomListHeader={
+          <View>
+            <Text style={styles.listTextInfo}>{"\n\n"}{foodData.length} Pantry Items {"\n"}</Text>
+          </View>
+        }
 
-          renderCustomItem={(item) => (
-					<View>
-				 	<TouchableOpacity onPress={() => navigation.navigate('Item Information', { itemName: "" })}>
-			            <Text style={styles.listText}>{item.value}</Text>
-				      </TouchableOpacity>
-					</View>
-          )}
+        renderCustomItem={(item) => ( //Make the data fancy lookin'
+          <View>
+            <TouchableOpacity onPress={() => navigation.navigate('Item Information', { itemName: "" })}>
+              <Text style={styles.listText}>{item.value}</Text>
+            </TouchableOpacity>
+          </View>
+        )}
 
-          renderCustomSectionHeader={(section) => (
-            <Text style={styles.seperatorText}>{section.title}</Text> //Seperators
-          )}
-        />
-      </View>
+        renderCustomSectionHeader={(section) => ( //Seperators
+          <Text style={styles.seperatorText}>{section.title}</Text>
+        )}
+      />
+    </View>
 
-    );
-  }
+  );
+}
 
 
 const foodData = [ /* Temp data until the database is connected */
@@ -114,11 +114,11 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
     marginTop: 1,
-	 marginRight:10,
+    marginRight: 10,
     fontSize: 16,
     color: '#fff',
     backgroundColor: "#00000044",
-	 paddingLeft: 10,
+    paddingLeft: 10,
   },
   seperatorText: {
     width: "100%",
@@ -127,10 +127,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     paddingTop: 5,
     paddingBottom: 5,
-	 paddingLeft: 10,
+    paddingLeft: 10,
     marginTop: 1,
-    marginBottom: 1,
-	  marginRight:10,
+    marginRight: 10,
     backgroundColor: "#555555ff",
   },
   listTextInfo: {
