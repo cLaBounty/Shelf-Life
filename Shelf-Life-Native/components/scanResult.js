@@ -23,7 +23,7 @@ ParseStates:
 */
 
 function ScanResult(props) {
-    const [parseState, setParseState] = useState('');
+    const [parseState, setParseState] = useState('CODE');
     const [officialName, setOfficialName] = useState([]);
     const [commonName, setCommonName] = useState('');
     const [category, setCategory] = useState('');
@@ -33,7 +33,7 @@ function ScanResult(props) {
     ws.onopen = () => {
         // connection opened
         console.log('Connected to Server')        
-        if (parseState == 0) // only run if we haven't started to parse this barcode
+        if (parseState == 'CODE') // only run if we haven't started to parse this barcode
         {
             message = "CODE^" + props.barcode
             console.log(message)
@@ -116,6 +116,7 @@ function ScanResult(props) {
 
     return (
         <View style={styles.container}>
+            {(parseState == 'CODE') && <Text style={tempStyles.btnText}>Awaiting Response from Server</Text>}
             {(parseState == '') && <Button title={'Tap to Scan Again'} onPress={props.press} />}
             {(parseState == 'NEED_SELECTION') &&
                 <View>
