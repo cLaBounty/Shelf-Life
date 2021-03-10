@@ -1,0 +1,78 @@
+Fruits
+acai
+apples
+apricots
+avocado
+ackee
+bananas
+bilberries
+blueberries
+blackberries
+boysenberries
+bread fruit
+cantaloupes
+cantalope
+chocolate-fruit
+cherimoya
+cherries
+cranberries
+cucumbers
+currants
+dates
+durian
+eggplant
+elderberries
+figs
+gooseberries
+grapes
+grapefruit
+guava
+honeydew melons
+horned melon
+kiwano
+huckleberries
+ita palm
+jujubes
+kiwis
+durian
+kumquat
+lemons
+limes
+lychees
+mangos
+mangosteen
+mulberries
+muskmelon
+nectarines
+ogden melons
+olives
+oranges
+papaya
+passion fruit
+peaches
+pears
+peppers
+persimmon
+pineapple
+plums
+pluot
+pomegranate
+prickly pear
+quince
+rambuton
+raspberries
+rose apple
+starfruit
+sapadilla
+strawberries
+tamarind
+tangelo
+tangerines
+tomatoes
+ugli fruit
+voavanga
+spanish tamarind
+watermelons
+xigua melon
+yellow watermelon
+zucchini
