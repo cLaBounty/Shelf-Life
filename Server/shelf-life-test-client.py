@@ -16,8 +16,7 @@ async def hello():
         print("Sent")
         
         response = await websocket.recv()
-        print("Received: " + response)
-        await asyncio.sleep(10)
+        print("Received: " + response)        
         print("closed")
 
 asyncio.get_event_loop().run_until_complete(hello())
