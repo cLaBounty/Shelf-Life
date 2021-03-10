@@ -40,7 +40,7 @@ async def messages(websocket, path):
                 
                 # TODO: Remove any non ABC chars, (include whitespace)
                 split_product_name = item_official_name.split(' ')                
-                response = "NEED_SELECTION|"
+                response = "NEED_SELECTION^"
                 for x in range(len(split_product_name)-1):
                     response += split_product_name[x] + '|'
                 response += split_product_name[len(split_product_name)-1]
@@ -57,7 +57,7 @@ async def messages(websocket, path):
                 
                 
                 
-                response = 'ALL_INFO|' + official_name + '|' + category + '|' + common_name                
+                response = 'ALL_INFO^' + official_name + '|' + category + '|' + common_name                
                 print("Response: " + response)
                 print('======================')
                 await websocket.send(response) 
