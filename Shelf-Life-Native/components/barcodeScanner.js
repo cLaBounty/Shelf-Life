@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Button, Animated } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-
+import ScanResult from './scanResult'
 
 /*
 Helpful Docs: 
@@ -16,7 +16,7 @@ This is currently a functional component however it may be better suited as a cl
 function Cam() {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
-
+  const [barcode, setBarcode] = useState('');
 
   // Some reading on 'useEffect'
   // https://reactjs.org/docs/hooks-effect.html
@@ -45,9 +45,8 @@ function Cam() {
   }
 
   const handleBarCodeScanned = ({ type, data }) => {
-    setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-
+    setScanned(true);    
+    setBarcode(data)
     // TODO: EXTEND CODE HERE WITH DATA HANDLING
   };
 
@@ -62,27 +61,35 @@ function Cam() {
   // the elements after the && will be added to the screen
   // https://reactjs.org/docs/conditional-rendering.html
   return (
-    <View style={styles.container}>      
+    <View style={styles.container}>
       <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={StyleSheet.absoluteFillObject} />
       <View style={styles.focusedContainer}>
         {!scanned && (
-          <Animated.View
+          <View style={styles.container}>
+          <Animated.View 
             style={[
               styles.animationLineStyle,
               {
                 transform: [
                   {
-                    translateY: 225
+                    translateY: 0
                   },
                 ],
               },
             ]}
           />
+          </View>
         )}
-        {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
-      </View>      
+        {scanned && <View style={styles.container}>
+                      <ScanResult 
+                        press={() => setScanned(false)}
+                        barcode={barcode}                        
+                        />
+                    </View>
+        }
+      </View>
     </View>
   );
 }
