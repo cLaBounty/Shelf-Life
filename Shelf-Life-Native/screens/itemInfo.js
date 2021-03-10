@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View, ImageBackground, TouchableOpacity } from 'react-native';
+import { Text, TextInput, View, ImageBackground, TouchableOpacity } from 'react-native';
+import styles from '../Style'
 
 export default function ItemInfoScreen({ navigation, route }) {
   const [name, setName] = useState(route.params.itemName);
@@ -51,41 +52,3 @@ const handleSubmit = (name, quantity, price, expDate, navigation) => {
   // TODO: Add item to pantry
   navigation.navigate('Home');
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#000',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  background: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
-    position: 'absolute',
-    opacity: 0.50
-  },
-  inputField: {
-    width: 300,
-    fontSize: 22,
-    color: '#fff',
-    margin: 20,
-    padding: 3,
-    paddingLeft: 0,
-    borderColor: '#fff',
-    borderBottomWidth: 1
-  },
-  submitBtn: {
-    backgroundColor:'#5296E7',
-    borderColor: '#fff',
-    borderWidth: 1,
-    borderRadius: 10
-  },
-  submitBtnText: {
-    fontSize: 16,
-    color:'#fff',
-    padding: 8,
-    letterSpacing: 2
-  }
-});

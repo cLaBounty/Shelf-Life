@@ -1,6 +1,7 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
+import styles from '../Style'
 import Cam from '../components/barcodeScanner';
 
 export default function ScanItemScreen({ navigation }) {
@@ -18,30 +19,3 @@ export default function ScanItemScreen({ navigation }) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#000',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  text: {
-    fontSize: 24,
-    color: '#fff',
-    margin: 10
-  },
-  btn: {
-    backgroundColor:'#595959',
-    borderColor: '#fff',
-    borderWidth: 1,
-    borderRadius: 10,
-    margin: 5
-  },
-  btnText: {
-    fontSize: 14,
-    color:'#fff',
-    padding: 8,
-    letterSpacing: 1.5
-  }
-});
