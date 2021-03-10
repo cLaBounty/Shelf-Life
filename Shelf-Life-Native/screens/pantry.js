@@ -1,13 +1,16 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ImageBackground, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, TouchableOpacity } from 'react-native';
 import { AlphabetList } from "react-native-section-alphabet-list";
+import { createStackNavigator } from '@react-navigation/stack';
 
-class PantryScreen extends React.Component {
 
-  render() {
+
+export default function PantryScreen({navigation}) {
+
+
     return (
-      <View style={styles.container}>
+		 <View>
         <StatusBar style="something that causes an error so the status bar is black, thus readable on the white background :)" />
         <ImageBackground source={require('../assets/background.jpg')} style={styles.background} />
 
@@ -23,7 +26,11 @@ class PantryScreen extends React.Component {
           }
 
           renderCustomItem={(item) => (
-            <Text style={styles.listText}>{item.value}</Text>  //Items for list
+					<View>
+				 	<TouchableOpacity onPress={() => navigation.navigate('Item Information', { itemName: "" })}>
+			            <Text style={styles.listText}>{item.value}</Text>
+				      </TouchableOpacity>
+					</View>
           )}
 
           renderCustomSectionHeader={(section) => (
@@ -34,7 +41,7 @@ class PantryScreen extends React.Component {
 
     );
   }
-}
+
 
 const foodData = [ /* Temp data until the database is connected */
   { value: "Jif Chunky Peanutbutter" },
@@ -95,7 +102,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1.5
   },
   list: {
-    width: "95%",
+    width: "100%",
     height: "100 %",
     justifyContent: "center",
     backgroundColor: '#59595959',
@@ -104,13 +111,14 @@ const styles = StyleSheet.create({
   },
   listText: {
     width: "100%",
-    paddingTop: 5,
-    paddingBottom: 5,
+    paddingTop: 10,
+    paddingBottom: 10,
     marginTop: 1,
-    marginBottom: 1,
+	 marginRight:10,
     fontSize: 16,
     color: '#fff',
     backgroundColor: "#00000044",
+	 paddingLeft: 10,
   },
   seperatorText: {
     width: "100%",
@@ -119,9 +127,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     paddingTop: 5,
     paddingBottom: 5,
-    marginTop: 2,
-    marginBottom: 2,
-    backgroundColor: "#00000099",
+	 paddingLeft: 10,
+    marginTop: 1,
+    marginBottom: 1,
+	  marginRight:10,
+    backgroundColor: "#555555ff",
   },
   listTextInfo: {
     fontSize: 24,
@@ -130,5 +140,3 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   }
 });
-
-export default PantryScreen;
