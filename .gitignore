@@ -1,2 +1,33 @@
+# OSX
+#
+.DS_Store
 
-Shelf-Life-Native/android/java_pid15484.hprof
+# Xcode
+#
+Shelf-Life-Native/build/
+*/ios/*
+
+# Android/IntelliJ
+#
+build/
+.idea
+.gradle
+local.properties
+/Shelf-Life-Native/android/java_pid15484.hprof
+/Shelf-Life-Native/android/gradlew
+/Shelf-Life-Native/android/java_pid17317.hprof
+
+# node.js
+#
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# CocoaPods
+#
+/ios/Pods/*
+
+# Expo
+#
+Shelf-Life-Native/.expo/*
+web-build/
