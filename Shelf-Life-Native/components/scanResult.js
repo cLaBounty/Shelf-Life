@@ -32,11 +32,11 @@ function ScanResult(props) {
     // it would be good to find a way to keep this persistantly open
     ws.onopen = () => {
         // connection opened
-        console.log('Connected to Server')
-        console.log(props.barcode)
+        console.log('Connected to Server')        
         if (parseState == 0) // only run if we haven't started to parse this barcode
         {
-            message = "CODE|" + props.barcode
+            message = "CODE^" + props.barcode
+            console.log(message)
             ws.send(message); // send the barcode that was scanned to kick off conversation
         }
     };
@@ -59,6 +59,9 @@ function ScanResult(props) {
                 setCategory(data[1])
                 setCommonName(data[2])
                 break
+            case 'ERROR':
+                alert(data)
+                setParseState('')
             default:
                 break
         }
@@ -134,6 +137,7 @@ function ScanResult(props) {
                     <Text style={tempStyles.btnText}>Official Name: {officialName}</Text>
                     <Text style={tempStyles.btnText}>Category: {category}</Text>
                     <Text style={tempStyles.btnText}>Common Name: {commonName}</Text>
+                    <Button title={'Tap to Scan Again'} onPress={props.press} />
                 </View>
             }
         </View>
