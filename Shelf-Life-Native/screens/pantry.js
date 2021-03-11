@@ -27,7 +27,7 @@ export default function PantryScreen({ navigation }) {
 
         renderCustomItem={(item) => ( //Make the data fancy lookin'
           <View>
-            <TouchableOpacity onPress={() => navigation.navigate('Item Information', { itemName: "" })}>
+            <TouchableOpacity onPress={() => navigation.navigate('Item Information', { itemName: item.value, itemQuantity: "32", itemUnitPrice: "100000000", itemExpDate: "Mon, Feb 30, 2021" })}>
               <Text style={styles.listText}>{item.value}</Text>
             </TouchableOpacity>
           </View>
