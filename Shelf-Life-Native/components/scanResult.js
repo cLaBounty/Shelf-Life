@@ -27,7 +27,7 @@ function ScanResult(props) {
     const [officialName, setOfficialName] = useState([]);
     const [commonName, setCommonName] = useState('');
     const [category, setCategory] = useState('');
-    const [ws, setWs] = useState(new WebSocket('ws://184.171.155.35:20500'));
+    const [ws, setWs] = useState(new WebSocket('ws://143.198.232.184:20500'));
     const [selected, setSelected] = useState([])
     // it would be good to find a way to keep this persistantly open
     ws.onopen = () => {
