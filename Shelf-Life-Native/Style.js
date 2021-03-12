@@ -24,36 +24,6 @@ export default StyleSheet.create({
 		position: 'absolute',
 		opacity: 0.50,
 	},
-	title: {
-		fontSize: 72,
-		fontFamily: 'Baskerville-Italic',
-		fontWeight: '300',
-		color: '#fff',
-		letterSpacing: 4,
-	},
-	loginInput: {
-		width: 300,
-		fontSize: 22,
-		color: '#fff',
-		margin: 25,
-		padding: 3,
-		paddingLeft: 0,
-		borderColor: '#fff',
-		borderBottomWidth: 1,
-	},
-	loginBtn: {
-		backgroundColor:'#5296E7',
-		borderColor: '#fff',
-		borderWidth: 0,
-		borderRadius: 10,
-	},
-	loginBtnText: {
-		fontSize: 16,
-		color:'#fff',
-		textTransform: 'uppercase',
-		padding: 8,
-		letterSpacing: 2,
-	},
 	text: {
 		fontSize: 24,
 		color: '#fff',
@@ -72,27 +42,5 @@ export default StyleSheet.create({
 		color:'#fff',
 		padding: 8,
 		letterSpacing: 1.5,
-	},
-	inputField: {
-		width: 300,
-		fontSize: 22,
-		color: '#fff',
-		margin: 20,
-		padding: 3,
-		paddingLeft: 0,
-		borderColor: '#fff',
-		borderBottomWidth: 1
-	},
-	submitBtn: {
-		backgroundColor:'#5296E7',
-		borderColor: '#fff',
-		borderWidth: 0,
-		borderRadius: 10
-	},
-	submitBtnText: {
-		fontSize: 16,
-		color:'#fff',
-		padding: 8,
-		letterSpacing: 2
 	},
 })
