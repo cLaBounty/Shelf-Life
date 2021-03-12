@@ -1,13 +1,14 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Text, View, TouchableOpacity } from 'react-native';
-import styles from '../Style'
+import styles from '../Style';
 import Cam from '../components/barcodeScanner';
+
 
 export default function ScanItemScreen({ navigation }) {
   // TODO: Merge Cam class with this, could maybe done through props?
   
-  //return (<Cam/>);
+  return (<Cam/>);
   
   return (  
     <View style={styles.container}>
