@@ -13,7 +13,7 @@ export default function AddItemScreen({ navigation }) {
       <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Scan Item')}>
         <Text style={styles.btnText}>Scan</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Item Information', { itemName: "" })}>
+      <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Item Information', { itemName: "", itemQuantity: "", itemUnitPrice: "", itemExpDate: "" })}>
         <Text style={styles.btnText}>Manual</Text>
       </TouchableOpacity>
     </View>
