@@ -1,0 +1,15 @@
+{
+	"recipes": ["Decorative", "Ribbon Cut", "Long"],
+	"Decorative": {
+		"dispName": "Decorative",
+		"ingredients": ["penne", "trenne", "marziani"]
+	},
+	"Ribbon Cut": {
+		"dispName": "Ribbon Cut",
+		"ingredients": ["linguine", "lasagne", "tripoline"]
+	},
+	"Long": {
+		"dispName": "Long",
+		"ingredients": ["spaghetti", "bucatini", "ziti"]
+	}
+};

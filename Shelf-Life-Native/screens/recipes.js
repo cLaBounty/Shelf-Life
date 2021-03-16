@@ -1,8 +1,10 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, Alert } from 'react-native';
 import { Pages } from 'react-native-pages';
 import ModalDropdown from 'react-native-modal-dropdown';
+
+const recipes = require('../assets/recipeTest.json')
 
 export default function RecipesScreen({ navigation }) {
   return (
@@ -15,15 +17,16 @@ export default function RecipesScreen({ navigation }) {
 			<Pages>
         <View>
 					<Text style={styles.header}>Noodles</Text>
-					<ModalDropdown 
-						options={noodleTypes} 
-						defaultIndex={1} 
-						textStyle={styles.type}
-						dropdownStyle={styles.dropdown}
-						dropdownTextStyle={styles.textDropdown}
-						dropdownTextHighlightStyle={styles.textDropdownSelected}
-					/>
-				<Text style={styles.header}>Test</Text>
+						<ModalDropdown 
+							options={recipes.recipes}
+							textStyle={styles.type}
+							dropdownStyle={styles.dropdown}
+							dropdownTextStyle={styles.textDropdown}
+							dropdownTextHighlightStyle={styles.textDropdownSelected}
+							onSelect={this._testButton}
+						/>
+						<Text style={styles.header}>{Cat("Test")}</Text>
+						<Text style={styles.header}>{noodleList()}</Text>
 				</View>                     
         <View> 
 					<Text style={styles.header}>Page 2</Text>
@@ -37,13 +40,35 @@ export default function RecipesScreen({ navigation }) {
   );
 }
 
-const noodleTypes = [
+const Cat = (message) => {
+  return message;
+};
+
+const noodleList = (index, value) => {
+	text=recipes.recipes
+	return <Text>{text}</Text>
+}
+
+_testButton = (index, value) => {
+	 title = "Selected recipe: " + recipes.recipes[index]
+	 desc = "Available Recipes: " + recipes.[value].ingredients
+	 Alert.alert(
+		 title,
+		 desc,
+		 [
+			 {
+				 text: "Yay!"
+			 },
+		 ]
+	 )
+}
+
+const noodleTypesOLD = [
 	"Decorative",
 	"Ribbon Cut",
 	"Long",
-	"Short",
-	"Eh"
 ]
+
 
 const styles = StyleSheet.create({
   container: {
