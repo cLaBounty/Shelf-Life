@@ -2,7 +2,6 @@ import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ImageBackground, Alert } from 'react-native';
 import { Pages } from 'react-native-pages';
-import ModalDropdown from 'react-native-modal-dropdown';
 
 const recipes = require('../assets/recipeTest.json')
 
@@ -16,23 +15,11 @@ export default function RecipesScreen({ navigation }) {
 			<View style={styles.pageStyle}>
 			<Pages>
         <View>
-					<Text style={styles.header}>Noodles</Text>
-						<ModalDropdown 
-							options={recipes.recipes}
-							textStyle={styles.type}
-							dropdownStyle={styles.dropdown}
-							dropdownTextStyle={styles.textDropdown}
-							dropdownTextHighlightStyle={styles.textDropdownSelected}
-							onSelect={this._testButton}
-						/>
-						<Text style={styles.header}>{Cat("Test")}</Text>
-						<Text style={styles.header}>{noodleList()}</Text>
+					<Text style={styles.header}>Recipes</Text>
+					
 				</View>                     
         <View> 
-					<Text style={styles.header}>Page 2</Text>
-				</View>                     
-        <View> 
-					<Text style={styles.header}>Page 3</Text>
+					<Text style={styles.header}>Favorites</Text>
 				</View>
       </Pages>
 			</View>
@@ -40,35 +27,10 @@ export default function RecipesScreen({ navigation }) {
   );
 }
 
-const Cat = (message) => {
-  return message;
-};
-
-const noodleList = (index, value) => {
+recipeList = (index, value) => {
 	text=recipes.recipes
 	return <Text>{text}</Text>
 }
-
-_testButton = (index, value) => {
-	 title = "Selected recipe: " + recipes.recipes[index]
-	 desc = "Available Recipes: " + recipes.[value].ingredients
-	 Alert.alert(
-		 title,
-		 desc,
-		 [
-			 {
-				 text: "Yay!"
-			 },
-		 ]
-	 )
-}
-
-const noodleTypesOLD = [
-	"Decorative",
-	"Ribbon Cut",
-	"Long",
-]
-
 
 const styles = StyleSheet.create({
   container: {

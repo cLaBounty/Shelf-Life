@@ -1,15 +1,34 @@
 {
-	"recipes": ["Decorative", "Ribbon Cut", "Long"],
-	"Decorative": {
-		"dispName": "Decorative",
-		"ingredients": ["penne", "trenne", "marziani"]
+	"recipes": ["Orange Cake", "React BB", "PB&J", "Windowpane Cookies", "Salmon"],
+	"favorites" : ["Salmon"],
+	"Orange Cake": {
+		"dispName": "Orange Cake",
+		"desc": "Moist orange flavored cake.",
+		"ingredients": ["Cake", "Orange", "Molecular infuser"],
+		"quantity": [1, 3000, 2]
 	},
-	"Ribbon Cut": {
-		"dispName": "Ribbon Cut",
-		"ingredients": ["linguine", "lasagne", "tripoline"]
+	"React BB": {
+		"dispName": "React Bits and Bytes",
+		"desc": "The dead soul of a react project.",
+		"ingredients:": ["React Project", "Developer Tears", "Recycle Bin", "'Final' Label"],
+		"quantity": [2, 50, 1, 10]
 	},
-	"Long": {
-		"dispName": "Long",
-		"ingredients": ["spaghetti", "bucatini", "ziti"]
+	"PB&J": {
+		"dispName": "Peanut Butter and Jelly",
+		"desc": "A task which people enjoy, but cannot describe how to make.",
+		"ingredients": ["Bread", "Peanut Butter", "Jelly"],
+		"quantity": [2, 1, 1]
+	},
+	"Windowpane Cookies": {
+		"dispName": "Windowpane Cookies",
+		"desc": "Chocolate cookies with colorful mini marshmellows with coconut shavings.",
+		"ingredients": ["Chocolate", "mini marshmellow bag", "coconut shavings bag"],
+		"quantity": [3, 1, 1]
+	},
+	"Salmon": {
+		"dispName": "Cooked Salmon",
+		"desc": "What description? It's salmon! Everyone loves salmon!",
+		"ingredients": ["Salmon", "Cooking Oil", "Other stuff"],
+		"quantity": [1, 1, 5]
 	}
 };
