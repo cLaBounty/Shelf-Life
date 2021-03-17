@@ -30,7 +30,7 @@
 		{
 			"name": "Windowpane Cookies",
 			"dispName": "Windowpane Cookies",
-			"desc": "Chocolate cookies with colorful mini marshmellows with coconut shavings.",
+			"desc": "Chocolate cookies with colorful mini marshmellows with coconut shavings. Truly a holiday special for all to enjoy, and makes you want to forget about the Christmas turkey and candy.",
 			"ingredients": ["Chocolate", "mini marshmellow bag", "coconut shavings bag"],
 			"quantity": [3, 1, 1],
 			"favorite": false,

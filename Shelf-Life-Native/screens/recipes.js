@@ -35,27 +35,28 @@ recipeList = () => {
 		return (
 			retVal = [],
 			retVal.concat(
+				
 				<View style={styles.listItem}>
-					<Image source={require('../assets/unknown.jpg')} style={styles.thumbnail} />
-					<View style={styles.listItemText}>
-						<Text style={styles.listItemName}>{data.dispName}</Text>
-						<Text style={styles.listItemDesc}>{data.desc}</Text>
+					<Text style={styles.listItemName} numberOfLines={1} ellipsizeMode = 'tail'>{data.dispName}</Text>
+				
+					<View style={styles.listItemText, styles.listLower}>
+						<Image source={require('../assets/unknown.jpg')} style={styles.thumbnail} />
+						<Text style={styles.listItemDesc} numberOfLines={6} ellipsizeMode = 'tail'>{data.desc}</Text>
+				
 					</View>
 				</View>
 			)
+			
 		)
 	})
-	return (output.sort())
+	return (output)
 }
 
 
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: '#000',
-    alignItems: 'center',
-    justifyContent: 'center'
   },
   background: {
     width: '100%',
@@ -67,6 +68,8 @@ const styles = StyleSheet.create({
 	scrollable: {
 		width: '100%',
 		height: '80%',
+		borderWidth: 3,
+		borderColor: "#00000000",
 	},
   header: {
     fontSize: 50,
@@ -95,32 +98,25 @@ const styles = StyleSheet.create({
 		marginTop: 25,
 		marginLeft: 10,
 		marginRight: 10,
-		borderRadius: 10,
+		borderRadius: 15,
 		borderWidth: 3,
 		borderColor: "#00000000",
-    overflow: "hidden",
 		paddingLeft: 10,
 		paddingTop: 10,
 		paddingBottom: 10,
-		flexDirection: "row",
 		justifyContent:"flex-start"
-	},
-	listItemText:{
-		flexDirection: "column",
-		flex: 10,
-		marginRight: 10,
 	},
 	listItemName: {
 		color: "#fff",
 		fontSize: 25,
-		flex: 10,
+		marginBottom: 10,
   },
 	listItemDesc: {
 		color: "#aaa",
 		fontSize: 15,
+		width: "64%",
 	},
 	thumbnail: {
-		flex: 1,
 		resizeMode: 'cover',
 		marginTop: "auto",
 		marginBottom: "auto",
@@ -129,5 +125,12 @@ const styles = StyleSheet.create({
 		height: 50,
 		width: 50,
 		backgroundColor: "red",
+		borderWidth: 3,
+		borderColor: "#00000000",
+		borderRadius: 10,
+	},
+	listLower: {
+		flex: 10,
+		flexDirection: "row",
 	}
 });
