@@ -3,8 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ImageBackground, TouchableOpacity } from 'react-native';
 import { AlphabetList } from "react-native-section-alphabet-list";
 import { createStackNavigator } from '@react-navigation/stack';
-
-
+import styles from '../Style';
 
 export default function PantryScreen({ navigation }) {
 
@@ -15,33 +14,32 @@ export default function PantryScreen({ navigation }) {
       <ImageBackground source={require('../assets/background.jpg')} style={styles.background} />
 
 
-      <AlphabetList style={styles.list}
+      <AlphabetList style={pantryStyles.list}
         data={foodData} // Data for list
         indexLetterColor={'white'} //Color of letters on right
 
         renderCustomListHeader={
           <View>
-            <Text style={styles.listTextInfo}>{"\n\n"}{foodData.length} Pantry Items {"\n"}</Text>
+            <Text style={pantryStyles.listTextInfo}>{"\n\n"}{foodData.length} Pantry Items {"\n"}</Text>
           </View>
         }
 
         renderCustomItem={(item) => ( //Make the data fancy lookin'
           <View>
             <TouchableOpacity onPress={() => navigation.navigate('Item Information', { itemName: item.value, itemQuantity: "32", itemUnitPrice: "100000000", itemExpDate: "Mon, Feb 30, 2021" })}>
-              <Text style={styles.listText}>{item.value}</Text>
+              <Text style={pantryStyles.listText}>{item.value}</Text>
             </TouchableOpacity>
           </View>
         )}
 
         renderCustomSectionHeader={(section) => ( //Seperators
-          <Text style={styles.seperatorText}>{section.title}</Text>
+          <Text style={pantryStyles.seperatorText}>{section.title}</Text>
         )}
       />
     </View>
 
   );
 }
-
 
 const foodData = [ /* Temp data until the database is connected */
   { value: "Jif Chunky Peanutbutter" },
@@ -67,40 +65,7 @@ const foodData = [ /* Temp data until the database is connected */
   { value: "Canada Dry Ginger Ale" },
 ]
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#000',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    height: '100%'
-  },
-  background: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
-    position: 'absolute',
-    opacity: 0.50
-  },
-  text: {
-    fontSize: 24,
-    color: '#fff',
-    margin: 10
-  },
-  btn: {
-    backgroundColor: '#595959',
-    borderColor: '#fff',
-    borderWidth: 1,
-    borderRadius: 10,
-    margin: 5
-  },
-  btnText: {
-    fontSize: 14,
-    color: '#fff',
-    padding: 8,
-    letterSpacing: 1.5
-  },
+const pantryStyles = StyleSheet.create({
   list: {
     width: "100%",
     height: "100 %",
