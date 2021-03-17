@@ -5,9 +5,9 @@ import styles from '../Style';
 
 export default function ItemInfoScreen({ navigation, route }) {
   const [name, setName] = useState(route.params.itemName);
-  const [quantity, setQuantity] = useState("");
-  const [price, setPrice] = useState("");
-  const [expDate, setExpDate] = useState("");
+  const [quantity, setQuantity] = useState(route.params.itemQuantity);
+  const [price, setPrice] = useState(route.params.itemUnitPrice);
+  const [expDate, setExpDate] = useState(route.params.itemExpDate);
 
   return (
     <View style={styles.container}>
@@ -25,6 +25,7 @@ export default function ItemInfoScreen({ navigation, route }) {
         placeholder="Quantity"
         placeholderTextColor="#9E9791"
         keyboardType="numeric"
+        defaultValue={route.params.itemQuantity}
         onChangeText={(value) => setQuantity(value)}
       />
       <TextInput
@@ -32,6 +33,7 @@ export default function ItemInfoScreen({ navigation, route }) {
         placeholder="Unit Price"
         placeholderTextColor="#9E9791"
         keyboardType="numeric"
+		  defaultValue={route.params.itemUnitPrice}
         onChangeText={(value) => setPrice(value)}
       />
       <TextInput
@@ -39,6 +41,7 @@ export default function ItemInfoScreen({ navigation, route }) {
         placeholder="Expiration Date"
         placeholderTextColor="#9E9791"
         keyboardType="numbers-and-punctuation"
+		  defaultValue={route.params.itemExpDate}
         onChangeText={(value) => setExpDate(value)}
       />
       <TouchableOpacity style={infoStyles.submitBtn} onPress={() => handleSubmit(name, quantity, price, expDate, navigation)}>
