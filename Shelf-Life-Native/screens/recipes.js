@@ -36,23 +36,36 @@ recipeList = ({ navigation }) => {
 		return (
 			retVal = [],
 			retVal.concat(
-				
-				<View style={styles.listItem}>
-				  <TouchableOpacity onPress={() => navigation.navigate('Recipe Information', { recipeName: data.name, recipeDispName: data.dispName, recipeDesc: data.desc,recipeIngredients: data.ingredients, recipeQuantity: data.quantity, recipeFavorite: data.favorite, recipeImage: data.image})} >
+				<View>
+					<Text style={styles.header}>Test</Text>
 
-					<Text style={styles.listItemName} numberOfLines={1} ellipsizeMode = 'tail'>{data.dispName}</Text>
-
-					<View style={styles.listItemText, styles.listLower}>
-						<Image source={require('../assets/unknown.jpg')} style={styles.thumbnail} />
-						<Text style={styles.listItemDesc} numberOfLines={6} ellipsizeMode = 'tail'>{data.desc}</Text>
+					<View style={isFavorite(data.favorite)}>
+					  <TouchableOpacity onPress={() => navigation.navigate('Recipe Information', { recipeName: data.name, recipeDispName: data.dispName, recipeDesc: data.desc,recipeIngredients: data.ingredients, recipeQuantity: data.quantity, recipeFavorite: data.favorite, recipeImage: data.image})} >
+							<Text style={styles.listItemName} numberOfLines={1} ellipsizeMode = 'tail'>{data.dispName}</Text>
+							<View style={styles.listItemText, styles.listLower}>
+								<Image source={require('../assets/unknown.jpg')} style={styles.thumbnail} />
+								<Text style={styles.listItemDesc} numberOfLines={6} ellipsizeMode = 'tail'>{data.desc}</Text>
+							</View>
+						</TouchableOpacity>
 					</View>
-					</TouchableOpacity>
 				</View>
-			)
-			
+			)	
 		)
 	})
 	return (output)
+}
+
+function isFavorite (favorite) {
+	retVal = ""
+	if (favorite == "true")
+	{
+		retVal = styles.favoriteListItem
+	}
+	else
+	{
+		retVal = styles.listItem
+	}
+	return retVal
 }
 
 
@@ -104,6 +117,19 @@ const styles = StyleSheet.create({
 		borderRadius: 15,
 		borderWidth: 3,
 		borderColor: "#00000000",
+		paddingLeft: 10,
+		paddingTop: 10,
+		paddingBottom: 10,
+		justifyContent:"flex-start"
+	},
+	favoriteListItem: {
+    backgroundColor: '#11111166',
+		marginTop: 25,
+		marginLeft: 10,
+		marginRight: 10,
+		borderRadius: 15,
+		borderWidth: 3,
+		borderColor: "#fa82a7aa",
 		paddingLeft: 10,
 		paddingTop: 10,
 		paddingBottom: 10,

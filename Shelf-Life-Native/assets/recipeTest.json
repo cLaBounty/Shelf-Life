@@ -6,7 +6,7 @@
 			"desc": "Moist orange flavored cake.",
 			"ingredients": ["Cake", "Orange", "Molecular infuser"],
 			"quantity": [1, 3000, 2],
-			"favorite": false,
+			"favorite": "false",
 			"image": "unknown.jpg"
 		},
 		{
@@ -15,7 +15,7 @@
 			"desc": "The dead soul of a react project.",
 			"ingredients:": ["React Project", "Developer Tears", "Recycle Bin", "'Final' Label"],
 			"quantity": [2, 50, 1, 10],
-			"favorite": true,
+			"favorite": "true",
 			"image": "unknown.jpg"
 		},
 		{
@@ -24,7 +24,7 @@
 			"desc": "A task which people enjoy, but cannot describe how to make.",
 			"ingredients": ["Bread", "Peanut Butter", "Jelly"],
 			"quantity": [2, 1, 1],
-			"favorite": false,
+			"favorite": "false",
 			"image": "unknown.jpg"
 		},
 		{
@@ -33,7 +33,7 @@
 			"desc": "Chocolate cookies with colorful mini marshmellows with coconut shavings. Truly a holiday special for all to enjoy, and makes you want to forget about the Christmas turkey and candy.",
 			"ingredients": ["Chocolate", "mini marshmellow bag", "coconut shavings bag"],
 			"quantity": [3, 1, 1],
-			"favorite": false,
+			"favorite": "false",
 			"image": "unknown.jpg"
 		},
 		{
@@ -42,7 +42,7 @@
 			"desc": "What description? It's salmon! Everyone loves salmon!",
 			"ingredients": ["Salmon", "Cooking Oil", "Other stuff"],
 			"quantity": [1, 1, 5],
-			"favorite": true,
+			"favorite": "true",
 			"image": "unknown.jpg"
 		}
 	]
