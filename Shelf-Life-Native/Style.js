@@ -7,12 +7,6 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
-	menucontainer: {
-		flex: 1,
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
 	btnImage: {
 		width: 100,
 		height: 100,
@@ -43,4 +37,14 @@ export default StyleSheet.create({
 		padding: 8,
 		letterSpacing: 1.5,
 	},
+	inputField: {
+		width: 300,
+		fontSize: 22,
+		color: '#fff',
+		margin: 20,
+		padding: 3,
+		paddingLeft: 0,
+		borderColor: '#fff',
+		borderBottomWidth: 1
+	}
 })

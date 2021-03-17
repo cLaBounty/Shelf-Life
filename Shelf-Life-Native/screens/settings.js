@@ -14,3 +14,7 @@ export default function SettingsScreen({ navigation }) {
     </View>
   );
 }
+
+const settingsStyles = StyleSheet.create({
+
+});

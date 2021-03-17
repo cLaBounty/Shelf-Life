@@ -1,6 +1,6 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { Text, View, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground } from 'react-native';
 import styles from '../Style';
 
 export default function NutritionScreen({ navigation }) {
@@ -14,3 +14,7 @@ export default function NutritionScreen({ navigation }) {
     </View>
   );
 }
+
+const nutritionStyles = StyleSheet.create({
+
+});

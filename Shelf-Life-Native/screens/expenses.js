@@ -1,6 +1,6 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { Text, View, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground } from 'react-native';
 import styles from '../Style';
 
 export default function ExpensesScreen({ navigation }) {
@@ -14,3 +14,7 @@ export default function ExpensesScreen({ navigation }) {
     </View>
   );
 }
+
+const expensesStyles = StyleSheet.create({
+
+});
