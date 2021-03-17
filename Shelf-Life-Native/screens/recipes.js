@@ -1,9 +1,9 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ImageBackground, Alert } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, ScrollView, Image } from 'react-native';
 import { Pages } from 'react-native-pages';
 
-const recipes = require('../assets/recipeTest.json')
+const recipesJSON = require('../assets/recipeTest.json')
 
 export default function RecipesScreen({ navigation }) {
   return (
@@ -16,7 +16,9 @@ export default function RecipesScreen({ navigation }) {
 			<Pages>
         <View>
 					<Text style={styles.header}>Recipes</Text>
-					
+					<ScrollView style={styles.scrollable}>
+						{recipeList()}
+					</ScrollView>
 				</View>                     
         <View> 
 					<Text style={styles.header}>Favorites</Text>
@@ -27,10 +29,26 @@ export default function RecipesScreen({ navigation }) {
   );
 }
 
-recipeList = (index, value) => {
-	text=recipes.recipes
-	return <Text>{text}</Text>
+
+recipeList = () => {
+	output = recipesJSON.recipes.map((data) => {
+		return (
+			retVal = [],
+			retVal.concat(
+				<View style={styles.listItem}>
+					<Image source={require('../assets/unknown.jpg')} style={styles.thumbnail} />
+					<View style={styles.listItemText}>
+						<Text style={styles.listItemName}>{data.dispName}</Text>
+						<Text style={styles.listItemDesc}>{data.desc}</Text>
+					</View>
+				</View>
+			)
+		)
+	})
+	return (output.sort())
 }
+
+
 
 const styles = StyleSheet.create({
   container: {
@@ -46,6 +64,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     opacity: 0.50
   },
+	scrollable: {
+		width: '100%',
+		height: '80%',
+	},
   header: {
     fontSize: 50,
     color: '#fff',
@@ -54,7 +76,7 @@ const styles = StyleSheet.create({
 		textAlign: "center",
 		paddingTop: 5,
 		marginTop: 25,
-    overflow: "hidden"
+    overflow: "hidden",
   },
 	type: {
 		fontSize: 25,
@@ -67,25 +89,45 @@ const styles = StyleSheet.create({
 	pageStyle: {
 		width: "100%",
 		height: "100%",
-	},
-	dropdown:{
-		width:"100%",
-		backgroundColor: "#11111100",
-		paddingTop: 5,
+	}, 
+	listItem: {
+    backgroundColor: '#11111166',
+		marginTop: 25,
+		marginLeft: 10,
+		marginRight: 10,
+		borderRadius: 10,
+		borderWidth: 3,
+		borderColor: "#00000000",
     overflow: "hidden",
-		borderWidth: 0,
+		paddingLeft: 10,
+		paddingTop: 10,
+		paddingBottom: 10,
+		flexDirection: "row",
+		justifyContent:"flex-start"
 	},
-	textDropdown: {
-    fontSize: 25,
-		color: "#fff",
-		backgroundColor: "#11111166",
-		textAlign: "center",
-		paddingTop: 5,
+	listItemText:{
+		flexDirection: "column",
+		flex: 10,
+		marginRight: 10,
 	},
-	textDropdownSelected: {
-    fontSize: 25,
+	listItemName: {
 		color: "#fff",
-		backgroundColor: "#55551166",
-		textAlign: "center",
+		fontSize: 25,
+		flex: 10,
+  },
+	listItemDesc: {
+		color: "#aaa",
+		fontSize: 15,
+	},
+	thumbnail: {
+		flex: 1,
+		resizeMode: 'cover',
+		marginTop: "auto",
+		marginBottom: "auto",
+		marginRight: 10,
+		padding: 50,
+		height: 50,
+		width: 50,
+		backgroundColor: "red",
 	}
 });

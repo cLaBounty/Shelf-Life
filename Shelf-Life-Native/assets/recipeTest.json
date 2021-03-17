@@ -1,34 +1,49 @@
 {
-	"recipes": ["Orange Cake", "React BB", "PB&J", "Windowpane Cookies", "Salmon"],
-	"favorites" : ["Salmon"],
-	"Orange Cake": {
-		"dispName": "Orange Cake",
-		"desc": "Moist orange flavored cake.",
-		"ingredients": ["Cake", "Orange", "Molecular infuser"],
-		"quantity": [1, 3000, 2]
-	},
-	"React BB": {
-		"dispName": "React Bits and Bytes",
-		"desc": "The dead soul of a react project.",
-		"ingredients:": ["React Project", "Developer Tears", "Recycle Bin", "'Final' Label"],
-		"quantity": [2, 50, 1, 10]
-	},
-	"PB&J": {
-		"dispName": "Peanut Butter and Jelly",
-		"desc": "A task which people enjoy, but cannot describe how to make.",
-		"ingredients": ["Bread", "Peanut Butter", "Jelly"],
-		"quantity": [2, 1, 1]
-	},
-	"Windowpane Cookies": {
-		"dispName": "Windowpane Cookies",
-		"desc": "Chocolate cookies with colorful mini marshmellows with coconut shavings.",
-		"ingredients": ["Chocolate", "mini marshmellow bag", "coconut shavings bag"],
-		"quantity": [3, 1, 1]
-	},
-	"Salmon": {
-		"dispName": "Cooked Salmon",
-		"desc": "What description? It's salmon! Everyone loves salmon!",
-		"ingredients": ["Salmon", "Cooking Oil", "Other stuff"],
-		"quantity": [1, 1, 5]
-	}
+	"recipes": [
+		{
+			"name": "Orange Cake",
+			"dispName": "Orange Cake",
+			"desc": "Moist orange flavored cake.",
+			"ingredients": ["Cake", "Orange", "Molecular infuser"],
+			"quantity": [1, 3000, 2],
+			"favorite": false,
+			"image": "unknown.jpg"
+		},
+		{
+			"name": "React BB",
+			"dispName": "React Bits and Bytes",
+			"desc": "The dead soul of a react project.",
+			"ingredients:": ["React Project", "Developer Tears", "Recycle Bin", "'Final' Label"],
+			"quantity": [2, 50, 1, 10],
+			"favorite": true,
+			"image": "unknown.jpg"
+		},
+		{
+			"name": "PB&J",
+			"dispName": "Peanut Butter and Jelly",
+			"desc": "A task which people enjoy, but cannot describe how to make.",
+			"ingredients": ["Bread", "Peanut Butter", "Jelly"],
+			"quantity": [2, 1, 1],
+			"favorite": false,
+			"image": "unknown.jpg"
+		},
+		{
+			"name": "Windowpane Cookies",
+			"dispName": "Windowpane Cookies",
+			"desc": "Chocolate cookies with colorful mini marshmellows with coconut shavings.",
+			"ingredients": ["Chocolate", "mini marshmellow bag", "coconut shavings bag"],
+			"quantity": [3, 1, 1],
+			"favorite": false,
+			"image": "unknown.jpg"
+		},
+		{
+			"name": "Salmon",
+			"dispName": "Cooked Salmon",
+			"desc": "What description? It's salmon! Everyone loves salmon!",
+			"ingredients": ["Salmon", "Cooking Oil", "Other stuff"],
+			"quantity": [1, 1, 5],
+			"favorite": true,
+			"image": "unknown.jpg"
+		}
+	]
 };
