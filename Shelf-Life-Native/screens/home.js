@@ -34,7 +34,7 @@ export default function HomeScreen({ navigation, route }) {
 					<Text style={styles.btnText}>Expenses</Text>
 					<Image style={styles.btnImage} source={require('../assets/placeholder.png')}/>
 		  		</TouchableOpacity>
-		  		<TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Settings')}>
+		  		<TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Settings', { username: route.params.username })}>
 					<Text style={styles.btnText}>Settings</Text>
 					<Image style={styles.btnImage} source={require('../assets/placeholder.png')}/>
 		  		</TouchableOpacity>

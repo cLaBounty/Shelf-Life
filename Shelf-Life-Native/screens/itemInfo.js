@@ -33,7 +33,7 @@ export default function ItemInfoScreen({ navigation, route }) {
         placeholder="Unit Price"
         placeholderTextColor="#9E9791"
         keyboardType="numeric"
-		  defaultValue={route.params.itemUnitPrice}
+		    defaultValue={route.params.itemUnitPrice}
         onChangeText={(value) => setPrice(value)}
       />
       <TextInput
@@ -41,7 +41,7 @@ export default function ItemInfoScreen({ navigation, route }) {
         placeholder="Expiration Date"
         placeholderTextColor="#9E9791"
         keyboardType="numbers-and-punctuation"
-		  defaultValue={route.params.itemExpDate}
+		    defaultValue={route.params.itemExpDate}
         onChangeText={(value) => setExpDate(value)}
       />
       <TouchableOpacity style={itemInfoStyles.submitBtn} onPress={() => handleSubmit(name, quantity, price, expDate, navigation)}>
