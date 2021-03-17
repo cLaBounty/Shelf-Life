@@ -13,6 +13,7 @@ import RecipesScreen from './screens/recipes';
 import NutritionScreen from './screens/nutrition';
 import ExpensesScreen from './screens/expenses';
 import SettingsScreen from './screens/settings';
+import RecipeInfoScreen from './screens/recipeInfo';
 
 const Stack = createStackNavigator();
 
@@ -29,6 +30,7 @@ export default function App() {
 
         <Stack.Screen name="Pantry" component={PantryScreen} options={{ headerShown: true }} />
         <Stack.Screen name="Recipes" component={RecipesScreen} options={{ headerShown: true }} />
+        <Stack.Screen name="Recipe Information" component={RecipeInfoScreen} options={{ headerShown: true }} />				
         <Stack.Screen name="Nutrition" component={NutritionScreen} options={{ headerShown: true }} />
         <Stack.Screen name="Expenses" component={ExpensesScreen} options={{ headerShown: true }} />
         <Stack.Screen name="Settings" component={SettingsScreen} options={{ headerShown: true }} />

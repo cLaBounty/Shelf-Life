@@ -1,7 +1,8 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ImageBackground, ScrollView, Image } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { Pages } from 'react-native-pages';
+import { createStackNavigator } from '@react-navigation/stack';
 
 const recipesJSON = require('../assets/recipeTest.json')
 
@@ -17,7 +18,7 @@ export default function RecipesScreen({ navigation }) {
         <View>
 					<Text style={styles.header}>Recipes</Text>
 					<ScrollView style={styles.scrollable}>
-						{recipeList()}
+						{recipeList({navigation})}
 					</ScrollView>
 				</View>                     
         <View> 
@@ -30,20 +31,21 @@ export default function RecipesScreen({ navigation }) {
 }
 
 
-recipeList = () => {
+recipeList = ({ navigation }) => {
 	output = recipesJSON.recipes.map((data) => {
 		return (
 			retVal = [],
 			retVal.concat(
 				
 				<View style={styles.listItem}>
+				  <TouchableOpacity onPress={() => navigation.navigate('Recipe Information', { recipeName: data.name, recipeDispName: data.dispName, recipeDesc: data.desc,recipeIngredients: data.ingredients, recipeQuantity: data.quantity, recipeFavorite: data.favorite, recipeImage: data.image})} >
 					<Text style={styles.listItemName} numberOfLines={1} ellipsizeMode = 'tail'>{data.dispName}</Text>
 				
 					<View style={styles.listItemText, styles.listLower}>
 						<Image source={require('../assets/unknown.jpg')} style={styles.thumbnail} />
 						<Text style={styles.listItemDesc} numberOfLines={6} ellipsizeMode = 'tail'>{data.desc}</Text>
-				
 					</View>
+					</TouchableOpacity>
 				</View>
 			)
 			
@@ -124,7 +126,7 @@ const styles = StyleSheet.create({
 		padding: 50,
 		height: 50,
 		width: 50,
-		backgroundColor: "red",
+		backgroundColor: "#00000055",
 		borderWidth: 3,
 		borderColor: "#00000000",
 		borderRadius: 10,
