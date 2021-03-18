@@ -18,7 +18,9 @@ export default function RecipesScreen({ navigation }) {
         <View>
 					<Text style={styles.header}>Recipes</Text>
 					<ScrollView style={styles.scrollable}>
+		
 						{recipeList({navigation})}
+		
 					</ScrollView>
 				</View>                     
         <View> 
@@ -31,12 +33,12 @@ export default function RecipesScreen({ navigation }) {
 }
 
 
-recipeList = ({ navigation }) => {
-	output = recipesJSON.recipes.map((data) => {
+function recipeList ( {navigation} ){
+	return recipesJSON.recipes.map(data => {
 		return (
 			retVal = [],
 			retVal.concat(
-				<View style={isFavorite(data.favorite)}>
+				<View style={styleFavorite(data.favorite)}>
 				  <TouchableOpacity onPress={() => navigation.navigate('Recipe Information', { recipeName: data.name, recipeDispName: data.dispName, recipeDesc: data.desc,recipeIngredients: data.ingredients, recipeQuantity: data.quantity, recipeFavorite: data.favorite, recipeImage: data.image})} >
 						<Text style={styles.listItemName} numberOfLines={2} ellipsizeMode = 'tail'>{data.dispName}</Text>
 						<View style={styles.listItemText, styles.listLower}>
@@ -51,13 +53,11 @@ recipeList = ({ navigation }) => {
 			)	
 		)
 	})
-	return (output)
 }
 
-
-function isFavorite (favorite) {
+function styleFavorite (favorite) {
 	retVal = ""
-	if (favorite == "true")
+	if (isFavorite(favorite))
 	{
 		retVal = styles.favoriteListItem
 	}
@@ -68,6 +68,14 @@ function isFavorite (favorite) {
 	return retVal
 }
 
+function isFavorite (favorite) {
+	retVal = false
+	if (favorite == "true")
+	{
+		retVal = true
+	}
+	return retVal
+}
 
 
 const styles = StyleSheet.create({
