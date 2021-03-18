@@ -3,6 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ImageBackground, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { Pages } from 'react-native-pages';
 import { createStackNavigator } from '@react-navigation/stack';
+import styles from '../Style'
 
 const recipesJSON = require('../assets/recipeTest.json')
 
@@ -13,20 +14,20 @@ export default function RecipesScreen({ navigation }) {
       <ImageBackground source={require('../assets/background.jpg')} style={styles.background}/>
 
 
-			<View style={styles.pageStyle}>
+			<View style={recipeStyles.pageStyle}>
 			<Pages>
         <View>
 		
-					<Text style={styles.header}>Recipes</Text>
-					<ScrollView style={styles.scrollable}>
+					<Text style={recipeStyles.header}>Recipes</Text>
+					<ScrollView style={recipeStyles.scrollable}>
 						{getRecipes({navigation})}
 					</ScrollView>
 						
 				</View>                     
         <View> 
 						
-					<Text style={styles.header}>Favorites</Text>
-					<ScrollView style={styles.scrollable}>
+					<Text style={recipeStyles.header}>Favorites</Text>
+					<ScrollView style={recipeStyles.scrollable}>
 						{getFavorites({navigation})}
 					</ScrollView>
 						
@@ -53,12 +54,12 @@ function recipeSeperator (check, name, dispName, desc, ingredients, quantity, fa
 	return (
 				<View style={styleFavorite(favorite)}>
 				  <TouchableOpacity onPress={() => navigation.navigate('Recipe Information', { recipeName: name, recipeDispName: dispName, recipeDesc: desc, recipeIngredients: ingredients, recipeQuantity: quantity, recipeFavorite: favorite, recipeImage: image})} >
-						<Text style={styles.listItemName} numberOfLines={2} ellipsizeMode = 'tail'>{dispName}</Text>
-						<View style={styles.listItemText, styles.listLower}>
+						<Text style={recipeStyles.listItemName} numberOfLines={2} ellipsizeMode = 'tail'>{dispName}</Text>
+						<View style={recipeStyles.listItemText, recipeStyles.listLower}>
 						<View>
-							<Image source={{uri: image}} style={styles.thumbnail}/>
+							<Image source={{uri: image}} style={recipeStyles.thumbnail}/>
 						</View>
-							<Text style={styles.listItemDesc} numberOfLines={6} ellipsizeMode = 'tail'>{desc}</Text>
+							<Text style={recipeStyles.listItemDesc} numberOfLines={6} ellipsizeMode = 'tail'>{desc}</Text>
 						</View>
 					</TouchableOpacity>
 				</View>
@@ -98,11 +99,11 @@ function styleFavorite (favorite) {
 	retVal = ""
 	if (isFavorite(favorite))
 	{
-		retVal = styles.favoriteListItem
+		retVal = recipeStyles.favoriteListItem
 	}
 	else
 	{
-		retVal = styles.listItem
+		retVal = recipeStyles.listItem
 	}
 	return retVal
 }
@@ -118,22 +119,10 @@ function isFavorite (favorite) {
 }
 
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#000',
-  },
-  background: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
-    position: 'absolute',
-    opacity: 0.50
-  },
+const recipeStyles = StyleSheet.create({
 	scrollable: {
 		width: '100%',
 		height: '80%',
-		borderWidth: 3,
-		borderColor: "#00000000",
 	},
   header: {
     fontSize: 50,
@@ -145,14 +134,6 @@ const styles = StyleSheet.create({
 		marginTop: 25,
     overflow: "hidden",
   },
-	type: {
-		fontSize: 25,
-		color: "#fff",
-		backgroundColor: "#11111166",
-		textAlign: "center",
-		paddingBottom: 5,
-		width: "100%",
-	},
 	pageStyle: {
 		width: "100%",
 		height: "100%",
