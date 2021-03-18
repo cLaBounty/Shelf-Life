@@ -16,15 +16,20 @@ export default function RecipesScreen({ navigation }) {
 			<View style={styles.pageStyle}>
 			<Pages>
         <View>
+		
 					<Text style={styles.header}>Recipes</Text>
 					<ScrollView style={styles.scrollable}>
-		
-						{recipeList({navigation})}
-		
+						{getRecipes({navigation})}
 					</ScrollView>
+						
 				</View>                     
         <View> 
+						
 					<Text style={styles.header}>Favorites</Text>
+					<ScrollView style={styles.scrollable}>
+						{getFavorites({navigation})}
+					</ScrollView>
+						
 				</View>
       </Pages>
 			</View>
@@ -33,28 +38,62 @@ export default function RecipesScreen({ navigation }) {
 }
 
 
-function recipeList ( {navigation} ){
+function recipeSeperator (check, name, dispName, desc, ingredients, quantity, favorite, image, {navigation}) {
+	
+	// Filter out all recipes not wanted before it gets to compiling the output
+	if (check == "favorites")
+	{
+		if (favorite == "false") //Filter out all non-favorites
+		{
+			return null
+		}
+	}
+	
+	// Final output to the main function
+	return (
+				<View style={styleFavorite(favorite)}>
+				  <TouchableOpacity onPress={() => navigation.navigate('Recipe Information', { recipeName: name, recipeDispName: dispName, recipeDesc: desc, recipeIngredients: ingredients, recipeQuantity: quantity, recipeFavorite: favorite, recipeImage: image})} >
+						<Text style={styles.listItemName} numberOfLines={2} ellipsizeMode = 'tail'>{dispName}</Text>
+						<View style={styles.listItemText, styles.listLower}>
+						<View>
+							<Image source={{uri: image}} style={styles.thumbnail}/>
+						</View>
+							<Text style={styles.listItemDesc} numberOfLines={6} ellipsizeMode = 'tail'>{desc}</Text>
+						</View>
+					</TouchableOpacity>
+				</View>
+	)
+}
+
+// Combines all recipes into a list
+function getRecipes ( {navigation} ){
 	return recipesJSON.recipes.map(data => {
 		return (
 			retVal = [],
 			retVal.concat(
-				<View style={styleFavorite(data.favorite)}>
-				  <TouchableOpacity onPress={() => navigation.navigate('Recipe Information', { recipeName: data.name, recipeDispName: data.dispName, recipeDesc: data.desc,recipeIngredients: data.ingredients, recipeQuantity: data.quantity, recipeFavorite: data.favorite, recipeImage: data.image})} >
-						<Text style={styles.listItemName} numberOfLines={2} ellipsizeMode = 'tail'>{data.dispName}</Text>
-						<View style={styles.listItemText, styles.listLower}>
 				
-							<Image source={{uri: data.image}} style={styles.thumbnail}/>
-				
-							<Text style={styles.listItemDesc} numberOfLines={6} ellipsizeMode = 'tail'>{data.desc}</Text>
-						</View>
-					</TouchableOpacity>
-				</View>
+				recipeSeperator("recipes", data.name, data.dispName, data.desc, data.ingredients, data.quantity, data.favorite, data.image, {navigation})
 
 			)	
 		)
 	})
 }
 
+// Combines all favorites into a list
+function getFavorites ( {navigation} ){
+	return recipesJSON.recipes.map(data => {
+		return (
+			retVal = [],
+			retVal.concat(
+				
+				recipeSeperator("favorites", data.name, data.dispName, data.desc, data.ingredients, data.quantity, data.favorite, data.image, {navigation})
+
+			)	
+		)
+	})
+}
+
+//Only style favorite recipes with pink border
 function styleFavorite (favorite) {
 	retVal = ""
 	if (isFavorite(favorite))
@@ -68,6 +107,7 @@ function styleFavorite (favorite) {
 	return retVal
 }
 
+// Check if it's a favorite (broken into new func for abstraction purposes)
 function isFavorite (favorite) {
 	retVal = false
 	if (favorite == "true")
@@ -165,7 +205,6 @@ const styles = StyleSheet.create({
 		borderWidth: 3,
 		borderColor: "#00000000",
 		borderRadius: 10,
-
 	},
 	listLower: {
 		flex: 10,
