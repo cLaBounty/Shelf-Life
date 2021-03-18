@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, TextInput, View, ImageBackground, TouchableOpacity } from 'react-native';
+import styles from '../Style';
 
 export default function ItemInfoScreen({ navigation, route }) {
   const [name, setName] = useState(route.params.itemName);
-  const [quantity, setQuantity] = useState("");
-  const [price, setPrice] = useState("");
-  const [expDate, setExpDate] = useState("");
+  const [quantity, setQuantity] = useState(route.params.itemQuantity);
+  const [price, setPrice] = useState(route.params.itemUnitPrice);
+  const [expDate, setExpDate] = useState(route.params.itemExpDate);
 
   return (
     <View style={styles.container}>
@@ -24,6 +25,7 @@ export default function ItemInfoScreen({ navigation, route }) {
         placeholder="Quantity"
         placeholderTextColor="#9E9791"
         keyboardType="numeric"
+        defaultValue={route.params.itemQuantity}
         onChangeText={(value) => setQuantity(value)}
       />
       <TextInput
@@ -31,6 +33,7 @@ export default function ItemInfoScreen({ navigation, route }) {
         placeholder="Unit Price"
         placeholderTextColor="#9E9791"
         keyboardType="numeric"
+		    defaultValue={route.params.itemUnitPrice}
         onChangeText={(value) => setPrice(value)}
       />
       <TextInput
@@ -38,10 +41,11 @@ export default function ItemInfoScreen({ navigation, route }) {
         placeholder="Expiration Date"
         placeholderTextColor="#9E9791"
         keyboardType="numbers-and-punctuation"
+		    defaultValue={route.params.itemExpDate}
         onChangeText={(value) => setExpDate(value)}
       />
-      <TouchableOpacity style={styles.submitBtn} onPress={() => handleSubmit(name, quantity, price, expDate, navigation)}>
-        <Text style={styles.submitBtnText}>Submit</Text>
+      <TouchableOpacity style={itemInfoStyles.submitBtn} onPress={() => handleSubmit(name, quantity, price, expDate, navigation)}>
+        <Text style={itemInfoStyles.submitBtnText}>Submit</Text>
       </TouchableOpacity>
     </View>
   );
@@ -52,40 +56,17 @@ const handleSubmit = (name, quantity, price, expDate, navigation) => {
   navigation.navigate('Home');
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#000',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  background: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
-    position: 'absolute',
-    opacity: 0.50
-  },
-  inputField: {
-    width: 300,
-    fontSize: 22,
-    color: '#fff',
-    margin: 20,
-    padding: 3,
-    paddingLeft: 0,
-    borderColor: '#fff',
-    borderBottomWidth: 1
-  },
+const itemInfoStyles = StyleSheet.create({
   submitBtn: {
-    backgroundColor:'#5296E7',
-    borderColor: '#fff',
-    borderWidth: 1,
-    borderRadius: 10
-  },
-  submitBtnText: {
-    fontSize: 16,
-    color:'#fff',
-    padding: 8,
-    letterSpacing: 2
-  }
+		backgroundColor:'#5296E7',
+		borderColor: '#fff',
+		borderWidth: 0,
+		borderRadius: 10
+	},
+	submitBtnText: {
+		fontSize: 16,
+		color:'#fff',
+		padding: 8,
+		letterSpacing: 2
+	}
 });
