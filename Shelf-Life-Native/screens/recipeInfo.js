@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View, ImageBackground, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, Image, ScrollView } from 'react-native';
+
 import styles from '../Style'
 
 
@@ -13,25 +14,51 @@ export default function RecipeInfoScreen({ navigation, route }) {
 	const [favorite, setFavorite] = useState(route.params.recipeFavorite);
 	const [image, setImage] = useState(route.params.recipeImage);
 	
+	
   return (
     <View style={styles.container}>
-      <StatusBar style="auto" />
+      <StatusBar style="black" />
       <ImageBackground source={require('../assets/background.jpg')} style={styles.background}/>
-
-      {/* Temporary */}
-      <Text style={styles.text}>Recipe Info Screen for "{dispName}"</Text>
-			<Text style={styles.text}>Name: {name}</Text>
-			<Text style={styles.text}>Display Name: {dispName}</Text>
-			<Text style={styles.text}>Ingredients: {ingredients}</Text>
-			<Text style={styles.text}>Quantity: {quantity}</Text>
-			<Text style={styles.text}>Favorite: {favorite}</Text>
-			<Text style={styles.text}>Image: {image}</Text>
-			<Text style={styles.text}>Description: {desc}</Text>
-    </View>
+			<ScrollView style={recipeInfoStyles.scrollable}>
+				<Image source={{uri: image}} style={recipeInfoStyles.foodImage}/>
+				<Text style={styles.text}>{dispName}</Text>
+				<Text style={styles.text}>{desc}</Text>
+				{amounts(quantity, ingredients)}
+			</ScrollView>
+		
+		</View>
   );
 }
 
+function amounts(quantity, ingredients) {
+	if (quantity.length != ingredients.length){ //Error handling
+		return <Text style={styles.text}>Count mismatch. Take this one up with the devs.</Text>
+	}
+
+	i = -1 //Yes I know this is a hack. Fight me. It's 2:40 AM.
+	return quantity.map(data => {
+		i++
+		return (
+			retVal = [],
+			retVal.concat(
+				<Text style={styles.text} key={data}>• {data}x {ingredients[i]}</Text> //Actual list output
+			)
+		)
+	})
+}
+
+
+
 const recipeInfoStyles = StyleSheet.create({
-
-
+	scrollable: {
+		width: "100%",
+	},
+	headerImg: {
+		height: 100
+	},
+	foodImage: {
+		resizeMode: 'contain',
+		width: "100%",
+		height: 200,
+	},
 });

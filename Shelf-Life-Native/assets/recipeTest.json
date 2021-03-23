@@ -13,7 +13,7 @@
 			"name": "React BB",
 			"dispName": "React Bits and Bytes",
 			"desc": "The dead soul of a react project.",
-			"ingredients:": ["React Project", "Developer Tears", "Recycle Bin", "'Final' Label"],
+			"ingredients": ["React Project", "Developer Tears", "Recycle Bin", "Final Label"],
 			"quantity": [2, 50, 1, 10],
 			"favorite": "true",
 			"image": "https://photos.bigoven.com/recipe/hero/one-pan-apricot-glazed-walnut--549df4.jpg"
