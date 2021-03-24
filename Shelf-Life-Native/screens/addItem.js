@@ -1,6 +1,6 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { Text, View, ImageBackground, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, Image } from 'react-native';
 import styles from '../Style';
 
 export default function AddItemScreen({ navigation }) {
@@ -8,10 +8,8 @@ export default function AddItemScreen({ navigation }) {
     <View style={styles.container}>
       <StatusBar style="auto" />
       <ImageBackground source={require('../assets/background.jpg')} style={styles.background}/>
-
-      {/* Temporary */}
-      <Text style={styles.text}>Add Item Screen</Text>
-      <View style={styles.menucontainer}>
+      
+      <View style={addItemStyles.container}>
         <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Scan Item')}>
           <Image style={styles.btnImage} source={require('../assets/scan.png')}/>
           <Text style={styles.btnText}>Scan</Text>
@@ -24,3 +22,12 @@ export default function AddItemScreen({ navigation }) {
     </View>
   );
 }
+
+const addItemStyles = StyleSheet.create({
+  container: {
+		flex: 1,
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'center'
+	}
+});

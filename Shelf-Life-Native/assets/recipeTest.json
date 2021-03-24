@@ -1,0 +1,49 @@
+{
+	"recipes": [
+		{
+			"name": "Orange Cake",
+			"dispName": "Orange Cake",
+			"desc": "Moist orange flavored cake.",
+			"ingredients": ["Cake", "Orange", "Molecular infuser"],
+			"quantity": [1, 3000, 2],
+			"favorite": "false",
+			"image": "https://photos.bigoven.com/recipe/hero/orange-infused-pumpkin-cheesecake.jpg"
+		},
+		{
+			"name": "React BB",
+			"dispName": "React Bits and Bytes",
+			"desc": "The dead soul of a react project.",
+			"ingredients:": ["React Project", "Developer Tears", "Recycle Bin", "'Final' Label"],
+			"quantity": [2, 50, 1, 10],
+			"favorite": "true",
+			"image": "https://photos.bigoven.com/recipe/hero/one-pan-apricot-glazed-walnut--549df4.jpg"
+		},
+		{
+			"name": "PB&J",
+			"dispName": "Peanut Butter and Jelly Sandwich",
+			"desc": "A task which people enjoy, but cannot describe how to make.",
+			"ingredients": ["Bread", "Peanut Butter", "Jelly"],
+			"quantity": [2, 1, 1],
+			"favorite": "false",
+			"image": "https://photos.bigoven.com/recipe/hero/peanut-butter-brownie-balls-5d81fb.jpg"
+		},
+		{
+			"name": "Windowpane Cookies",
+			"dispName": "Windowpane Cookies",
+			"desc": "Chocolate cookies with colorful mini marshmellows with coconut shavings. Truly a holiday special for all to enjoy, and makes you want to forget about the Christmas turkey and candy.",
+			"ingredients": ["Chocolate", "mini marshmellow bag", "coconut shavings bag"],
+			"quantity": [3, 1, 1],
+			"favorite": "false",
+			"image": "https://photos.bigoven.com/recipe/hero/green-gruel-with-eyeballs-2.jpg"
+		},
+		{
+			"name": "Salmon",
+			"dispName": "Cooked Salmon",
+			"desc": "What description? It's salmon! Everyone loves salmon!",
+			"ingredients": ["Salmon", "Cooking Oil", "Other stuff"],
+			"quantity": [1, 1, 5],
+			"favorite": "true",
+			"image": "https://photos.bigoven.com/recipe/hero/salmon-on-the-grill-with-lemon-butt-2.jpg"
+		}
+	]
+};

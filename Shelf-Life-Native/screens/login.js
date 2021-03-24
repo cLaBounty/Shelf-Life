@@ -12,7 +12,7 @@ export default function LoginScreen({ navigation }) {
       <ImageBackground source={require('../assets/background.jpg')} style={styles.background}/>
       <Text style={loginStyles.title}>Shelf Life</Text>
       <TextInput
-        style={loginStyles.loginInput}
+        style={styles.inputField}
         placeholder="Username"
         placeholderTextColor="#9E9791"
         onChangeText={(value) => setUsername(value)}
@@ -31,16 +31,6 @@ const loginStyles = StyleSheet.create({
     fontWeight: '300',
     color: '#fff',
     letterSpacing: 4
-  },
-  loginInput: {
-    width: 300,
-    fontSize: 22,
-    color: '#fff',
-    margin: 25,
-    padding: 3,
-    paddingLeft: 0,
-    borderColor: '#fff',
-    borderBottomWidth: 1
   },
   loginBtn: {
     backgroundColor:'#5296E7',

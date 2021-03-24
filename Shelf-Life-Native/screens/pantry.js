@@ -2,17 +2,13 @@ import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ImageBackground, TouchableOpacity } from 'react-native';
 import { AlphabetList } from "react-native-section-alphabet-list";
-import { createStackNavigator } from '@react-navigation/stack';
 import styles from '../Style';
 
 export default function PantryScreen({ navigation }) {
-
-
   return (
     <View>
       <StatusBar style="something that causes an error so the status bar is black, thus readable on the white background :)" />
       <ImageBackground source={require('../assets/background.jpg')} style={styles.background} />
-
 
       <AlphabetList style={pantryStyles.list}
         data={foodData} // Data for list
@@ -37,7 +33,6 @@ export default function PantryScreen({ navigation }) {
         )}
       />
     </View>
-
   );
 }
 
