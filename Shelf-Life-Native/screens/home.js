@@ -11,32 +11,32 @@ export default function HomeScreen({ navigation, route }) {
 			<Text style={styles.text}>Hi, {route.params.username}!</Text>
 			<View style={homeStyles.container}>
 		  		<TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Add Item')}>
+					<Image style={styles.btnImage} source={require('../assets/additem.png')}/>
 					<Text style={styles.btnText}>Add Item</Text>
-					<Image style={styles.btnImage} source={require('../assets/placeholder.png')}/>
 		  		</TouchableOpacity>
 		  		<TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Pantry')}>
+					<Image style={styles.btnImage} source={require('../assets/pantry.png')}/>
 					<Text style={styles.btnText}>Pantry</Text>
-					<Image style={styles.btnImage} source={require('../assets/placeholder.png')}/>
 		  		</TouchableOpacity>
 	  		</View>
 	  		<View style={homeStyles.container}>
 		  		<TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Recipes')}>
+				  	<Image style={styles.btnImage} source={require('../assets/recipes.png')}/>
 					<Text style={styles.btnText}>Recipes</Text>
-					<Image style={styles.btnImage} source={require('../assets/placeholder.png')}/>
 		  		</TouchableOpacity>
 		  		<TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Nutrition')}>
+				  <Image style={styles.btnImage} source={require('../assets/nutrition.png')}/>
 					<Text style={styles.btnText}>Nutrition</Text>
-					<Image style={styles.btnImage} source={require('../assets/placeholder.png')}/>
 		  		</TouchableOpacity>
 	  		</View>
 	  		<View style={homeStyles.container}>
 		  		<TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Expenses')}>
+				  	<Image style={styles.btnImage} source={require('../assets/expenses.png')}/>
 					<Text style={styles.btnText}>Expenses</Text>
-					<Image style={styles.btnImage} source={require('../assets/placeholder.png')}/>
 		  		</TouchableOpacity>
 		  		<TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Settings', { username: route.params.username })}>
+				  	<Image style={styles.btnImage} source={require('../assets/settings.png')}/>
 					<Text style={styles.btnText}>Settings</Text>
-					<Image style={styles.btnImage} source={require('../assets/placeholder.png')}/>
 		  		</TouchableOpacity>
 	  		</View>
 		</View>
