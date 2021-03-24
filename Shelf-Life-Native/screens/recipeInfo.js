@@ -27,6 +27,7 @@ export default function RecipeInfoScreen({ navigation, route }) {
                     { useNativeDriver: true },
                 )}
                 scrollEventThrottle={16}
+								
             >
 
 								<View style={recipeInfoStyles.foodImageView}>
@@ -90,7 +91,7 @@ const recipeInfoStyles = StyleSheet.create({
     content: {
         backgroundColor: "#000000",
 		    shadowOpacity: 1,
-		    shadowRadius: 40,
+		    shadowRadius: 20,
 				height: "100%",
     },
     foodImage: paralaxScroll => ({
@@ -115,6 +116,7 @@ const recipeInfoStyles = StyleSheet.create({
     }),
 		header: paralaxScroll => ({
 			fontSize: headerFontSize,
+			textAlign: 'center', 
 			color: '#fff',
 			fontWeight: "bold",
 			shadowOffset: {width: 0, height: 0},
