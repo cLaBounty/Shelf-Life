@@ -37,11 +37,12 @@ export default function RecipeInfoScreen({ navigation, route }) {
                 <View style={recipeInfoStyles.content}>
 							      <ImageBackground source={require('../assets/background.jpg')} style={styles.background}/>
 		                <Animated.Text style={recipeInfoStyles.header(paralaxScroll)}>{dispName}</Animated.Text>
+                    <Text style={recipeInfoStyles.header2}>About</Text>
                     <Text style={styles.text}>{desc}</Text>
+                    <Text style={recipeInfoStyles.header2}>Ingredients</Text>
                     {amounts(quantity, ingredients)}
                 </View>
             </Animated.ScrollView>
-
         </View>
     );
 }
@@ -86,14 +87,24 @@ function imageOpacity() { //Lessen opacity of image as user scrolls away. Gets u
 
 const recipeInfoStyles = StyleSheet.create({
     paralaxScroll: {
-        width: "100%",
+      width: "100%",
     },
     content: {
-        backgroundColor: "#000000",
-		    shadowOpacity: 1,
-		    shadowRadius: 20,
-				height: "100%",
+      backgroundColor: "#000000",
+			marginBottom: 50,
+			shadowColor: "#000000ff",
+	    shadowOpacity: 200,
+	    shadowRadius: 50,
+			height: "100%",
     },
+		header2: {
+			fontSize: headerFontSize  * 0.75,
+			color: '#fff',
+			fontWeight: "bold",
+			marginLeft: 5,
+			marginBottom: 12,
+			marginTop: 36,
+		},
     foodImage: paralaxScroll => ({
         resizeMode: 'cover',
         width: "100%",
