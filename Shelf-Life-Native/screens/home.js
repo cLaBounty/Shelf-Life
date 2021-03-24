@@ -8,7 +8,7 @@ export default function HomeScreen({ navigation, route }) {
 		<View style={styles.container}>
 			<StatusBar style="auto" />
 			<ImageBackground source={require('../assets/background.jpg')} style={styles.background}/>
-			<Text style={styles.text}>Hi, {route.params.username}!</Text>
+			<Text style={styles.text}>Hi, {route.params.name}!</Text>
 			<View style={homeStyles.container}>
 		  		<TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Add Item')}>
 					<Image style={styles.btnImage} source={require('../assets/additem.png')}/>
