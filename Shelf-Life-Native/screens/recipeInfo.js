@@ -27,7 +27,6 @@ export default function RecipeInfoScreen({ navigation, route }) {
                     { useNativeDriver: true },
                 )}
                 scrollEventThrottle={16}
-								
             >
 
 								<View style={recipeInfoStyles.foodImageView}>
@@ -36,7 +35,10 @@ export default function RecipeInfoScreen({ navigation, route }) {
 
                 <View style={recipeInfoStyles.content}>
 							      <ImageBackground source={require('../assets/background.jpg')} style={styles.background}/>
-		                <Animated.Text style={recipeInfoStyles.header(paralaxScroll)}>{dispName}</Animated.Text>
+										<Animated.View style={recipeInfoStyles.headerView(paralaxScroll)}>
+								      <ImageBackground source={require('../assets/headerBackdrop.jpg')} style={recipeInfoStyles.headerBackdrop}/>
+			                <Text style={recipeInfoStyles.header}>{dispName}</Text>
+										</Animated.View>
                     <Text style={recipeInfoStyles.header2}>About</Text>
                     <Text style={styles.text}>{desc}</Text>
                     <Text style={recipeInfoStyles.header2}>Ingredients</Text>
@@ -97,6 +99,19 @@ const recipeInfoStyles = StyleSheet.create({
 	    shadowRadius: 50,
 			height: "100%",
     },
+		header: {
+			fontSize: headerFontSize,
+			textAlign: 'center', 
+			color: '#fff',
+			fontWeight: "bold",
+			shadowOffset: {width: 0, height: 0},
+	    shadowOpacity: 1,
+	    shadowRadius: 3,
+			paddingTop: 20,
+			paddingBottom: 20,
+			paddingLeft:  2,
+			paddingRight: 2,
+		},
 		header2: {
 			fontSize: headerFontSize  * 0.75,
 			color: '#fff',
@@ -105,6 +120,29 @@ const recipeInfoStyles = StyleSheet.create({
 			marginBottom: 12,
 			marginTop: 36,
 		},
+		headerBackdrop: {
+			width: '100%',
+			height: '100%',
+			resizeMode: 'repeat',
+			position: 'absolute',
+		},
+		headerView: paralaxScroll => ({
+			width: "100%",
+			borderWidth: 0,
+			borderColor: "#ff00ff00",
+			borderBottomLeftRadius: 40,
+			borderBottomRightRadius: 40,
+	    overflow: "hidden",
+			transform: [
+				{
+					translateY: paralaxScroll.interpolate({
+				    inputRange: [0, bannerHeight/2],
+				    outputRange: [-headerFontSize, 0],
+				    extrapolate: "clamp",
+				  })
+				}
+			]
+		}),
     foodImage: paralaxScroll => ({
         resizeMode: 'cover',
         width: "100%",
@@ -125,23 +163,4 @@ const recipeInfoStyles = StyleSheet.create({
 						}
         ]
     }),
-		header: paralaxScroll => ({
-			fontSize: headerFontSize,
-			textAlign: 'center', 
-			color: '#fff',
-			fontWeight: "bold",
-			shadowOffset: {width: 0, height: 0},
-	    shadowOpacity: 1,
-	    shadowRadius: 3,
-			transform: [
-				{
-					translateY: paralaxScroll.interpolate({
-				    inputRange: [0, bannerHeight/2],
-				    outputRange: [-headerFontSize, 0],
-				    extrapolate: "clamp",
-				  })
-				}
-			]
-		}),
-		
 });
