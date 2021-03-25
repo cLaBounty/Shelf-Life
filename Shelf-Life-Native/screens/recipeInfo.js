@@ -19,30 +19,35 @@ export default function RecipeInfoScreen({ navigation, route }) {
     return (
         <View style={styles.container}>
             <StatusBar style="black" />
-
+		    <ImageBackground source={require('../assets/background.jpg')} style={[styles.background, recipeInfoStyles.backgroundOverride]}/>
             <Animated.ScrollView style={recipeInfoStyles.paralaxScroll}
-						// onScroll={e => console.log(e.nativeEvent.contentOffset.y)}
+				// onScroll={e => console.log(e.nativeEvent.contentOffset.y)}
                 onScroll={Animated.event(
                     [{ nativeEvent: { contentOffset: { y: paralaxScroll } } }],
                     { useNativeDriver: true },
                 )}
                 scrollEventThrottle={16}
             >
+				<Animated.Image source={{ uri: image }} style={recipeInfoStyles.foodImage(paralaxScroll)} />
 
-								<View style={recipeInfoStyles.foodImageView}>
-	                <Animated.Image source={{ uri: image }} style={recipeInfoStyles.foodImage(paralaxScroll)} />
-								</View>
+                <View style={[recipeInfoStyles.content, recipeInfoStyles.shadow]}>
 
-                <View style={recipeInfoStyles.content}>
-							      <ImageBackground source={require('../assets/background.jpg')} style={styles.background}/>
-										<Animated.View style={recipeInfoStyles.headerView(paralaxScroll)}>
-								      <ImageBackground source={require('../assets/headerBackdrop.jpg')} style={recipeInfoStyles.headerBackdrop}/>
-			                <Text style={recipeInfoStyles.header}>{dispName}</Text>
-										</Animated.View>
-                    <Text style={recipeInfoStyles.header2}>About</Text>
-                    <Text style={styles.text}>{desc}</Text>
-                    <Text style={recipeInfoStyles.header2}>Ingredients</Text>
-                    {amounts(quantity, ingredients)}
+                    <Animated.View style={[recipeInfoStyles.headerView(paralaxScroll), recipeInfoStyles.tray ]}>
+                        <Text style={recipeInfoStyles.header}>{dispName}</Text>
+                    </Animated.View>
+
+					<View style={[recipeInfoStyles.tray]}>
+	                    <Text style={[recipeInfoStyles.header2]}>About</Text>
+						<View style={[recipeInfoStyles.tray, recipeInfoStyles.miniTray]}>
+		                    <Text style={[styles.text, recipeInfoStyles.trayText]}>{desc}</Text>
+						</View>
+					</View>
+
+					<View style={[recipeInfoStyles.tray]}>
+	                    <Text style={[recipeInfoStyles.header2]}>Ingredients</Text>
+	                    {amounts(quantity, ingredients)}
+					</View>
+
                 </View>
             </Animated.ScrollView>
         </View>
@@ -61,8 +66,13 @@ function amounts(quantity, ingredients) {
         i++
         return (
             retVal = [],
+
+            count = quantity[i],
+            ingredient = ingredients[i],
             retVal.concat(
-                <Text style={styles.text} key={data}>• {data}x {ingredients[i]}</Text> //Actual list output
+				<View style={[recipeInfoStyles.tray, recipeInfoStyles.miniTray]}>
+	                <Text style={[styles.text, recipeInfoStyles.trayText]} key={ingredient[i]}>• {count}x {ingredient}</Text>
+				</View>
             )
         )
     })
@@ -73,94 +83,87 @@ function amounts(quantity, ingredients) {
 
 // Constants for styling
 const bannerHeight = 250
-const headerFontSize = 45
-
-// Functions for styling
-function imageOpacity() { //Lessen opacity of image as user scrolls away. Gets updated by foodImage transform function
-	return (
-			paralaxScroll.interpolate({
-		    inputRange: [0, bannerHeight],
-		    outputRange: [1, 0.5],
-		    extrapolate: "clamp",
-		  })
-	)
-}
-
+const headerFontSize = 40
 
 const recipeInfoStyles = StyleSheet.create({
+	backgroundOverride: {
+		opacity: 1
+	},
+	shadow: {
+		shadowOpacity: 1,
+		shadowRadius: 50,
+	},
     paralaxScroll: {
-      width: "100%",
+        width: "100%",
     },
     content: {
-      backgroundColor: "#000000",
-			marginBottom: 50,
-			shadowColor: "#000000ff",
-	    shadowOpacity: 200,
-	    shadowRadius: 50,
-			height: "100%",
+        marginBottom: 50,
+        height: "100%",
     },
-		header: {
-			fontSize: headerFontSize,
-			textAlign: 'center', 
-			color: '#fff',
-			fontWeight: "bold",
-			shadowOffset: {width: 0, height: 0},
-	    shadowOpacity: 1,
-	    shadowRadius: 3,
-			paddingTop: 20,
-			paddingBottom: 20,
-			paddingLeft:  2,
-			paddingRight: 2,
-		},
-		header2: {
-			fontSize: headerFontSize  * 0.75,
-			color: '#fff',
-			fontWeight: "bold",
-			marginLeft: 5,
-			marginBottom: 12,
-			marginTop: 36,
-		},
-		headerBackdrop: {
-			width: '100%',
-			height: '100%',
-			resizeMode: 'repeat',
-			position: 'absolute',
-		},
-		headerView: paralaxScroll => ({
-			width: "100%",
-			borderWidth: 0,
-			borderColor: "#ff00ff00",
-			borderBottomLeftRadius: 40,
-			borderBottomRightRadius: 40,
-	    overflow: "hidden",
-			transform: [
-				{
-					translateY: paralaxScroll.interpolate({
-				    inputRange: [0, bannerHeight/2],
-				    outputRange: [-headerFontSize, 0],
-				    extrapolate: "clamp",
-				  })
-				}
-			]
-		}),
-    foodImage: paralaxScroll => ({
-        resizeMode: 'cover',
+    header: {
+        fontSize: headerFontSize,
+        textAlign: 'center',
+		fontWeight: "bold",
+    },
+    header2: {
+        fontSize: headerFontSize * 0.75,
+        color: '#000',
+        fontWeight: "bold",
+        marginLeft: 8,
+        marginBottom: 12,
+    },
+    headerView: paralaxScroll => ({
         width: "100%",
-        height: bannerHeight - 10,
-				opacity: imageOpacity(),
+        overflow: "hidden",
         transform: [
             {
                 translateY: paralaxScroll.interpolate({
-                    inputRange: [-bannerHeight, 0, bannerHeight, bannerHeight],
-                    outputRange: [-bannerHeight / 2, 0, bannerHeight / 2, bannerHeight * 5],
+                    inputRange: [-bannerHeight, 0, bannerHeight],
+                    outputRange: [-220, -20 , 0],
+                })}]
+    }),
+	tray:{
+		backgroundColor: "#E3E1DA",
+		borderColor: "#00000000",
+		borderRadius: 20,
+		borderWidth: 1,
+        overflow: "hidden",
+		paddingTop: 15,
+		paddingBottom: 15,
+		paddingLeft: 5,
+		paddingRight: 5,
+		marginBottom: 40,
+	},
+	miniTray: {
+		backgroundColor: "#D9D7D0",
+		marginBottom: 0,
+		marginTop: 3,
+		paddingTop: 4,
+		paddingBottom: 2,
+	},
+	trayText: {
+		color: "#000",
+		fontSize: 19,
+		marginLeft: 10
+	},
+    foodImage: paralaxScroll => ({
+        resizeMode: 'cover',
+        width: "100%",
+        height: bannerHeight,
+		marginTop: 29,
+		backgroundColor: "#000",
+        transform: [
+            {
+                translateY: paralaxScroll.interpolate({
+                    inputRange: [-bannerHeight, 0, bannerHeight],
+                    outputRange: [-245, -20 , 40],
                 })
             },
             {
                 scale: paralaxScroll.interpolate({
-                    inputRange: [-bannerHeight, 0, bannerHeight, bannerHeight + 1],
-                    outputRange: [bannerHeight/110, 1.3, 1, 1], // 110 seemed to work on an iPhone Xs. Further testing is advised. Just look for when black bars appear when pulling down on content overly far.
-                })
-						}
-        ]
-    }),
+                    inputRange: [-bannerHeight, 0, bannerHeight],
+                    outputRange: [1.3, 1.1, 1], //Starts at 110% scale, and shrink to 100%.
+                })}
+		]
+	}),
 });
