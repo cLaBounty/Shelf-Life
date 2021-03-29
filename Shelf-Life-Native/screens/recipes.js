@@ -14,9 +14,9 @@ export default function RecipesScreen({ navigation }) {
             <ImageBackground source={require('../assets/background.jpg')} style={styles.background} />
 		
             <View style={recipeStyles.pageStyle}>
+
                 <Pages>
                     <View>
-
                         <Text style={recipeStyles.header}>Recipes</Text>
                         <ScrollView style={recipeStyles.scrollable}>
                             {getRecipes({ navigation })}
@@ -34,12 +34,10 @@ export default function RecipesScreen({ navigation }) {
     );
 }
 
-
-function recipeSeperator(check, name, dispName, desc, ingredients, quantity, favorite, image, { navigation }) {
-
+function recipeSeperator(check, data, { navigation }) {
     // Filter out all recipes not wanted before it gets to compiling the output
     if (check == "favorites") {
-        if (favorite == "false") //Filter out all non-favorites
+        if (data.favorite == "false") //Filter out all non-favorites
         {
             return null
         }
@@ -47,14 +45,16 @@ function recipeSeperator(check, name, dispName, desc, ingredients, quantity, fav
 
     // Final output to the main function
     return (
-        <View style={styleFavorite(favorite)} key={name}>
-            <TouchableOpacity onPress={() => navigation.navigate('Recipe Information', { recipeName: name, recipeDispName: dispName, recipeDesc: desc, recipeIngredients: ingredients, recipeQuantity: quantity, recipeFavorite: favorite, recipeImage: image })} >
-                <Text style={recipeStyles.listItemName} numberOfLines={2} ellipsizeMode='tail'>{dispName}</Text>
+        <View style={styleFavorite(data.favorite)} key={data.name}>
+            <TouchableOpacity 
+			onPress={() => navigation.navigate('Recipe Information', { recipeName: data.name, recipeDispName: data.dispName, recipeDesc: data.desc, recipeIngredients: data.ingredients, recipeQuantity: data.quantity, recipeFavorite: data.favorite, recipeImage: data.image })} 
+			>
+                <Text style={recipeStyles.listItemName} numberOfLines={2} ellipsizeMode='tail'>{data.dispName}</Text>
                 <View style={recipeStyles.listItemText, recipeStyles.listLower}>
                     <View>
-                        <Image source={{ uri: image }} style={recipeStyles.thumbnail} />
+                        <Image source={{ uri: data.image }} style={recipeStyles.thumbnail} />
                     </View>
-                    <Text style={recipeStyles.listItemDesc} numberOfLines={6} ellipsizeMode='tail'>{desc}</Text>
+                    <Text style={recipeStyles.listItemDesc} numberOfLines={6} ellipsizeMode='tail'>{data.desc}</Text>
                 </View>
             </TouchableOpacity>
         </View>
@@ -67,7 +67,7 @@ function getRecipes({ navigation }) {
         return (
             retVal = [],
             retVal.concat(
-                recipeSeperator("recipes", data.name, data.dispName, data.desc, data.ingredients, data.quantity, data.favorite, data.image, { navigation })
+                recipeSeperator("recipes", data, { navigation })
             )
         )
     })
@@ -79,7 +79,7 @@ function getFavorites({ navigation }) {
         return (
             retVal = [],
             retVal.concat(
-                recipeSeperator("favorites", data.name, data.dispName, data.desc, data.ingredients, data.quantity, data.favorite, data.image, { navigation })
+                recipeSeperator("favorites", data, { navigation })
             )
         )
     })
