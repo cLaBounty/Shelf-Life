@@ -123,7 +123,7 @@ const recipeInfoStyles = StyleSheet.create({
                 })}]
     }),
 	tray:{
-		backgroundColor: "#E3E1DA",
+		backgroundColor: "#fff",
 		borderColor: "#00000000",
 		borderRadius: 20,
 		borderWidth: 1,
@@ -135,7 +135,7 @@ const recipeInfoStyles = StyleSheet.create({
 		marginBottom: 40,
 	},
 	miniTray: {
-		backgroundColor: "#D9D7D0",
+		backgroundColor: "#eee",
 		marginBottom: 0,
 		marginTop: 3,
 		paddingTop: 4,
