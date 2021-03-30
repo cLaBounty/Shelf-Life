@@ -1,6 +1,7 @@
+//import React, { useState } from 'react';
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ImageBackground, ScrollView, Image, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { Pages } from 'react-native-pages';
 import { createStackNavigator } from '@react-navigation/stack';
 import styles from '../Style'
@@ -14,7 +15,6 @@ export default function RecipesScreen({ navigation }) {
             <ImageBackground source={require('../assets/background.jpg')} style={styles.background} />
 		
             <View style={recipeStyles.pageStyle}>
-
                 <Pages>
                     <View>
                         <Text style={recipeStyles.header}>Recipes</Text>
@@ -34,26 +34,20 @@ export default function RecipesScreen({ navigation }) {
     );
 }
 
-function random() {
-	return Math.floor(Math.random() * 100) + 1;
-}
 
-function toggleFavorite(data) {
+function toggleFavorite(data, {navigation}) {
+	const forceUpdate = useForceUpdate();
+	
 	if (data.favorite == "true") {
     	data.favorite = "false"
     }
 	else {
 		data.favorite = "true"
 	}
-	Alert.alert(
-		"Set data to " + data.favorite
-	)
 }
 
-function checkThisData(data) {
-	Alert.alert(
-		data.favorite
-	)
+function goToScreen(data, {navigation}) {
+	navigation.navigate('Recipe Information', { recipeName: data.name, recipeDispName: data.dispName, recipeDesc: data.desc, recipeIngredients: data.ingredients, recipeQuantity: data.quantity, recipeFavorite: data.favorite, recipeImage: data.image })
 }
 
 function recipeSeperator(check, data, { navigation }) {
@@ -64,16 +58,15 @@ function recipeSeperator(check, data, { navigation }) {
             return null
         }
     }
-
+	
     // Final output to the main function
     return (
         <View style={styleFavorite(data.favorite)} key={data.name}>
             <TouchableOpacity 
-			//onPress={() => navigation.navigate('Recipe Information', { recipeName: data.name, recipeDispName: data.dispName, recipeDesc: data.desc, recipeIngredients: data.ingredients, recipeQuantity: data.quantity, recipeFavorite: data.favorite, recipeImage: data.image })} 
-			onPress={() => checkThisData(data)}
-			onLongPress={() => toggleFavorite(data)}
+			onPress={() => goToScreen(data, {navigation})}
+			onLongPress={() => toggleFavorite(data, {navigation})}
 			>
-                <Text style={recipeStyles.listItemName} numberOfLines={2} ellipsizeMode='tail'>{data.dispName} - {random()}</Text>
+                <Text style={recipeStyles.listItemName} numberOfLines={2} ellipsizeMode='tail'>{data.dispName}</Text>
                 <View style={recipeStyles.listItemText, recipeStyles.listLower}>
                     <View>
                         <Image source={{ uri: data.image }} style={recipeStyles.thumbnail} />
