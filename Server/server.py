@@ -97,11 +97,7 @@ def userinfo():
     """    
         Purely a testing function, outputs all of the user information to a webpage
     """
-    response = dbConnector.getUserInformation()
-    outstr = ""
-    for entry in response:
-        outstr += str(entry)
-    return outstr
+    return "depreciated"
 
 
 @app.route('/api/user/new', methods=['GET', 'POST'])
@@ -134,16 +130,42 @@ def makeNewUser():
         Sample curl tester:                        
         curl -d '{"email":"rhys@rhyssullivan.com", "password":"passowrd", "display_name":"rhysS"}' -H "Content-Type: application/json" -X POST http://127.0.0.1:5000/api/user/new 
     """
-
+     
+    # TODO ADD ERROR HANDLING
     info_dict = request.json
     password = info_dict['password']
     username = info_dict['email']
     display_name = info_dict['display_name']
+    print(info_dict)
     dbConnector.addNewUser(username, password, display_name)
     
     response_dict = {}
     response_dict["Status"] = "OK"
     return response_dict
 
+@app.route('/api/user/login', methods=['GET', 'POST'])
+def login():
+    info_dict = request.json
+    password = info_dict['password']
+    email = info_dict['email']
+    
+    user_info = dbConnector.getUserInformation(email)
 
-app.run()
+    response_dict = {}
+    response_dict["Status"] = "ERROR"
+    
+    try:
+        server_password = user_info[2] # TODO Split up into specific password call? Indexing directly is ugly and insecure
+        display_name = user_info[3]
+        if server_password == password:
+            response_dict["display_name"] = display_name
+            response_dict["Status"] = "OK"
+            return response_dict
+        else:
+            response_dict["Status"] = "INVALID PASSWORD"
+            return response_dict
+    except IndexError:
+        response_dict["Status"] = "SERVER ERROR"
+        return response_dict    
+
+app.run(host="0.0.0.0")
