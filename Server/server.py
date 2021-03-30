@@ -164,8 +164,8 @@ def login():
         else:
             response_dict["Status"] = "INVALID PASSWORD"
             return response_dict
-    except IndexError:
-        response_dict["Status"] = "SERVER ERROR"
+    except TypeError:
+        response_dict["Status"] = "INVALID EMAIL"
         return response_dict    
 
 app.run(host="0.0.0.0")

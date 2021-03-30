@@ -108,7 +108,18 @@ const login = (email, password, navigation) => {
     {    
       // TODO: Expand here with invalid error codes, i.e invalid email, password, username
     }
+    else if(status == "INVALID PASSWORD")  
+    { 
+      console.log("Invalid Password")   
+      // TODO: Expand here with invalid error codes, i.e invalid email, password, username
+    }
+    else if(status == "INVALID EMAIL")  
+    {    
+      console.log("Invalid Email")
+      // TODO: Expand here with invalid error codes, i.e invalid email, password, username
+    }
     }).catch((error) => {
+      console.log("Server Error") // this'll get called if the server is offline / can't be reached
       console.error(error); // catch networking errors
     });  
 }
