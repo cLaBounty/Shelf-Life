@@ -13,7 +13,7 @@
 			"name": "React BB",
 			"dispName": "React Bits and Bytes",
 			"desc": "The dead soul of a react project.",
-			"ingredients:": ["React Project", "Developer Tears", "Recycle Bin", "'Final' Label"],
+			"ingredients": ["React Project", "Developer Tears", "Recycle Bin", "Final Label"],
 			"quantity": [2, 50, 1, 10],
 			"favorite": "true",
 			"image": "https://photos.bigoven.com/recipe/hero/one-pan-apricot-glazed-walnut--549df4.jpg"
@@ -44,6 +44,15 @@
 			"quantity": [1, 1, 5],
 			"favorite": "true",
 			"image": "https://photos.bigoven.com/recipe/hero/salmon-on-the-grill-with-lemon-butt-2.jpg"
+		},
+		{
+			"name:": "Canned Chicken",
+			"dispName": "Canned Chicken (The Good Stuff)",
+			"desc": "Canned Chicken on the surface sounds like someone either squished a chicken into a can or cut one up and put it into a can. But let me assure you that is not at all what happened here. This delectable canned chicken was carefully procured from the heavens of Canned Chicken™'s finest ovens, tender enough to let the chicken simply slide from our bowls to the inside of the can, no force required. This chicken then hardens back into the lovable chicken consistency that people around the world have been able to enjoy. Take this canned chicken on the road, or even into battle without ever worrying that it'll spoil thanks to the pateneted can surrounding it.",
+			"ingredients": ["Love","Joy","Portability", "Tin", "Hell's Easybake Oven", "Seasoning"],
+			"quantity": [9000, 10000, 50, 1, 1, 5],
+			"favorite": "true",
+			"image": "https://i.redd.it/elsntx0qqao61.jpg"
 		}
 	]
 };
