@@ -17,7 +17,16 @@ export default function RecipeInfoScreen({ navigation, route }) {
     const [quantity, setQuantity] = useState(route.params.recipeQuantity);
     const [favorite, setFavorite] = useState(route.params.recipeFavorite);
     const [image, setImage] = useState(route.params.recipeImage);
-	const [buttonColor, setButtonColor] = useState({pink});
+	[buttonColor, setButtonColor] = useState({pink});
+
+	if (favorite == "true") //Setting initial border color
+	{
+		buttonColor = pink //Don't use setButtonColor(), it'd cause a loop
+	}
+	else
+	{
+		buttonColor = white
+	}
 
     return (
         <View style={styles.container}>
@@ -69,12 +78,9 @@ export default function RecipeInfoScreen({ navigation, route }) {
 			setFavorite("false")
 			setButtonColor(white)
 		}
-		
-		
-		
-		console.log(favorite)
 	}
 }
+
 
 
 function amounts(quantity, ingredients) {
