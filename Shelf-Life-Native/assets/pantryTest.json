@@ -1,0 +1,25 @@
+{
+	"items": [
+		{		
+			"name": "Betsy Orange",
+			"dispName": "Orange",
+			"quantity": "32",
+			"expDate": "November 3, 2015",
+			"price": "1.52"
+		},
+		{
+			"name": "Gatorade Lemon Lime",
+			"dispName": "Lemon Lime Gatorade",
+			"quantity": "16",
+			"expDate": "April 23, 2025",
+			"price": "0.50"
+		},
+		{
+			"name": "Canned Chicken",
+			"dispName": "Canned Chicken",
+			"quantity": "2",
+			"expDate": "January 32, 2029",
+			"price": "9,000.99"
+		},
+	]
+}
