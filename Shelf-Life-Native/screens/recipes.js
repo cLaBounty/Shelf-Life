@@ -3,7 +3,6 @@ import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ImageBackground, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { Pages } from 'react-native-pages';
-import { createStackNavigator } from '@react-navigation/stack';
 import styles from '../Style'
 
 const recipesJSON = require('../assets/recipeTest.json')
@@ -47,7 +46,10 @@ function toggleFavorite(data, {navigation}) {
 }
 
 function goToScreen(data, {navigation}) {
-	navigation.navigate('Recipe Information', { recipeName: data.name, recipeDispName: data.dispName, recipeDesc: data.desc, recipeIngredients: data.ingredients, recipeQuantity: data.quantity, recipeFavorite: data.favorite, recipeImage: data.image })
+	navigation.navigate(
+		'Recipe Information', { recipeName: data.name, recipeDispName: data.dispName, recipeDesc: data.desc, recipeIngredients: data.ingredients, recipeQuantity: data.quantity, recipeFavorite: data.favorite, recipeImage: data.image },
+		
+	)
 }
 
 function recipeSeperator(check, data, { navigation }) {

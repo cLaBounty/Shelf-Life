@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ImageBackground, Image, ScrollView, Animated } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, Image, ScrollView, Animated, TouchableOpacity, Alert } from 'react-native';
 
 import styles from '../Style'
 
 const paralaxScroll = new Animated.Value(0);
+
+const pink = "#fa82a7";
+const white = "#fff";
 
 export default function RecipeInfoScreen({ navigation, route }) {
     const [name, setName] = useState(route.params.recipeName);
@@ -14,7 +17,7 @@ export default function RecipeInfoScreen({ navigation, route }) {
     const [quantity, setQuantity] = useState(route.params.recipeQuantity);
     const [favorite, setFavorite] = useState(route.params.recipeFavorite);
     const [image, setImage] = useState(route.params.recipeImage);
-
+	const [buttonColor, setButtonColor] = useState({pink});
 
     return (
         <View style={styles.container}>
@@ -32,8 +35,10 @@ export default function RecipeInfoScreen({ navigation, route }) {
 
                 <View style={[recipeInfoStyles.content, recipeInfoStyles.shadow]}>
 
-                    <Animated.View style={[recipeInfoStyles.headerView(paralaxScroll), recipeInfoStyles.tray ]}>
-                        <Text style={recipeInfoStyles.header}>{dispName}</Text>
+                    <Animated.View style={[recipeInfoStyles.headerView(paralaxScroll), recipeInfoStyles.tray, { borderColor: buttonColor }]}>
+						<TouchableOpacity onLongPress={() => handleFavoriteChange()}>
+							<Text style={recipeInfoStyles.header}>{dispName}</Text>
+						</TouchableOpacity>
                     </Animated.View>
 
 					<View style={[recipeInfoStyles.tray]}>
@@ -52,8 +57,24 @@ export default function RecipeInfoScreen({ navigation, route }) {
             </Animated.ScrollView>
         </View>
     );
+	
+	
+	function handleFavoriteChange() {
+		if (favorite == "false")
+		{
+			setFavorite("true")
+			setButtonColor(pink)
+		}
+		else {
+			setFavorite("false")
+			setButtonColor(white)
+		}
+		
+		
+		
+		console.log(favorite)
+	}
 }
-
 
 
 function amounts(quantity, ingredients) {
@@ -124,9 +145,9 @@ const recipeInfoStyles = StyleSheet.create({
     }),
 	tray:{
 		backgroundColor: "#fff",
-		borderColor: "#00000000",
 		borderRadius: 20,
-		borderWidth: 1,
+		borderWidth: 5,
+		borderColor: "#00000000",
         overflow: "hidden",
 		paddingTop: 15,
 		paddingBottom: 15,
@@ -136,6 +157,7 @@ const recipeInfoStyles = StyleSheet.create({
 	},
 	miniTray: {
 		backgroundColor: "#eee",
+		borderColor: "#00000000",
 		marginBottom: 0,
 		marginTop: 3,
 		paddingTop: 4,
