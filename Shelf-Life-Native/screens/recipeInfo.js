@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ImageBackground, Image, ScrollView, Animated, TouchableOpacity, Alert } from 'react-native';
-
 import styles from '../Style'
 
 const paralaxScroll = new Animated.Value(0);
-
-const pink = "#fa82a7";
+const pink = "#fa82a7"; 
 const white = "#fff";
 
-export default function RecipeInfoScreen({ navigation, route }) {
+export default function RecipeInfoScreen({ route }) {
     const [favorite, setFavorite] = useState(route.params.data.favorite);
 	[buttonColor, setButtonColor] = useState({pink});
 
