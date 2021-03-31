@@ -43,8 +43,7 @@ export default function RecipesScreen({ navigation }) {
 			data.favorite = "true"
 		}
 		
-		const newFavorite ={...favorite,[index]:data.favorite}
-		setFavorite(setFavorite)
+		setFavorite({...favorite,[index]:data.favorite})
 	}
 
 	function goToScreen(data, {navigation}) {
