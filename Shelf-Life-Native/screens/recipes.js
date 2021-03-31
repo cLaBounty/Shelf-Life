@@ -2,8 +2,7 @@ import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ImageBackground, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { Pages } from 'react-native-pages';
-import { createStackNavigator } from '@react-navigation/stack';
-import styles from '../Style'
+import styles from '../Style';
 
 const recipesJSON = require('../assets/recipeTest.json')
 
