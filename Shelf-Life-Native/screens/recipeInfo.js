@@ -81,8 +81,6 @@ export default function RecipeInfoScreen({ navigation, route }) {
 	}
 }
 
-
-
 function amounts(quantity, ingredients) {
     if (quantity.length != ingredients.length) { //Error handling
         return <Text style={styles.text}>Count mismatch. Take this one up with the devs.</Text>
@@ -152,7 +150,7 @@ const recipeInfoStyles = StyleSheet.create({
 	tray:{
 		backgroundColor: "#fff",
 		borderRadius: 20,
-		borderWidth: 5,
+		borderWidth: 3,
 		borderColor: "#00000000",
         overflow: "hidden",
 		paddingTop: 15,

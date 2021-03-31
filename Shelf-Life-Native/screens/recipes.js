@@ -1,13 +1,15 @@
-//import React, { useState } from 'react';
-import React from 'react';
+import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ImageBackground, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, ScrollView, Image, TouchableOpacity, Alert} from 'react-native';
 import { Pages } from 'react-native-pages';
 import styles from '../Style'
 
-const recipesJSON = require('../assets/recipeTest.json')
+import { createStackNavigator } from '@react-navigation/stack';
+
+const recipesJSON = require('../assets/recipeTest.json');
 
 export default function RecipesScreen({ navigation }) {
+	[favorite, setFavorite] = useState("false");
     return (
         <View style={styles.container}>
             <StatusBar style="black" />
@@ -31,100 +33,100 @@ export default function RecipesScreen({ navigation }) {
             </View>
         </View>
     );
-}
 
+	function toggleFavorite(data, index, {navigation}) {
+		if (data.favorite == "true") {
+	    	data.favorite = "false"
+			
+	    }
+		else {
+			data.favorite = "true"
+		}
+		
+		const newFavorite ={...favorite,[index]:data.favorite}
+		setFavorite(setFavorite)
+	}
 
-function toggleFavorite(data, {navigation}) {
-	const forceUpdate = useForceUpdate();
-	
-	if (data.favorite == "true") {
-    	data.favorite = "false"
-    }
-	else {
-		data.favorite = "true"
+	function goToScreen(data, {navigation}) {
+		navigation.navigate(
+			'Recipe Information', { recipeName: data.name, recipeDispName: data.dispName, recipeDesc: data.desc, recipeIngredients: data.ingredients, recipeQuantity: data.quantity, recipeFavorite: data.favorite, recipeImage: data.image },
+		)
+	}
+
+	function recipeSeperator(check, data, index, { navigation }) {
+	    // Filter out all recipes not wanted before it gets to compiling the output
+	    if (check == "favorites") {
+	        if (data.favorite == "false") //Filter out all non-favorites
+	        {
+	            return null
+	        }
+	    }
+
+		favorite ={...favorite,[index]:data.favorite}
+	    // Final output to the main function
+	    return (
+	        <View style={styleFavorite(data.favorite)} key={data.name}>
+	            <TouchableOpacity 
+				onPress={() => goToScreen(data, {navigation})}
+				onLongPress={() => toggleFavorite(data, index, {navigation})}
+				>
+				<Text style={recipeStyles.listItemName} numberOfLines={2} ellipsizeMode='tail'>{data.dispName}</Text>
+	                <View style={recipeStyles.listItemText, recipeStyles.listLower}>
+	                    <View>
+	                        <Image source={{ uri: data.image }} style={recipeStyles.thumbnail} />
+	                    </View>
+	                    <Text style={recipeStyles.listItemDesc} numberOfLines={6} ellipsizeMode='tail'>{data.desc}</Text>
+	                </View>
+	            </TouchableOpacity>
+	        </View>
+	    )
+	}
+
+	// Combines all recipes into a list
+	function getRecipes({ navigation }) {
+	    return recipesJSON.recipes.map((data, index) => {
+	        return (
+	            retVal = [],
+	            retVal.concat(
+	                recipeSeperator("recipes", data, index, { navigation })
+	            )
+	        )
+	    })
+	}
+
+	// Combines all favorites into a list
+	function getFavorites({ navigation }) {
+	    return recipesJSON.recipes.map((data, index) => {
+	        return (
+	            retVal = [],
+	            retVal.concat(
+	                recipeSeperator("favorites", data, index, { navigation })
+	            )
+	        )
+	    })
+	}
+
+	//Only style favorite recipes with pink border
+	function styleFavorite(favorite) {
+	    retVal = ""
+	    if (isFavorite(favorite)) {
+	        retVal = recipeStyles.favoriteListItem
+	    }
+	    else {
+	        retVal = recipeStyles.listItem
+	    }
+	    return retVal
+	}
+
+	// Check if it's a favorite (broken into new func for abstraction purposes)
+	function isFavorite(favorite) {
+	    retVal = false
+	    if (favorite == "true") {
+	        retVal = true
+	    }
+	    return retVal
 	}
 }
-
-function goToScreen(data, {navigation}) {
-	navigation.navigate(
-		'Recipe Information', { recipeName: data.name, recipeDispName: data.dispName, recipeDesc: data.desc, recipeIngredients: data.ingredients, recipeQuantity: data.quantity, recipeFavorite: data.favorite, recipeImage: data.image },
-		
-	)
-}
-
-function recipeSeperator(check, data, { navigation }) {
-    // Filter out all recipes not wanted before it gets to compiling the output
-    if (check == "favorites") {
-        if (data.favorite == "false") //Filter out all non-favorites
-        {
-            return null
-        }
-    }
-	
-    // Final output to the main function
-    return (
-        <View style={styleFavorite(data.favorite)} key={data.name}>
-            <TouchableOpacity 
-			onPress={() => goToScreen(data, {navigation})}
-			onLongPress={() => toggleFavorite(data, {navigation})}
-			>
-                <Text style={recipeStyles.listItemName} numberOfLines={2} ellipsizeMode='tail'>{data.dispName}</Text>
-                <View style={recipeStyles.listItemText, recipeStyles.listLower}>
-                    <View>
-                        <Image source={{ uri: data.image }} style={recipeStyles.thumbnail} />
-                    </View>
-                    <Text style={recipeStyles.listItemDesc} numberOfLines={6} ellipsizeMode='tail'>{data.desc}</Text>
-                </View>
-            </TouchableOpacity>
-        </View>
-    )
-}
-
-// Combines all recipes into a list
-function getRecipes({ navigation }) {
-    return recipesJSON.recipes.map(data => {
-        return (
-            retVal = [],
-            retVal.concat(
-                recipeSeperator("recipes", data, { navigation })
-            )
-        )
-    })
-}
-
-// Combines all favorites into a list
-function getFavorites({ navigation }) {
-    return recipesJSON.recipes.map(data => {
-        return (
-            retVal = [],
-            retVal.concat(
-                recipeSeperator("favorites", data, { navigation })
-            )
-        )
-    })
-}
-
-//Only style favorite recipes with pink border
-function styleFavorite(favorite) {
-    retVal = ""
-    if (isFavorite(favorite)) {
-        retVal = recipeStyles.favoriteListItem
-    }
-    else {
-        retVal = recipeStyles.listItem
-    }
-    return retVal
-}
-
-// Check if it's a favorite (broken into new func for abstraction purposes)
-function isFavorite(favorite) {
-    retVal = false
-    if (favorite == "true") {
-        retVal = true
-    }
-    return retVal
-}
-
 
 const recipeStyles = StyleSheet.create({
     scrollable: {
