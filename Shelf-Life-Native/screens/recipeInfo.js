@@ -10,7 +10,7 @@ const pink = "#fa82a7";
 const white = "#fff";
 
 export default function RecipeInfoScreen({ navigation, route }) {
-    const [favorite, setFavorite] = useState(route.params.recipeFavorite);
+    const [favorite, setFavorite] = useState(route.params.data.favorite);
 	[buttonColor, setButtonColor] = useState({pink});
 
 	if (favorite == "true") //Setting initial border color
