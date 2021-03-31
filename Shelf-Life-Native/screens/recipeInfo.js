@@ -10,13 +10,7 @@ const pink = "#fa82a7";
 const white = "#fff";
 
 export default function RecipeInfoScreen({ navigation, route }) {
-    const [name, setName] = useState(route.params.recipeName);
-    const [dispName, setDispName] = useState(route.params.recipeDispName);
-    const [desc, setDesc] = useState(route.params.recipeDesc);
-    const [ingredients, setIngredients] = useState(route.params.recipeIngredients);
-    const [quantity, setQuantity] = useState(route.params.recipeQuantity);
     const [favorite, setFavorite] = useState(route.params.recipeFavorite);
-    const [image, setImage] = useState(route.params.recipeImage);
 	[buttonColor, setButtonColor] = useState({pink});
 
 	if (favorite == "true") //Setting initial border color
@@ -40,26 +34,26 @@ export default function RecipeInfoScreen({ navigation, route }) {
                 )}
                 scrollEventThrottle={16}
             >
-				<Animated.Image source={{ uri: image }} style={recipeInfoStyles.foodImage(paralaxScroll)} />
+				<Animated.Image source={{ uri: route.params.data.image }} style={recipeInfoStyles.foodImage(paralaxScroll)} />
 
                 <View style={[recipeInfoStyles.content, recipeInfoStyles.shadow]}>
 
                     <Animated.View style={[recipeInfoStyles.headerView(paralaxScroll), recipeInfoStyles.tray, { borderColor: buttonColor }]}>
 						<TouchableOpacity onLongPress={() => handleFavoriteChange()}>
-							<Text style={recipeInfoStyles.header}>{dispName}</Text>
+							<Text style={recipeInfoStyles.header}>{route.params.data.dispName}</Text>
 						</TouchableOpacity>
                     </Animated.View>
 
 					<View style={[recipeInfoStyles.tray]}>
 	                    <Text style={[recipeInfoStyles.header2]}>About</Text>
 						<View style={[recipeInfoStyles.tray, recipeInfoStyles.miniTray]}>
-		                    <Text style={[styles.text, recipeInfoStyles.trayText]}>{desc}</Text>
+		                    <Text style={[styles.text, recipeInfoStyles.trayText]}>{route.params.data.desc}</Text>
 						</View>
 					</View>
 
 					<View style={[recipeInfoStyles.tray]}>
 	                    <Text style={[recipeInfoStyles.header2]}>Ingredients</Text>
-	                    {amounts(quantity, ingredients)}
+	                    {amounts(route.params.data.quantity, route.params.data.ingredients)}
 					</View>
 
                 </View>

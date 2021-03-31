@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ImageBackground, ScrollView, Image, TouchableOpacity, Alert} from 'react-native';
 import { Pages } from 'react-native-pages';
-import styles from '../Style'
-
 import { createStackNavigator } from '@react-navigation/stack';
 
+import styles from '../Style'
 const recipesJSON = require('../assets/recipeTest.json');
 
 export default function RecipesScreen({ navigation }) {
@@ -42,13 +41,13 @@ export default function RecipesScreen({ navigation }) {
 		else {
 			data.favorite = "true"
 		}
-		
 		setFavorite({...favorite,[index]:data.favorite})
+		// TODO: Sync with server
 	}
 
 	function goToScreen(data, {navigation}) {
 		navigation.navigate(
-			'Recipe Information', { recipeName: data.name, recipeDispName: data.dispName, recipeDesc: data.desc, recipeIngredients: data.ingredients, recipeQuantity: data.quantity, recipeFavorite: data.favorite, recipeImage: data.image },
+			'Recipe Information', { data },
 		)
 	}
 
