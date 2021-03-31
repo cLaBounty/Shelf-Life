@@ -1,14 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, TextInput, View, ImageBackground, TouchableOpacity } from 'react-native';
 import styles from '../Style';
+import * as SecureStore from 'expo-secure-store';
+
 const GLOBAL = require('../Globals')
+
+async function save(key, value) {
+  await SecureStore.setItemAsync(key, value);
+}
+
+async function getValueFor(key) {
+  let result = await SecureStore.getItemAsync(key);
+  response = "key: "
+  if (result) {    
+    return response
+  } else {
+    return null
+  }
+}
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [password, setPassword] = useState("");
   const [tab, setTab] = useState("Login");
+  
+  useEffect(() => {
+    (async () => {
+      let key = await SecureStore.getItemAsync("login_token");  
+      GLOBAL.LOGIN_TOKEN = key    
+      if(key)
+      {
+        navigation.navigate('Home', { name: "TODO" });
+      }      
+    })();
+  }, []);
+
 
   if (tab === "Login") {
     return (
@@ -85,8 +113,6 @@ export default function LoginScreen({ navigation }) {
 }
 
 const login = (email, password, navigation) => {  
-
-
   fetch(GLOBAL.BASE_URL+'/api/user/login', {
     method: 'POST',
     headers: {
@@ -98,10 +124,13 @@ const login = (email, password, navigation) => {
       "email": email,      
     })
     
-  }).then((response) => response.json()).then((json) => {
+  }).then((response) => response.json()).then(async (json) => {
     status = json["Status"]    
-    if (status == "OK") { // successful sign up    
-      const displayName = json["display_name"]; // from database
+    if (status == "OK") { // successful sign up          
+      const displayName = json["display_name"]; // from database      
+      login_token = json["login_token"]      
+      save("login_token", login_token.toString())
+      GLOBAL.LOGIN_TOKEN = login_token        
       navigation.navigate('Home', { name: displayName });
     }
     else if(status == "ERROR")  

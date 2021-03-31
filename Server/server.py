@@ -6,6 +6,7 @@ import requests
 import mysql.connector
 import database_connector as dbConnector
 import urllib.parse
+import random
 
 # ref: https://programminghistorian.org/en/lessons/creating-apis-with-python-and-flask
 app = flask.Flask(__name__)
@@ -86,6 +87,7 @@ def selection():
     data = findCommonNameFromOfficial(user_selection)
 
     response_dict = {}
+    response_dict['Status'] = "OK"
     response_dict['Official Name'] = info_dict["Official Name"]
     response_dict['Category'] = data[0]
     response_dict['Common Name'] = data[1]
@@ -160,6 +162,13 @@ def login():
         if server_password == password:
             response_dict["display_name"] = display_name
             response_dict["Status"] = "OK"
+            
+            login_token = random.randrange(0,1000000) # TODO: Generate on client? Encrypt before sending back?            
+            while(dbConnector.checkIfTokenIsInUse(login_token)):
+                login_token = random.randrange(0,1000000)
+            
+            dbConnector.updateUserLoginToken(user_info[0], login_token)
+            response_dict["login_token"] = login_token
             return response_dict
         else:
             response_dict["Status"] = "INVALID PASSWORD"
@@ -167,5 +176,31 @@ def login():
     except TypeError:
         response_dict["Status"] = "INVALID EMAIL"
         return response_dict    
+
+@app.route('/api/user/pantry/get', methods=['GET', 'POST'])
+def getUserPantryItems():
+    # curl -d '{"key":594730}' -H "Content-Type: application/json" -X POST http://127.0.0.1:5000/api/user/pantry/get
+    info_dict = request.json
+    key = info_dict["key"]
+    print(key)
+    user = dbConnector.getUserInfoFromKey(key)    
+    pantry_items = dbConnector.getAllItemsInPantry(user[5])
+    response = {}
+    response["Status"] = "OK"
+    items = []
+    for item in pantry_items:
+        item_dict = {}
+        item_dict["name"] = item[4]        
+        item_dict["dispName"] = item[4]
+        item_dict["quantity"] = "32"
+        item_dict["expDate"] = "November 3, 2015"
+        item_dict["price"] = 1.52
+        items.append(item_dict)
+    response["items"] = items
+    return response
+
+@app.route('/api/user/pantry/add', methods=['GET', 'POST'])
+def addUserPantryItem():
+    return "not implemented"
 
 app.run(host="0.0.0.0")

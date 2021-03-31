@@ -1,49 +1,92 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ImageBackground, TouchableOpacity } from 'react-native';
 import { AlphabetList } from "react-native-section-alphabet-list";
 import styles from '../Style';
-
+import * as SecureStore from 'expo-secure-store';
 const pantryJSON = require('../assets/pantryTest.json')
+const GLOBAL = require('../Globals')
 
 export default function PantryScreen({ navigation }) {
+  const [pantry_data, setPantryData] = useState(getPantry());  
+  useEffect(() => {
+    (async () => {
+      const data = await getRemotePantry()
+      console.log(data)
+      setPantryData(data)
+    })();
+  }, []);
+
   return (
     <View>
       <StatusBar style="something that causes an error so the status bar is black, thus readable on the white background :)" />
       <ImageBackground source={require('../assets/background.jpg')} style={styles.background} />
 
       <AlphabetList style={pantryStyles.list}
-			 data={getPantry()}
+        data={pantry_data}
         indexLetterColor={'white'} //Color of letters on right
 
-				renderCustomItem={(item) => ( //Make the data fancy lookin'
-					formatPantry( item, {navigation} )
+        renderCustomItem={(item) => ( //Make the data fancy lookin'
+          formatPantry(item, { navigation })
         )}
 
         renderCustomSectionHeader={(section) => ( //Seperators
           <Text style={pantryStyles.seperatorText}>{section.title}</Text>
         )}
       />
-</View>
+    </View>
   );
 }
 
-function getPantry() {
-	return pantryJSON.items.map(data => {
-		return (
-			{ dispName: data.dispName, quantity: data.quantity, expDate: data.expDate, price: data.price, value: data.name, key: data.dispName }
-		)
-	})
+async function getRemotePantry()
+{
+  items = null
+  if (GLOBAL.LOGIN_TOKEN) {
+    await fetch(GLOBAL.BASE_URL + '/api/user/pantry/get', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "key": GLOBAL.LOGIN_TOKEN,
+      })
+
+    }).then((response) => response.json()).then((json) => {
+      status = json["Status"]
+      if (status == "OK") { // successful sign up        
+        items = json        
+      }
+    }
+    );
+  }
+  else
+  {
+    alert("No login token found")
+  }  
+  return items["items"].map(data => {
+    return (
+      { dispName: data.dispName, quantity: data.quantity, expDate: data.expDate, price: data.price, value: data.name, key: data.dispName }
+    )
+  })
 }
 
-function formatPantry(item, { navigation } ){
-		return (
-			<View key = {item.name}>
-				<TouchableOpacity onPress={() => navigation.navigate('Item Information', { itemName: item.dispName, itemQuantity: item.quantity, itemUnitPrice: item.price, itemExpDate: item.expDate })}>
-					<Text style={pantryStyles.listText}>{item.dispName}</Text>
-			</TouchableOpacity>
-			</View>
-		)
+function getPantry() {
+    return pantryJSON.items.map(data => {
+      return (
+        { dispName: data.dispName, quantity: data.quantity, expDate: data.expDate, price: data.price, value: data.name, key: data.dispName }
+      )
+    })
+}
+
+function formatPantry(item, { navigation }) {
+  return (
+    <View key={item.name}>
+      <TouchableOpacity onPress={() => navigation.navigate('Item Information', { itemName: item.dispName, itemQuantity: item.quantity, itemUnitPrice: item.price, itemExpDate: item.expDate })}>
+        <Text style={pantryStyles.listText}>{item.dispName}</Text>
+      </TouchableOpacity>
+    </View>
+  )
 }
 
 

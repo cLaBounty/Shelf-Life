@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Button, Animated, TouchableOpacity } from 'react-native';
-
+const GLOBAL = require('../Globals')
 /*
 Data Flow From Client <-> Server
 
@@ -22,85 +22,68 @@ ParseStates:
 2 - received common name and category
 */
 
+
+
+
 function ScanResult(props) {
     const [parseState, setParseState] = useState('CODE');
     const [officialName, setOfficialName] = useState([]);
     const [commonName, setCommonName] = useState('');
     const [category, setCategory] = useState('');
-    const [ws, setWs] = useState(new WebSocket('ws://143.198.232.184:20500'));
     const [selected, setSelected] = useState([])
-    // it would be good to find a way to keep this persistantly open
-    ws.onopen = () => {
-        // connection opened
-        console.log('Connected to Server')        
-        if (parseState == 'CODE') // only run if we haven't started to parse this barcode
-        {
-            message = "CODE^" + props.barcode
-            console.log(message)
-            ws.send(message); // send the barcode that was scanned to kick off conversation
+
+    useEffect(() => {
+        (async () => {
+            if (parseState == "CODE")
+            {
+                sendBarcodeToServer(props.barcode)
+            }
+        })();
+      }, []);
+      
+    sendBarcodeToServer = (barcode) => {
+        fetch(GLOBAL.BASE_URL+ '/api/barcode/?barcode=' + barcode).then((response) => response.json()).then((json) => {
+            status = json["Status"]
+            if (status == "OK") { // successful sign up        
+                setParseState("NEED_SELECTION")
+                setOfficialName(json["Official Name"].split(" "))
+            }
         }
-    };
+        );
+    }
 
-    ws.onmessage = (e) => {
-        console.log(`SERVER MESSAGE: ${e.data}`);
-        split_message = e.data.split('^');
-        status = split_message[0]
-        data = split_message[1]
-        switch (split_message[0]) {
-            case 'NEED_SELECTION':
-                setParseState(split_message[0])
-                console.log(data.split('|'))
-                setOfficialName(data.split('|'))
-                break
-            case 'ALL_INFO': // formatted as ALL_INFO|Official|Category|Common
-                setParseState(split_message[0])
-                data = data.split('|')
-                setOfficialName(data[0])
-                setCategory(data[1])
-                setCommonName(data[2])
-                break
-            case 'ERROR':
-                alert(data)
-                setParseState('')
-            default:
-                break
-        }
-
-
-    };
-
-    ws.onerror = (e) => {
-        console.log(`SERVER ERROR: ${e.message}`);
-    };
-
-    ws.onclose = (e) => {
-        console.log(`Closed Connection - Code: ${e.code} Reason: ${e.reason}`);
-    };
-    /*
-    alert(`Barcode: ${props.barcode}
-           Official Name: ${officalName}
-           Common Name: ${commonName}
-           Category: ${category}`);
-    */
-
-
-    
     sendSelectionToServer = () => {
-        message = 'SELECTION^'
-        if(selected.length == 0)
-        {
+        if (selected.length == 0) {
             // TODO: ADD PROPER ERROR HANDLING
             alert('no selection')
-
             return
         }
-        for(var i = 0; i < selected.length-1; i++)
-        {
-            message += officialName[selected[i]] + '|'
+        selected_parts = []
+        for (var i = 0; i < selected.length; i++) {
+            selected_parts.push(officialName[selected[i]])
         }
-        message += officialName[selected[selected.length-1]]
-        console.log(message)
-        ws.send(message);
+        selection_message = {}
+        fetch(GLOBAL.BASE_URL + '/api/selection/', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "Selection": selected_parts,
+                "Official Name": "Official Name"
+            })
+
+        }).then((response) => response.json()).then((json) => {
+            status = json["Status"]
+            if (status == "OK") { // successful sign up        
+                setParseState("ALL_INFO")
+                setOfficialName(json["Official Name"])
+                setCategory(json["Category"])
+                setCommonName(json["Common Name"])
+            }
+        }
+        );
     }
 
     updateSelected = (index) => {
@@ -111,8 +94,8 @@ function ScanResult(props) {
         else {
             newSelected.push(index)
         }
-        setSelected(newSelected)        
-    }
+        setSelected(newSelected)
+    }    
 
     return (
         <View style={styles.container}>
@@ -128,12 +111,12 @@ function ScanResult(props) {
                             <Text style={tempStyles.btnText}>{part}</Text>
                         </TouchableOpacity>
                     )}
-                    <TouchableOpacity style={tempStyles.btn} onPress={()=>sendSelectionToServer()}>
+                    <TouchableOpacity style={tempStyles.btn} onPress={() => sendSelectionToServer()}>
                         <Text style={tempStyles.btnText}>Send To Server</Text>
                     </TouchableOpacity>
                 </View>
             }
-            {(parseState == 'ALL_INFO') && 
+            {(parseState == 'ALL_INFO') &&
                 <View>
                     <Text style={tempStyles.btnText}>Official Name: {officialName}</Text>
                     <Text style={tempStyles.btnText}>Category: {category}</Text>
