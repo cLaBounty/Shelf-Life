@@ -10,5 +10,6 @@ expo install react-native-reanimated react-native-gesture-handler react-native-s
 npm install --save react-native-pages
 npm install react-native-section-alphabet-list
 npm install @react-navigation/bottom-tabs
+npm i react-native-floating-action --save
 cd ..
 echo -e "${GREEN}All dependencies were successfully installed"

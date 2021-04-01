@@ -11,6 +11,8 @@ import NutritionScreen from './nutrition';
 import ExpensesScreen from './expenses';
 import SettingsScreen from './settings';
 
+const GLOBAL = require('../Globals')
+
 export default function mainNavScreen({ navigation, route }) {
 	const [username, setUsername] = useState(route.params.username);
 	const Tab = createBottomTabNavigator();
@@ -75,7 +77,7 @@ export default function mainNavScreen({ navigation, route }) {
 }
 
 
-const activeTintColor = "#ff4444"
+const activeTintColor = GLOBAL.ACCENT_COLOR
 const inactiveTintColor = "#888"
 const iconSize = 40;
 const tint = "#888"

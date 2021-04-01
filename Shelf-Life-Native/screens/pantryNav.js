@@ -17,6 +17,7 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen name="Pantry" component={PantryScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Item Info" component={ItemInfoScreen} options={{ headerShown: true }} />
+        <Stack.Screen name="Scan Item" component={ScanItemScreen} options={{ headerShown: true }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

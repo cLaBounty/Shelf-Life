@@ -2,7 +2,9 @@ import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, SafeAreaView } from 'react-native';
 import { AlphabetList } from "react-native-section-alphabet-list";
+import { FloatingAction } from "react-native-floating-action";
 import styles from '../Style';
+const GLOBAL = require('../Globals')
 
 const pantryJSON = require('../assets/pantryTest.json')
 
@@ -24,6 +26,23 @@ export default function PantryScreen({ navigation }) {
 		        )}
 		      />
 	      </View>
+		  <FloatingAction
+		  actions={addActions}
+		  color={GLOBAL.ACCENT_COLOR}
+		  iconHeight = {22}
+		  iconWidth = {22}
+		  overlayColor={"rgba(0,0,0,0)"}
+		  icon={require('../assets/settings.png')}
+		  shadow={{ shadowOpacity: 0.3, shadowOffset: { width: 0, height: 0 }, shadowColor: "#000000", shadowRadius: 10 }}
+		  onPressItem={name => {
+		  	if (name == "manual")
+		  	{
+		  		navigation.navigate('Item Info', { itemName: "", itemQuantity: "", itemUnitPrice: "", itemExpDate: "" })
+		  	}
+		  	else if (name == "scan") {
+		  		navigation.navigate('Scan Item')
+		  	}
+		}}/>
 	  </SafeAreaView>
   );
 }
@@ -45,6 +64,24 @@ function formatPantry(item, { navigation } ){
 			</View>
 		)
 }
+
+
+const addActions = [
+	{
+		text: "Manual Entry",
+		icon: require("../assets/manual.png"),
+		name: "manual",
+		position: 1,
+		color: GLOBAL.ACCENT_COLOR
+	},
+	{
+		text: "Scan Item",
+		icon: require("../assets/scan.png"),
+		name: "scan",
+		position: 2,
+		color: GLOBAL.ACCENT_COLOR
+	}
+]
 
 const pantryStyles = StyleSheet.create({
   test: {
