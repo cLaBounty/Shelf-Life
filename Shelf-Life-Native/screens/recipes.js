@@ -53,7 +53,7 @@ function recipeSeperator (check, name, dispName, desc, ingredients, quantity, fa
 	// Final output to the main function
 	return (
 				<View style={styleFavorite(favorite)} key={name}>
-				  <TouchableOpacity onPress={() => navigation.navigate('Recipe Information', { recipeName: name, recipeDispName: dispName, recipeDesc: desc, recipeIngredients: ingredients, recipeQuantity: quantity, recipeFavorite: favorite, recipeImage: image})} >
+				  <TouchableOpacity onPress={() => navigation.navigate('Recipe Info', { recipeName: name, recipeDispName: dispName, recipeDesc: desc, recipeIngredients: ingredients, recipeQuantity: quantity, recipeFavorite: favorite, recipeImage: image})} >
 						<Text style={recipeStyles.listItemName} numberOfLines={2} ellipsizeMode = 'tail'>{dispName}</Text>
 						<View style={recipeStyles.listItemText, recipeStyles.listLower}>
 						<View>

@@ -39,31 +39,12 @@ function getPantry() {
 function formatPantry(item, { navigation } ){
 		return (
 			<View key = {item.name}>
-				<TouchableOpacity onPress={() => navigation.navigate('Item Information', { itemName: item.dispName, itemQuantity: item.quantity, itemUnitPrice: item.price, itemExpDate: item.expDate })}>
+				<TouchableOpacity onPress={() => navigation.navigate('Item Info', { itemName: item.dispName, itemQuantity: item.quantity, itemUnitPrice: item.price, itemExpDate: item.expDate })}>
 					<Text style={pantryStyles.listText}>{item.dispName}</Text>
 			</TouchableOpacity>
 			</View>
 		)
 }
-
-function test() {
-//	<ImageBackground source={require('../assets/background.jpg')} style={styles.background} />
-    <AlphabetList style={pantryStyles.list}
-		 data={getPantry()}
-      indexLetterColor={'white'} //Color of letters on right
-
-			renderCustomItem={(item) => ( //Make the data fancy lookin'
-				formatPantry( item, {navigation} )
-      )}
-
-      renderCustomSectionHeader={(section) => ( //Seperators
-        <Text style={pantryStyles.seperatorText}>{section.title}</Text>
-      )}
-    />
-}
-
-
-
 
 const pantryStyles = StyleSheet.create({
   test: {

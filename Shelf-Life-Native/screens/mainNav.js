@@ -5,13 +5,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import styles from '../Style';
 
-import PantryScreen from './pantry';
-import RecipesScreen from './recipes';
+import PantryNav from './pantryNav';
+import RecipeNav from './recipeNav';
 import NutritionScreen from './nutrition';
 import ExpensesScreen from './expenses';
 import SettingsScreen from './settings';
 
-export default function HomeScreen({ navigation, route }) {
+export default function mainNavScreen({ navigation, route }) {
 	const [username, setUsername] = useState(route.params.username);
 	const Tab = createBottomTabNavigator();
 	
@@ -24,19 +24,19 @@ export default function HomeScreen({ navigation, route }) {
 			}}
 			>
 
-				<Tab.Screen name="Pantry" component={PantryScreen}
+				<Tab.Screen name="Pantry" component={PantryNav}
 				options={{
 					tabBarIcon: () => {
 						return (
-							<Image style={homeStyles.tabIcons} source={require('../assets/pantry.png')} />
+							<Image style={mainNavStyles.tabIcons} source={require('../assets/pantry.png')} />
 					)}}}
 				/>
 
-				<Tab.Screen name="Recipes" component={RecipesScreen}
+				<Tab.Screen name="Recipes" component={RecipeNav}
 				options={{
 					tabBarIcon: () => {
 						return (
-							<Image style={homeStyles.tabIcons} source={require('../assets/recipes.png')} />
+							<Image style={mainNavStyles.tabIcons} source={require('../assets/recipes.png')} />
 					)}}}
 				/>
 
@@ -44,7 +44,7 @@ export default function HomeScreen({ navigation, route }) {
 				options={{
 					tabBarIcon: () => {
 					    return (
-							<Image style={homeStyles.tabIcons} source={require('../assets/nutrition.png')} />
+							<Image style={mainNavStyles.tabIcons} source={require('../assets/nutrition.png')} />
 					)}}}
 				/>
 
@@ -52,7 +52,7 @@ export default function HomeScreen({ navigation, route }) {
 				options={{
 					tabBarIcon: () => {
 					    return (
-							<Image style={homeStyles.tabIcons} source={require('../assets/expenses.png')} />
+							<Image style={mainNavStyles.tabIcons} source={require('../assets/expenses.png')} />
 					)}}}
 				/>
 
@@ -64,7 +64,7 @@ export default function HomeScreen({ navigation, route }) {
 				options={{
 					tabBarIcon: (focused) => {
 						return (
-							<Image style={[homeStyles.tabIcons]} source={require('../assets/settings.png')} />
+							<Image style={[mainNavStyles.tabIcons]} source={require('../assets/settings.png')} />
 						)
 					}}}
 				/>
@@ -80,7 +80,7 @@ const inactiveTintColor = "#888"
 const iconSize = 40;
 const tint = "#888"
 
-const homeStyles = StyleSheet.create({
+const mainNavStyles = StyleSheet.create({
 	tabIcons: {
 		width: iconSize,
 		height: iconSize,
