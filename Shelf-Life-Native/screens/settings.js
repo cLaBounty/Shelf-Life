@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View, ImageBackground, Switch } from 'react-native';
+import { StyleSheet, Text, TextInput, View, ImageBackground, Switch, SafeAreaView } from 'react-native';
 import styles from '../Style';
 
 export default function SettingsScreen({ navigation, route }) {
@@ -42,6 +42,7 @@ export default function SettingsScreen({ navigation, route }) {
   }
 
   return (
+	  	<SafeAreaView style={styles.safeArea}>
     <View style={settingsStyles.container}>
       <StatusBar style="auto" />
       <ImageBackground source={require('../assets/background.jpg')} style={styles.background}/>
@@ -107,22 +108,21 @@ export default function SettingsScreen({ navigation, route }) {
         />
       </View>
     </View>
+		  	</SafeAreaView>
   );
 }
 
 const settingsStyles = StyleSheet.create({
   container: {
-    flex: 1,
-		backgroundColor: '#000',
-    overflow: 'visible'
+	backgroundColor: '#000',
+    overflow: 'visible',
+    height: "100%"
   },
   toggleSetting: {
-    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   toggleSubSetting: {
-    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginLeft: '7.5%'

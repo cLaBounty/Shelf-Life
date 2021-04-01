@@ -1,6 +1,6 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ImageBackground, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, SafeAreaView } from 'react-native';
 import { AlphabetList } from "react-native-section-alphabet-list";
 import styles from '../Style';
 
@@ -8,23 +8,23 @@ const pantryJSON = require('../assets/pantryTest.json')
 
 export default function PantryScreen({ navigation }) {
   return (
-    <View>
-      <StatusBar style="something that causes an error so the status bar is black, thus readable on the white background :)" />
-      <ImageBackground source={require('../assets/background.jpg')} style={styles.background} />
+	  <SafeAreaView style={styles.safeArea}>
+	      <View style={styles.container}>
+			  <ImageBackground source={require('../assets/background.jpg')} style={styles.background} />
+		      <AlphabetList style={pantryStyles.list}
+		  		 data={getPantry()}
+		        indexLetterColor={'white'} //Color of letters on right
 
-      <AlphabetList style={pantryStyles.list}
-			 data={getPantry()}
-        indexLetterColor={'white'} //Color of letters on right
+		  			renderCustomItem={(item) => ( //Make the data fancy lookin'
+		  				formatPantry( item, {navigation} )
+		        )}
 
-				renderCustomItem={(item) => ( //Make the data fancy lookin'
-					formatPantry( item, {navigation} )
-        )}
-
-        renderCustomSectionHeader={(section) => ( //Seperators
-          <Text style={pantryStyles.seperatorText}>{section.title}</Text>
-        )}
-      />
-</View>
+		        renderCustomSectionHeader={(section) => ( //Seperators
+		          <Text style={pantryStyles.seperatorText}>{section.title}</Text>
+		        )}
+		      />
+	      </View>
+	  </SafeAreaView>
   );
 }
 
@@ -46,9 +46,29 @@ function formatPantry(item, { navigation } ){
 		)
 }
 
+function test() {
+//	<ImageBackground source={require('../assets/background.jpg')} style={styles.background} />
+    <AlphabetList style={pantryStyles.list}
+		 data={getPantry()}
+      indexLetterColor={'white'} //Color of letters on right
+
+			renderCustomItem={(item) => ( //Make the data fancy lookin'
+				formatPantry( item, {navigation} )
+      )}
+
+      renderCustomSectionHeader={(section) => ( //Seperators
+        <Text style={pantryStyles.seperatorText}>{section.title}</Text>
+      )}
+    />
+}
+
+
 
 
 const pantryStyles = StyleSheet.create({
+  test: {
+	width: "100%",
+  },
   list: {
     width: "100%",
     height: "100%",
@@ -61,7 +81,6 @@ const pantryStyles = StyleSheet.create({
     width: "100%",
     paddingTop: 10,
     paddingBottom: 10,
-    marginTop: 1,
     marginRight: 10,
     fontSize: 16,
     color: '#fff',
@@ -76,7 +95,6 @@ const pantryStyles = StyleSheet.create({
     paddingTop: 5,
     paddingBottom: 5,
     paddingLeft: 10,
-    marginTop: 1,
     marginRight: 10,
     backgroundColor: "#555555ff",
   },

@@ -1,6 +1,6 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ImageBackground, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, ScrollView, Image, TouchableOpacity, SafeAreaView } from 'react-native';
 import { Pages } from 'react-native-pages';
 import { createStackNavigator } from '@react-navigation/stack';
 import styles from '../Style'
@@ -9,10 +9,9 @@ const recipesJSON = require('../assets/recipeTest.json')
 
 export default function RecipesScreen({ navigation }) {
   return (
-    <View style={styles.container}>
-      <StatusBar style="black" />
+  <SafeAreaView style={styles.safeArea}>
+    <View style={[styles.container]}>
       <ImageBackground source={require('../assets/background.jpg')} style={styles.background}/>
-
 
 			<View style={recipeStyles.pageStyle}>
 			<Pages>
@@ -35,6 +34,7 @@ export default function RecipesScreen({ navigation }) {
       </Pages>
 			</View>
     </View>
+			</SafeAreaView>
   );
 }
 
@@ -124,14 +124,16 @@ const recipeStyles = StyleSheet.create({
 		width: '100%',
 		height: '80%',
 	},
+	container: {
+		width: "100%",
+		height: "100%",
+	},
   header: {
     fontSize: 50,
     color: '#fff',
 		width:"100%",
 		backgroundColor: "#11111166",
 		textAlign: "center",
-		paddingTop: 5,
-		marginTop: 25,
     overflow: "hidden",
   },
 	pageStyle: {
