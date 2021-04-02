@@ -8,47 +8,47 @@ export default function SettingsScreen({ navigation, route }) {
   const [linkedPantry, setLinkedPantry] = useState("");
 
   // general notification setting
-  const [isEnabled, setIsEnabled] = useState(true);
-  const toggleSwitch = () => {
-    setIsEnabled(previousState => !previousState);
-    if (isEnabled) {
+  const [allowNotifications, setAllowNotifications] = useState(true);
+  const toggleAllowNotifications = () => {
+    setAllowNotifications(previousState => !previousState);
+    if (allowNotifications) {
       // Disable All Toggles
-      setIsEnabled1(false);
-      setIsEnabled2(false);
-      setIsEnabled3(false);
-      setIsEnabled4(false);
-      setIsEnabled5(false);
+      setAllowNotifications_dayAfter(false);
+      setAllowNotifications_expDate(false);
+      setAllowNotifications_3daysBefore(false);
+      setAllowNotifications_weekBefore(false);
+      setAllowNotifications_2weeksBefore(false);
     }
   }
 
-  // setting #1
-  const [isEnabled1, setIsEnabled1] = useState(true);
-  const toggleSwitch1 = () => {
-    if (isEnabled) {setIsEnabled1(previousState => !previousState)}
+  // Notification 1 Day After Expiration
+  const [allowNotifications_dayAfter, setAllowNotifications_dayAfter] = useState(true);
+  const toggleAllowNotifications_dayAfter = () => {
+    if (allowNotifications) {setAllowNotifications_dayAfter(previousState => !previousState)}
   }
 
-  // setting #2
-  const [isEnabled2, setIsEnabled2] = useState(true);
-  const toggleSwitch2 = () => {
-    if (isEnabled) {setIsEnabled2(previousState => !previousState)}
+  // Notification on Expiration Date
+  const [allowNotifications_expDate, setAllowNotifications_expDate] = useState(true);
+  const toggleAllowNotifications_expDate = () => {
+    if (allowNotifications) {setAllowNotifications_expDate(previousState => !previousState)}
   }
 
-  // setting #3
-  const [isEnabled3, setIsEnabled3] = useState(true);
-  const toggleSwitch3 = () => {
-    if (isEnabled) {setIsEnabled3(previousState => !previousState)}
+  // Notification 3 Days Before Expiration
+  const [allowNotifications_3daysBefore, setAllowNotifications_3daysBefore] = useState(true);
+  const toggleAllowNotifications_3daysBefore = () => {
+    if (allowNotifications) {setAllowNotifications_3daysBefore(previousState => !previousState)}
   }
 
-  // setting #4
-  const [isEnabled4, setIsEnabled4] = useState(false);
-  const toggleSwitch4 = () => {
-    if (isEnabled) {setIsEnabled4(previousState => !previousState)}
+  // Notification 1 Week Before Expiration
+  const [allowNotifications_weekBefore, setAllowNotifications_weekBefore] = useState(false);
+  const toggleAllowNotifications_weekBefore = () => {
+    if (allowNotifications) {setAllowNotifications_weekBefore(previousState => !previousState)}
   }
 
-  // setting #5
-  const [isEnabled5, setIsEnabled5] = useState(false);
-  const toggleSwitch5 = () => {
-    if (isEnabled) {setIsEnabled5(previousState => !previousState)}
+  // Notification 2 Weeks Before Expiration
+  const [allowNotifications_2weeksBefore, setAllowNotifications_2weeksBefore] = useState(false);
+  const toggleAllowNotifications_2weeksBefore = () => {
+    if (allowNotifications) {setAllowNotifications_2weeksBefore(previousState => !previousState)}
   }
 
   return (
@@ -78,10 +78,10 @@ export default function SettingsScreen({ navigation, route }) {
           <Switch
             style={settingsStyles.toggleSwitch}
             trackColor={{ false: "#ffffff", true: "#5BC236" }}
-            thumbColor={isEnabled ? "#ffffff" : "#ffffff"}
+            thumbColor={allowNotifications ? "#ffffff" : "#ffffff"}
             ios_backgroundColor="#3e3e3e"
-            onValueChange={toggleSwitch}
-            value={isEnabled}
+            onValueChange={toggleAllowNotifications}
+            value={allowNotifications}
           />
         </View>
         <View style={settingsStyles.toggleSubSetting}>
@@ -89,10 +89,10 @@ export default function SettingsScreen({ navigation, route }) {
           <Switch
             style={settingsStyles.toggleSwitch}
             trackColor={{ false: "#ffffff", true: "#5BC236" }}
-            thumbColor={isEnabled1 ? "#ffffff" : "#ffffff"}
+            thumbColor={allowNotifications_dayAfter ? "#ffffff" : "#ffffff"}
             ios_backgroundColor="#3e3e3e"
-            onValueChange={toggleSwitch1}
-            value={isEnabled1}
+            onValueChange={toggleAllowNotifications_dayAfter}
+            value={allowNotifications_dayAfter}
           />
         </View>
         <View style={settingsStyles.toggleSubSetting}>
@@ -100,10 +100,10 @@ export default function SettingsScreen({ navigation, route }) {
           <Switch
             style={settingsStyles.toggleSwitch}
             trackColor={{ false: "#ffffff", true: "#5BC236" }}
-            thumbColor={isEnabled2 ? "#ffffff" : "#ffffff"}
+            thumbColor={allowNotifications_expDate ? "#ffffff" : "#ffffff"}
             ios_backgroundColor="#3e3e3e"
-            onValueChange={toggleSwitch2}
-            value={isEnabled2}
+            onValueChange={toggleAllowNotifications_expDate}
+            value={allowNotifications_expDate}
           />
         </View>
         <View style={settingsStyles.toggleSubSetting}>
@@ -111,10 +111,10 @@ export default function SettingsScreen({ navigation, route }) {
           <Switch
             style={settingsStyles.toggleSwitch}
             trackColor={{ false: "#ffffff", true: "#5BC236" }}
-            thumbColor={isEnabled3 ? "#ffffff" : "#ffffff"}
+            thumbColor={allowNotifications_3daysBefore ? "#ffffff" : "#ffffff"}
             ios_backgroundColor="#3e3e3e"
-            onValueChange={toggleSwitch3}
-            value={isEnabled3}
+            onValueChange={toggleAllowNotifications_3daysBefore}
+            value={allowNotifications_3daysBefore}
           />
         </View>
         <View style={settingsStyles.toggleSubSetting}>
@@ -122,10 +122,10 @@ export default function SettingsScreen({ navigation, route }) {
           <Switch
             style={settingsStyles.toggleSwitch}
             trackColor={{ false: "#ffffff", true: "#5BC236" }}
-            thumbColor={isEnabled4 ? "#ffffff" : "#ffffff"}
+            thumbColor={allowNotifications_weekBefore ? "#ffffff" : "#ffffff"}
             ios_backgroundColor="#3e3e3e"
-            onValueChange={toggleSwitch4}
-            value={isEnabled4}
+            onValueChange={toggleAllowNotifications_weekBefore}
+            value={allowNotifications_weekBefore}
           />
         </View>
         <View style={settingsStyles.toggleSubSetting}>
@@ -133,10 +133,10 @@ export default function SettingsScreen({ navigation, route }) {
           <Switch
             style={settingsStyles.toggleSwitch}
             trackColor={{ false: "#ffffff", true: "#5BC236" }}
-            thumbColor={isEnabled5 ? "#ffffff" : "#ffffff"}
+            thumbColor={allowNotifications_2weeksBefore ? "#ffffff" : "#ffffff"}
             ios_backgroundColor="#3e3e3e"
-            onValueChange={toggleSwitch5}
-            value={isEnabled5}
+            onValueChange={toggleAllowNotifications_2weeksBefore}
+            value={allowNotifications_2weeksBefore}
           />
         </View>
       </ScrollView>
