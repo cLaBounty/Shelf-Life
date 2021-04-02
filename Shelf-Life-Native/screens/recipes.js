@@ -3,12 +3,28 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ImageBackground, ScrollView, Image, TouchableOpacity, Alert} from 'react-native';
 import { Pages } from 'react-native-pages';
 import { createStackNavigator } from '@react-navigation/stack';
+import { useFocusEffect } from '@react-navigation/native';
 
 import styles from '../Style'
 const recipesJSON = require('../assets/recipeTest.json');
 
 export default function RecipesScreen({ navigation }) {
 	[favorite, setFavorite] = useState("false");
+	[setJustFavorited, justFavoirted] = useState(false);
+
+	useFocusEffect(
+		React.useCallback(() => {
+			if (GLOBAL.favStateChanged == true)
+			{
+				GLOBAL.favStateChanged = false
+				GLOBAL.recipe.favorite = GLOBAL.favStatus
+				setFavorite({...favorite,[GLOBAL.favRecipeIndex]:GLOBAL.favStatus})
+				
+				//TODO: Sync with server (There's another place that needs syncing below)
+			}
+		}
+	))
+	
     return (
         <View style={styles.container}>
             <StatusBar style="black" />
@@ -33,7 +49,7 @@ export default function RecipesScreen({ navigation }) {
         </View>
     );
 
-	function toggleFavorite(data, index, {navigation}) {
+	function toggleFavorite(data, index) {
 		if (data.favorite == "true") {
 	    	data.favorite = "false"
 			
@@ -45,9 +61,10 @@ export default function RecipesScreen({ navigation }) {
 		// TODO: Sync with server
 	}
 
-	function goToScreen(data, {navigation}) {
+	function goToScreen(data, index, {navigation}) {
+		var indexStr = index.toString()
 		navigation.navigate(
-			'Recipe Information', { data },
+			'Recipe Information', { data: data, index: indexStr },
 		)
 	}
 
@@ -65,8 +82,8 @@ export default function RecipesScreen({ navigation }) {
 	    return (
 	        <View style={styleFavorite(data.favorite)} key={data.name}>
 	            <TouchableOpacity 
-				onPress={() => goToScreen(data, {navigation})}
-				onLongPress={() => toggleFavorite(data, index, {navigation})}
+				onPress={() => goToScreen(data, index, {navigation})}
+				onLongPress={() => toggleFavorite(data, index)}
 				>
 				<Text style={recipeStyles.listItemName} numberOfLines={2} ellipsizeMode='tail'>{data.dispName}</Text>
 	                <View style={recipeStyles.listItemText, recipeStyles.listLower}>

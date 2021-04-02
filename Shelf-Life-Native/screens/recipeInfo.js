@@ -3,6 +3,8 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ImageBackground, Image, ScrollView, Animated, TouchableOpacity, Alert } from 'react-native';
 import styles from '../Style'
 
+GLOBAL = require('../Globals')
+
 const paralaxScroll = new Animated.Value(0);
 const pink = "#fa82a7"; 
 const white = "#fff";
@@ -61,12 +63,18 @@ export default function RecipeInfoScreen({ route }) {
 	
 	
 	function handleFavoriteChange() {
+		GLOBAL.favStateChanged=true
+		GLOBAL.favRecipeIndex=route.params.index
+		GLOBAL.recipe = route.params.data
+		
 		if (favorite == "false")
 		{
+			GLOBAL.favStatus="true"
 			setFavorite("true")
 			setButtonColor(pink)
 		}
 		else {
+			GLOBAL.favStatus="false"
 			setFavorite("false")
 			setButtonColor(white)
 		}
