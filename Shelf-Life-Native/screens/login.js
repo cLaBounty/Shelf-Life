@@ -93,21 +93,21 @@ const login = (email, password, navigation) => {
   /*
   if () { // successful login
     const displayName; // from database
-    navigation.navigate('Home', { name: displayName });
+    navigation.navigate('mainNav', { name: displayName });
   }
   */
   const displayName = "Test123";
-  navigation.navigate('Home', { name: displayName });
+  navigation.navigate('mainNav', { name: displayName });
 }
 
 const signUp = (email, displayName, password, navigation) => {
   /*
   if () { // successful sign up
     // TODO: create user in database
-    navigation.navigate('Home', { name: displayName });
+    navigation.navigate('mainNav', { name: displayName });
   }
   */
-  navigation.navigate('Home', { name: displayName });
+  navigation.navigate('mainNav', { name: displayName });
 }
 
 const loginStyles = StyleSheet.create({

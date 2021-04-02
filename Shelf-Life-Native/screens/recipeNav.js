@@ -3,17 +3,17 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import LoginScreen from './screens/login';
-import mainNavScreen from './screens/mainNav';
+import RecipeScreen from './recipes';
+import RecipeInfoScreen from './recipeInfo';
 
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer>
+    <NavigationContainer independent = {true}>
       <Stack.Navigator>
-        <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="mainNav" component={mainNavScreen} options={{ headerShown: false, gestureEnabled: false }} />
+        <Stack.Screen name="Recipes" component={RecipeScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Recipe Info" component={RecipeInfoScreen} options={{ headerShown: true }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
