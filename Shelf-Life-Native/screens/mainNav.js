@@ -21,7 +21,7 @@ export default function mainNavScreen({ navigation, route }) {
     	<NavigationContainer independent = {true}>
 			<Tab.Navigator
 			tabBarOptions={{
-				activeTintColor: activeTintColor,
+				activeTintColor: GLOBAL.ACCENT_COLOR,
 				inactiveTintColor: inactiveTintColor,
 			}}
 			>
@@ -76,20 +76,17 @@ export default function mainNavScreen({ navigation, route }) {
 	);
 }
 
-
-const activeTintColor = GLOBAL.ACCENT_COLOR
 const inactiveTintColor = "#888"
 const iconSize = 40;
-const tint = "#888"
 
 const mainNavStyles = StyleSheet.create({
 	tabIcons: {
 		width: iconSize,
 		height: iconSize,
-		tintColor: activeTintColor
+		tintColor: GLOBAL.ACCENT_COLOR
 	},
 	active: {
-		tintColor: activeTintColor
+		tintColor: GLOBAL.ACCENT_COLOR
 	},
 	inactive: {
 		tintColor: inactiveTintColor

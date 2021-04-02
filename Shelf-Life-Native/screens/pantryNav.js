@@ -3,11 +3,9 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import AddItemScreen from './addItem';
 import ScanItemScreen from './scanItem';
 import ItemInfoScreen from './itemInfo';
 import PantryScreen from './pantry';
-import scanItem from './scanItem';
 
 const Stack = createStackNavigator();
 
