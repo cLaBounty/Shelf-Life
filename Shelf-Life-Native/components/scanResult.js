@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Button, Animated, TouchableOpacity } from 'react-native';
+import ItemInfoScreen from './itemEntry'
 const GLOBAL = require('../Globals')
 /*
 Data Flow From Client <-> Server
@@ -27,6 +28,7 @@ ParseStates:
 
 function ScanResult(props) {
     const [parseState, setParseState] = useState('CODE');
+    const [officialNameSplit, setOfficialNameSplit] = useState([]);
     const [officialName, setOfficialName] = useState([]);
     const [commonName, setCommonName] = useState('');
     const [category, setCategory] = useState('');
@@ -46,7 +48,8 @@ function ScanResult(props) {
             status = json["Status"]
             if (status == "OK") { // successful sign up        
                 setParseState("NEED_SELECTION")
-                setOfficialName(json["Official Name"].split(" "))
+                setOfficialName(json["Official Name"])
+                setOfficialNameSplit(json["Official Name"].split(" "))
             }
         }
         );
@@ -60,7 +63,7 @@ function ScanResult(props) {
         }
         selected_parts = []
         for (var i = 0; i < selected.length; i++) {
-            selected_parts.push(officialName[selected[i]])
+            selected_parts.push(officialNameSplit[selected[i]])
         }
         selection_message = {}
         fetch(GLOBAL.BASE_URL + '/api/selection/', {
@@ -78,7 +81,7 @@ function ScanResult(props) {
             status = json["Status"]
             if (status == "OK") { // successful sign up        
                 setParseState("ALL_INFO")
-                setOfficialName(json["Official Name"])
+                setOfficialNameSplit(json["Official Name"])
                 setCategory(json["Category"])
                 setCommonName(json["Common Name"])
             }
@@ -96,6 +99,7 @@ function ScanResult(props) {
         }
         setSelected(newSelected)
     }    
+    
 
     return (
         <View style={styles.container}>
@@ -103,7 +107,7 @@ function ScanResult(props) {
             {(parseState == '') && <Button title={'Tap to Scan Again'} onPress={props.press} />}
             {(parseState == 'NEED_SELECTION') &&
                 <View>
-                    {officialName.map((part, index) =>
+                    {officialNameSplit.map((part, index) =>
                         <TouchableOpacity
                             style={selected.includes(index) ? tempStyles.selected_btn : tempStyles.btn}
                             key={index}
@@ -117,12 +121,11 @@ function ScanResult(props) {
                 </View>
             }
             {(parseState == 'ALL_INFO') &&
-                <View>
-                    <Text style={tempStyles.btnText}>Official Name: {officialName}</Text>
-                    <Text style={tempStyles.btnText}>Category: {category}</Text>
-                    <Text style={tempStyles.btnText}>Common Name: {commonName}</Text>
-                    <Button title={'Tap to Scan Again'} onPress={props.press} />
-                </View>
+                <ItemInfoScreen itemNameOfficial={officialName}
+                itemName={commonName}
+                category={category}
+                resetScanner={props.press}
+                />
             }
         </View>
     )
