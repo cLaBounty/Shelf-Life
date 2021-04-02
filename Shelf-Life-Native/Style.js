@@ -29,7 +29,7 @@ export default StyleSheet.create({
 		borderColor: '#fff',
 		borderWidth: 0,
 		borderRadius: 10,
-		margin: 5,
+		margin: '5%',
 	},
 	btnText: {
 		fontSize: 14,
