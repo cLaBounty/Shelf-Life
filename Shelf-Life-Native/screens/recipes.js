@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ImageBackground, ScrollView, Image, TouchableOpacity, Alert} from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, ScrollView, Image, TouchableOpacity, SafeAreaView} from 'react-native';
 import { Pages } from 'react-native-pages';
-import { createStackNavigator } from '@react-navigation/stack';
 import { useFocusEffect } from '@react-navigation/native';
 
 import styles from '../Style'
@@ -26,6 +25,7 @@ export default function RecipesScreen({ navigation }) {
 	))
 	
     return (
+		<SafeAreaView style={styles.safeArea}>
         <View style={styles.container}>
             <StatusBar style="black" />
             <ImageBackground source={require('../assets/background.jpg')} style={styles.background} />
@@ -47,6 +47,7 @@ export default function RecipesScreen({ navigation }) {
                 </Pages>
             </View>
         </View>
+	</SafeAreaView>
     );
 
 	function toggleFavorite(data, index) {
@@ -64,7 +65,7 @@ export default function RecipesScreen({ navigation }) {
 	function goToScreen(data, index, {navigation}) {
 		var indexStr = index.toString()
 		navigation.navigate(
-			'Recipe Information', { data: data, index: indexStr },
+			'Recipe Info', { data: data, index: indexStr },
 		)
 	}
 
