@@ -6,4 +6,5 @@ module.exports = {
 	favRecipeIndex: 0,
 	recipe: "",
 	ACCENT_COLOR: "#ff5e5e",
+	FAVORITE_COLOR: "#fa82a7aa"
   };

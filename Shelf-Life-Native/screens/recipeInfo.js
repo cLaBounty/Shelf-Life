@@ -6,7 +6,7 @@ import styles from '../Style'
 GLOBAL = require('../Globals')
 
 const paralaxScroll = new Animated.Value(0);
-const pink = "#fa82a7"; 
+const pink = GLOBAL.FAVORITE_COLOR; 
 const white = "#fff";
 
 export default function RecipeInfoScreen({ route }) {
@@ -33,7 +33,7 @@ export default function RecipeInfoScreen({ route }) {
                     { useNativeDriver: true },
                 )}
                 scrollEventThrottle={16}
-            >
+        >
 				<Animated.Image source={{ uri: route.params.data.image }} style={recipeInfoStyles.foodImage(paralaxScroll)} />
 
                 <View style={[recipeInfoStyles.content, recipeInfoStyles.shadow]}>
@@ -95,8 +95,8 @@ function amounts(quantity, ingredients) {
             count = quantity[i],
             ingredient = ingredients[i],
             retVal.concat(
-				<View style={[recipeInfoStyles.tray, recipeInfoStyles.miniTray]}>
-	                <Text style={[styles.text, recipeInfoStyles.trayText]} key={ingredient[i]}>• {count}x {ingredient}</Text>
+				<View style={[recipeInfoStyles.tray, recipeInfoStyles.miniTray]} key={ingredient[i]}>
+	                <Text style={[styles.text, recipeInfoStyles.trayText]}>• {count}x {ingredient}</Text>
 				</View>
             )
         )

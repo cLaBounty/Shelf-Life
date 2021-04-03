@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
+import React,  { useState } from 'react'; 
+import { useFocusEffect } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ImageBackground, ScrollView, Image, TouchableOpacity, SafeAreaView} from 'react-native';
-import { Pages } from 'react-native-pages';
-import { useFocusEffect } from '@react-navigation/native';
+import 'react-native-gesture-handler';
+import { NavigationContainer } from '@react-navigation/native';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 import styles from '../Style'
 const recipesJSON = require('../assets/recipeTest.json');
+const TopTab = createMaterialTopTabNavigator();
+
+GLOBAL = require('../Globals')
 
 export default function RecipesScreen({ navigation }) {
 	[favorite, setFavorite] = useState("false");
@@ -28,38 +33,48 @@ export default function RecipesScreen({ navigation }) {
 		<SafeAreaView style={styles.safeArea}>
         <View style={styles.container}>
             <StatusBar style="black" />
-            <ImageBackground source={require('../assets/background.jpg')} style={styles.background} />
-		
-            <View style={recipeStyles.pageStyle}>
-                <Pages>
-                    <View>
-                        <Text style={recipeStyles.header}>Recipes</Text>
-                        <ScrollView style={recipeStyles.scrollable}>
-                            {getRecipes({ navigation })}
-                        </ScrollView>
-                    </View>
-                    <View>
-                        <Text style={recipeStyles.header}>Favorites</Text>
-                        <ScrollView style={recipeStyles.scrollable}>
-                            {getFavorites({ navigation })}
-                        </ScrollView>
-                    </View>
-                </Pages>
+            <View style={recipeStyles.maxer}>
+			
+			<NavigationContainer independent={true}>
+				<TopTab.Navigator 
+				screenOptions={({ route }) => ({
+				    tabBarLabel: ({ focused }) => {
+				      return (
+				          <Text style={recipeStyles.header}> {route.name}</Text>
+				      );
+				    },
+				  })}
+				  >
+					<TopTab.Screen name="Recipes" component={recipeTab}/>
+					<TopTab.Screen name="Favorite Recipes" component={favoriteTab}/>
+				</TopTab.Navigator>
+			</NavigationContainer>
+				
             </View>
         </View>
 	</SafeAreaView>
     );
-
-	function toggleFavorite(data, index) {
-		if (data.favorite == "true") {
-	    	data.favorite = "false"
-			
-	    }
-		else {
-			data.favorite = "true"
-		}
-		setFavorite({...favorite,[index]:data.favorite})
-		// TODO: Sync with server
+	
+	function recipeTab() {
+		return (
+		    <View style={recipeStyles.page}>
+				<ImageBackground source={require('../assets/background.jpg')} style={styles.background} />
+		        <ScrollView style={recipeStyles.scrollable}>
+		            {getRecipes({ navigation })}
+		        </ScrollView>
+		    </View>
+		)
+	}
+	
+	function favoriteTab() {
+		return (
+		    <View style={recipeStyles.page}>
+			<ImageBackground source={require('../assets/background.jpg')} style={styles.background} />
+		        <ScrollView style={recipeStyles.scrollable}>
+		            {getFavorites({ navigation })}
+		        </ScrollView>
+		    </View>
+		)
 	}
 
 	function goToScreen(data, index, {navigation}) {
@@ -69,6 +84,30 @@ export default function RecipesScreen({ navigation }) {
 		)
 	}
 
+	// Combines all recipes into a list
+	function getRecipes({ navigation }) {
+	    return recipesJSON.recipes.map((data, index) => {
+	        return (
+	            retVal = [],
+	            retVal.concat(
+	                recipeSeperator("recipes", data, index, { navigation })
+	            )
+	        )
+	    })
+	}
+
+	// Combines all favorites into a list
+	function getFavorites({ navigation }) {
+	    return recipesJSON.recipes.map((data, index) => {
+	        return (
+	            retVal = [],
+	            retVal.concat(
+	                recipeSeperator("favorites", data, index, { navigation })
+	            )
+	        )
+	    })
+	}
+	
 	function recipeSeperator(check, data, index, { navigation }) {
 	    // Filter out all recipes not wanted before it gets to compiling the output
 	    if (check == "favorites") {
@@ -98,30 +137,6 @@ export default function RecipesScreen({ navigation }) {
 	    )
 	}
 
-	// Combines all recipes into a list
-	function getRecipes({ navigation }) {
-	    return recipesJSON.recipes.map((data, index) => {
-	        return (
-	            retVal = [],
-	            retVal.concat(
-	                recipeSeperator("recipes", data, index, { navigation })
-	            )
-	        )
-	    })
-	}
-
-	// Combines all favorites into a list
-	function getFavorites({ navigation }) {
-	    return recipesJSON.recipes.map((data, index) => {
-	        return (
-	            retVal = [],
-	            retVal.concat(
-	                recipeSeperator("favorites", data, index, { navigation })
-	            )
-	        )
-	    })
-	}
-
 	//Only style favorite recipes with pink border
 	function styleFavorite(favorite) {
 	    retVal = ""
@@ -142,26 +157,34 @@ export default function RecipesScreen({ navigation }) {
 	    }
 	    return retVal
 	}
+	
+	function toggleFavorite(data, index) {
+		if (data.favorite == "true") {
+	    	data.favorite = "false"
+	    }
+		else {
+			data.favorite = "true"
+		}
+		setFavorite({...favorite,[index]:data.favorite})
+		
+		// TODO: Sync with server
+	}s
 }
 
 const recipeStyles = StyleSheet.create({
-    scrollable: {
-        width: '100%',
-        height: '80%',
-    },
-    header: {
-        fontSize: 50,
-        color: '#fff',
-        width: "100%",
-        backgroundColor: "#11111166",
-        textAlign: "center",
-        paddingTop: 5,
-        marginTop: 25,
-        overflow: "hidden",
-    },
-    pageStyle: {
+    maxer: {
         width: "100%",
         height: "100%",
+    },
+	header: {
+		fontSize: 15,
+	},
+	page: {
+		backgroundColor: "#000",
+	},
+    scrollable: {
+        width: '100%',
+        height: '100%',
     },
     listItem: {
         backgroundColor: '#11111166',
@@ -183,7 +206,7 @@ const recipeStyles = StyleSheet.create({
         marginRight: 10,
         borderRadius: 15,
         borderWidth: 3,
-        borderColor: "#fa82a7aa",
+        borderColor: GLOBAL.FAVORITE_COLOR,
         paddingLeft: 10,
         paddingTop: 10,
         paddingBottom: 10,
