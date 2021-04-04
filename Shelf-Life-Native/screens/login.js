@@ -21,6 +21,7 @@ export default function LoginScreen({ navigation }) {
           placeholder="Email"
           placeholderTextColor="#9E9791"
           textContentType="emailAddress"
+          defaultValue={email}
           onChangeText={(value) => setEmail(value)}
         />
         <TextInput
@@ -29,6 +30,7 @@ export default function LoginScreen({ navigation }) {
           placeholderTextColor="#9E9791"
           textContentType="password"
           secureTextEntry={true}
+          defaultValue={password}
           onChangeText={(value) => setPassword(value)}
         />
         <TouchableOpacity style={loginStyles.btn} onPress={() => login(email, password, navigation)}>
@@ -54,12 +56,15 @@ export default function LoginScreen({ navigation }) {
           placeholder="Email"
           placeholderTextColor="#9E9791"
           textContentType="emailAddress"
+          defaultValue={email}
           onChangeText={(value) => setEmail(value)}
         />
         <TextInput
           style={styles.inputField}
           placeholder="Display Name"
           placeholderTextColor="#9E9791"
+          secureTextEntry={false}
+          defaultValue={displayName}
           onChangeText={(value) => setDisplayName(value)}
         />
         <TextInput
@@ -68,6 +73,7 @@ export default function LoginScreen({ navigation }) {
           placeholderTextColor="#9E9791"
           textContentType="password"
           secureTextEntry={true}
+          defaultValue={password}
           onChangeText={(value) => setPassword(value)}
         />
         <TouchableOpacity style={loginStyles.btn} onPress={() => signUp(email, displayName, password, navigation)}>
@@ -150,9 +156,6 @@ const signUp = (email, displayName, password, navigation) => {
   }).catch((error) => {
     console.error(error); // catch networking errors
   });
-
-  
-}
 
 const loginStyles = StyleSheet.create({
   title: {

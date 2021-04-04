@@ -2,10 +2,13 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
 	container: {
-		flex: 1,
-		backgroundColor: '#000',
+		height: "100%",
 		alignItems: 'center',
 		justifyContent: 'center',
+		backgroundColor: "#000"
+	},
+	safeArea: {
+		backgroundColor: "#fff"
 	},
 	btnImage: {
 		width: 100,
@@ -29,7 +32,7 @@ export default StyleSheet.create({
 		borderColor: '#fff',
 		borderWidth: 0,
 		borderRadius: 10,
-		margin: 5,
+		margin: '5%',
 	},
 	btnText: {
 		fontSize: 14,
