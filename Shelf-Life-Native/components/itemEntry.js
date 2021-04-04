@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, View, ImageBackground, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native';
 import styles from '../Style';
+const GLOBAL = require('../Globals')
 
 export default function ItemInfoScreen(params) {
     const [officialName, setOfficialName] = useState(params.itemNameOfficial);
@@ -8,9 +9,41 @@ export default function ItemInfoScreen(params) {
     const [quantity, setQuantity] = useState(params.itemQuantity);
     const [price, setPrice] = useState(params.itemUnitPrice);
     const [expDate, setExpDate] = useState(params.itemExpDate);
+    const [itemAddingState, setItemAddingState] = useState("EDITING_VALUES");
+
+    handleSubmit = (officialName, name, quantity, price, expDate) => {
+        setItemAddingState("SENDING_TO_SERVER")
+        fetch(GLOBAL.BASE_URL + '/api/user/pantry/add', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "key": GLOBAL.LOGIN_TOKEN,
+                "item_official_name": officialName
+            })
+    
+        }).then((response) => response.json()).then((json) => {
+            status = json["Status"]
+            if (status == "OK") { // successful sign up        
+                setItemAddingState("ADDED")
+            }
+            else if (status = "INVALID TOKEN")
+            {
+                alert("Invalid login token, log in again")
+            }
+        }
+        );
+    }
+
+    handleCancel = () =>
+    {        
+        console.log("go home")
+    }
 
     return (
-        <View style={styles.transparent_container}>
+        <View style={styles.transparent_container}>            
             <View style={[{ flex: 2, justifyContent:'flex-end'}]}>
                 <TextInput
                     style={styles.inputField}
@@ -52,22 +85,28 @@ export default function ItemInfoScreen(params) {
                 />
             </View>
             <View style={itemInfoStyles.button_container}>
+                
                 <TouchableOpacity style={itemInfoStyles.submitBtn} onPress={() => params.resetScanner()}>
-                    <Text style={itemInfoStyles.submitBtnText}>Cancel</Text>
+                    <Text style={itemInfoStyles.submitBtnText}>Scan Again</Text>
                 </TouchableOpacity>
+                {(itemAddingState == "EDITING_VALUES") &&
                 <TouchableOpacity style={itemInfoStyles.submitBtn} onPress={() => handleSubmit(officialName, name, quantity, price, expDate)}>
                     <Text style={itemInfoStyles.submitBtnText}>Submit</Text>
                 </TouchableOpacity>
-
+                }
+                {(itemAddingState == "SENDING_TO_SERVER") &&                
+                    <Text style={itemInfoStyles.submitBtnText}>Sending to Server</Text>                
+                }
+                {(itemAddingState == "ADDED") &&                
+                    <TouchableOpacity style={itemInfoStyles.submitBtn} onPress={() => handleCancel()}>
+                        <Text style={itemInfoStyles.submitBtnText}>Done</Text>
+                    </TouchableOpacity>
+                }
             </View>
         </View>
     );
 }
 
-const handleSubmit = (officialName, name, quantity, price, expDate) => {
-    // TODO: Add item to pantry
-    console.log(officialName)
-}
 
 const itemInfoStyles = StyleSheet.create({
     transparent_container: {

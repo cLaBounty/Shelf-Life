@@ -36,20 +36,21 @@ function ScanResult(props) {
 
     useEffect(() => {
         (async () => {
-            if (parseState == "CODE")
-            {
+            if (parseState == "CODE") {
                 sendBarcodeToServer(props.barcode)
             }
         })();
-      }, []);
-      
+    }, []);
+
     sendBarcodeToServer = (barcode) => {
-        fetch(GLOBAL.BASE_URL+ '/api/barcode/?barcode=' + barcode).then((response) => response.json()).then((json) => {
+        fetch(GLOBAL.BASE_URL + '/api/barcode/?barcode=' + barcode).then((response) => response.json()).then((json) => {
             status = json["Status"]
             if (status == "OK") { // successful sign up        
                 setParseState("NEED_SELECTION")
                 setOfficialName(json["Official Name"])
                 setOfficialNameSplit(json["Official Name"].split(" "))
+            } else if (status == "NOT_FOUND") {
+                setParseState("NOT_FOUND")
             }
         }
         );
@@ -80,7 +81,7 @@ function ScanResult(props) {
         }).then((response) => response.json()).then((json) => {
             status = json["Status"]
             if (status == "OK") { // successful sign up        
-                setParseState("ALL_INFO")
+                setParseState("ENTERING_INFO")
                 setOfficialNameSplit(json["Official Name"])
                 setCategory(json["Category"])
                 setCommonName(json["Common Name"])
@@ -98,34 +99,56 @@ function ScanResult(props) {
             newSelected.push(index)
         }
         setSelected(newSelected)
-    }    
-    
+    }
+
 
     return (
         <View style={styles.container}>
             {(parseState == 'CODE') && <Text style={tempStyles.btnText}>Awaiting Response from Server</Text>}
             {(parseState == '') && <Button title={'Tap to Scan Again'} onPress={props.press} />}
             {(parseState == 'NEED_SELECTION') &&
-                <View>
+                <View >
                     {officialNameSplit.map((part, index) =>
-                        <TouchableOpacity
-                            style={selected.includes(index) ? tempStyles.selected_btn : tempStyles.btn}
-                            key={index}
-                            onPress={() => updateSelected(index)}>
-                            <Text style={tempStyles.btnText}>{part}</Text>
-                        </TouchableOpacity>
+                        <View style={{ flex: 0, marginBottom: 10 }}>
+                            <TouchableOpacity
+                                style={selected.includes(index) ? tempStyles.selected_btn : tempStyles.btn}
+                                key={index}
+                                onPress={() => updateSelected(index)}>
+                                <Text style={tempStyles.btnText}>{part}</Text>
+                            </TouchableOpacity>
+                        </View>
                     )}
                     <TouchableOpacity style={tempStyles.btn} onPress={() => sendSelectionToServer()}>
                         <Text style={tempStyles.btnText}>Send To Server</Text>
                     </TouchableOpacity>
                 </View>
             }
-            {(parseState == 'ALL_INFO') &&
+            {(parseState == 'ENTERING_INFO') &&
                 <ItemInfoScreen itemNameOfficial={officialName}
-                itemName={commonName}
-                category={category}
-                resetScanner={props.press}
+                    itemName={commonName}
+                    category={category}
+                    resetScanner={props.press}
                 />
+            }
+            {(parseState == 'NOT_FOUND') &&
+                <View>
+                    <View style={{ flex: 0, marginBottom: 10 }}>
+                        <Text style={tempStyles.btnText}>Not Found</Text>
+                        <TouchableOpacity style={tempStyles.btn} onPress={() => console.log("quitting")}>
+                            <Text style={tempStyles.btnText}>Quit</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{ flex: 0, marginBottom: 10 }}>
+                        <TouchableOpacity style={tempStyles.btn} onPress={() => setParseState("ENTERING_INFO")}>
+                            <Text style={tempStyles.btnText}>Manual Entry</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{ flex: 0, marginBottom: 10 }}>
+                        <TouchableOpacity style={tempStyles.btn} onPress={() => props.press()}>
+                            <Text style={tempStyles.btnText}>Scan Again</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
             }
         </View>
     )
@@ -186,24 +209,20 @@ const tempStyles = StyleSheet.create({
         margin: 10
     },
     btn: {
-        backgroundColor: '#595959',
-        borderColor: '#fff',
-        borderWidth: 1,
-        borderRadius: 10,
-        margin: 5
+        backgroundColor: '#5296E7',
+        borderWidth: 0,
+        borderRadius: 10
     },
     selected_btn: {
-        backgroundColor: '#000000',
-        borderColor: '#fff',
-        borderWidth: 1,
-        borderRadius: 10,
-        margin: 5
+        backgroundColor: '#38689E',
+        borderWidth: 0,
+        borderRadius: 10
     },
     btnText: {
-        fontSize: 14,
+        fontSize: 16,
         color: '#fff',
         padding: 8,
-        letterSpacing: 1.5
+        letterSpacing: 2
     }
 });
 

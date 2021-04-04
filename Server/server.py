@@ -51,7 +51,10 @@ def barcode():
         if api_response_json['status_verbose'] == 'product found':
             response_dict['Status'] = "OK"            
             response_dict["Official Name"] = api_response_json["product"]["product_name_en"]
-            return response_dict        
+            return response_dict       
+        else:
+             response_dict['Status'] = "NOT_FOUND"   
+             return response_dict         
     return response_dict
 
 
@@ -182,25 +185,38 @@ def getUserPantryItems():
     # curl -d '{"key":594730}' -H "Content-Type: application/json" -X POST http://127.0.0.1:5000/api/user/pantry/get
     info_dict = request.json
     key = info_dict["key"]
-    print(key)
-    user = dbConnector.getUserInfoFromKey(key)    
-    pantry_items = dbConnector.getAllItemsInPantry(user[5])
     response = {}
     response["Status"] = "OK"
-    items = []
-    for item in pantry_items:
-        item_dict = {}
-        item_dict["name"] = item[4]        
-        item_dict["dispName"] = item[4]
-        item_dict["quantity"] = "32"
-        item_dict["expDate"] = "November 3, 2015"
-        item_dict["price"] = 1.52
-        items.append(item_dict)
-    response["items"] = items
+    user = dbConnector.getUserInfoFromKey(key)    
+    if user:    
+        pantry_items = dbConnector.getAllItemsInPantry(user[5])
+        
+        items = []
+        for item in pantry_items:
+            item_dict = {}
+            item_dict["name"] = item[4]        
+            item_dict["dispName"] = item[4]
+            item_dict["quantity"] = "32"
+            item_dict["expDate"] = "November 3, 2015"
+            item_dict["price"] = 1.52
+            items.append(item_dict)
+        response["items"] = items
+    else:
+        response["Status"] = "INVALID TOKEN"
     return response
 
 @app.route('/api/user/pantry/add', methods=['GET', 'POST'])
 def addUserPantryItem():
-    return "not implemented"
+    info_dict = request.json
+    key = info_dict["key"]    
+    user = dbConnector.getUserInfoFromKey(key)    
+    pantry_item = info_dict # TODO: Add input validation
+    if user:
+        dbConnector.addItem(user[5], pantry_item)    
+        response_dict = {}
+        response_dict["Status"] = "OK"
+    else:
+        response_dict["Status"] = "INVALID TOKEN"
+    return response_dict
 
 app.run(host="0.0.0.0")

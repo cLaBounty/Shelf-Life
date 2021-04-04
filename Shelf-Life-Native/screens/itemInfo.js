@@ -3,11 +3,11 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, TextInput, View, ImageBackground, TouchableOpacity } from 'react-native';
 import styles from '../Style';
 
-export default function ItemInfoScreen({ params }) {
-  const [name, setName] = useState(params.itemName);
-  const [quantity, setQuantity] = useState(params.itemQuantity);
-  const [price, setPrice] = useState(params.itemUnitPrice);
-  const [expDate, setExpDate] = useState(params.itemExpDate);
+export default function ItemInfoScreen({ navigation, route }) {
+  const [name, setName] = useState(route.params.itemName);
+  const [quantity, setQuantity] = useState(route.params.itemQuantity);
+  const [price, setPrice] = useState(route.params.itemUnitPrice);
+  const [expDate, setExpDate] = useState(route.params.itemExpDate);
 
   return (
     <View style={styles.container}>

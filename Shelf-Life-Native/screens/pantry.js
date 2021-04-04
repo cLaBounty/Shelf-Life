@@ -3,7 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ImageBackground, TouchableOpacity } from 'react-native';
 import { AlphabetList } from "react-native-section-alphabet-list";
 import styles from '../Style';
-import * as SecureStore from 'expo-secure-store';
+
 const pantryJSON = require('../assets/pantryTest.json')
 const GLOBAL = require('../Globals')
 
@@ -11,8 +11,7 @@ export default function PantryScreen({ navigation }) {
   const [pantry_data, setPantryData] = useState(getPantry());  
   useEffect(() => {
     (async () => {
-      const data = await getRemotePantry()
-      console.log(data)
+      const data = await getRemotePantry()      
       setPantryData(data)
     })();
   }, []);
@@ -64,9 +63,9 @@ async function getRemotePantry()
   {
     alert("No login token found")
   }  
-  return items["items"].map(data => {
+  return items["items"].map( (data, index) => {
     return (
-      { dispName: data.dispName, quantity: data.quantity, expDate: data.expDate, price: data.price, value: data.name, key: data.dispName }
+      { dispName: data.dispName, quantity: data.quantity, expDate: data.expDate, price: data.price, value: data.name, key: index }
     )
   })
 }
@@ -81,7 +80,7 @@ function getPantry() {
 
 function formatPantry(item, { navigation }) {
   return (
-    <View key={item.name}>
+    <View>
       <TouchableOpacity onPress={() => navigation.navigate('Item Information', { itemName: item.dispName, itemQuantity: item.quantity, itemUnitPrice: item.price, itemExpDate: item.expDate })}>
         <Text style={pantryStyles.listText}>{item.dispName}</Text>
       </TouchableOpacity>
