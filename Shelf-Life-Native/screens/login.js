@@ -1,42 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, TextInput, View, ImageBackground, TouchableOpacity } from 'react-native';
 import styles from '../Style';
-import * as SecureStore from 'expo-secure-store';
-
 const GLOBAL = require('../Globals')
-
-async function save(key, value) {
-  await SecureStore.setItemAsync(key, value);
-}
-
-async function getValueFor(key) {
-  let result = await SecureStore.getItemAsync(key);
-  response = "key: "
-  if (result) {    
-    return response
-  } else {
-    return null
-  }
-}
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [password, setPassword] = useState("");
   const [tab, setTab] = useState("Login");
-  
-  useEffect(() => {
-    (async () => {
-      let key = await SecureStore.getItemAsync("login_token");  
-      GLOBAL.LOGIN_TOKEN = key    
-      if(key)
-      {
-        navigation.navigate('Home', { name: "TODO" });
-      }      
-    })();
-  }, []);
-
 
   if (tab === "Login") {
     return (
@@ -49,6 +21,7 @@ export default function LoginScreen({ navigation }) {
           placeholder="Email"
           placeholderTextColor="#9E9791"
           textContentType="emailAddress"
+          defaultValue={email}
           onChangeText={(value) => setEmail(value)}
         />
         <TextInput
@@ -57,6 +30,7 @@ export default function LoginScreen({ navigation }) {
           placeholderTextColor="#9E9791"
           textContentType="password"
           secureTextEntry={true}
+          defaultValue={password}
           onChangeText={(value) => setPassword(value)}
         />
         <TouchableOpacity style={loginStyles.btn} onPress={() => login(email, password, navigation)}>
@@ -82,12 +56,15 @@ export default function LoginScreen({ navigation }) {
           placeholder="Email"
           placeholderTextColor="#9E9791"
           textContentType="emailAddress"
+          defaultValue={email}
           onChangeText={(value) => setEmail(value)}
         />
         <TextInput
           style={styles.inputField}
           placeholder="Display Name"
           placeholderTextColor="#9E9791"
+          secureTextEntry={false}
+          defaultValue={displayName}
           onChangeText={(value) => setDisplayName(value)}
         />
         <TextInput
@@ -96,6 +73,7 @@ export default function LoginScreen({ navigation }) {
           placeholderTextColor="#9E9791"
           textContentType="password"
           secureTextEntry={true}
+          defaultValue={password}
           onChangeText={(value) => setPassword(value)}
         />
         <TouchableOpacity style={loginStyles.btn} onPress={() => signUp(email, displayName, password, navigation)}>
@@ -113,6 +91,8 @@ export default function LoginScreen({ navigation }) {
 }
 
 const login = (email, password, navigation) => {  
+
+
   fetch(GLOBAL.BASE_URL+'/api/user/login', {
     method: 'POST',
     headers: {
@@ -124,14 +104,13 @@ const login = (email, password, navigation) => {
       "email": email,      
     })
     
-  }).then((response) => response.json()).then(async (json) => {
+  }).then((response) => response.json()).then((json) => {
     status = json["Status"]    
-    if (status == "OK") { // successful sign up          
-      const displayName = json["display_name"]; // from database      
-      login_token = json["login_token"]      
-      save("login_token", login_token.toString())
-      GLOBAL.LOGIN_TOKEN = login_token        
-      navigation.navigate('Home', { name: displayName });
+    if (status == "OK") { // successful sign up    
+      const displayName = json["display_name"]; // from database
+      GLOBAL.LOGIN_TOKEN = json["login_token"]
+      navigation.navigate('mainNav', { name: displayName });
+
     }
     else if(status == "ERROR")  
     {    
@@ -170,7 +149,8 @@ const signUp = (email, displayName, password, navigation) => {
   status = json["Status"]
   
   if (status == "OK") { // successful sign up    
-    navigation.navigate('Home', { name: displayName });
+    navigation.navigate('mainNav', { name: displayName });
+    GLOBAL.LOGIN_TOKEN = json["login_token"]
   }
   else if(status == "ERROR")  
   {    
@@ -179,8 +159,6 @@ const signUp = (email, displayName, password, navigation) => {
   }).catch((error) => {
     console.error(error); // catch networking errors
   });
-
-  
 }
 
 const loginStyles = StyleSheet.create({

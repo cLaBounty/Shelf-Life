@@ -109,10 +109,9 @@ function ScanResult(props) {
             {(parseState == 'NEED_SELECTION') &&
                 <View >
                     {officialNameSplit.map((part, index) =>
-                        <View style={{ flex: 0, marginBottom: 10 }}>
+                        <View style={{ flex: 0, marginBottom: 10 }} key={index}>
                             <TouchableOpacity
-                                style={selected.includes(index) ? tempStyles.selected_btn : tempStyles.btn}
-                                key={index}
+                                style={selected.includes(index) ? tempStyles.selected_btn : tempStyles.btn}                                
                                 onPress={() => updateSelected(index)}>
                                 <Text style={tempStyles.btnText}>{part}</Text>
                             </TouchableOpacity>
