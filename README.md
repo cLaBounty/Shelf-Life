@@ -20,3 +20,8 @@ Based off of...
 1. Open the Shelf-Life-Native folder in the command line and type 'npm start' or 'expo start'
 2. Android -> Scan the QR Code Using the Expo App | iOS -> Scan the QR Code using the Camera App
 3. Make your changes
+
+## Server Run Instructions
+1. Follow Setup in the Server/ README
+2. Edit Globals.js to your PCs' IPv4 Address, if you're on windows type "ipconfig" into the cmd to find this
+3. Run Server.py in python3

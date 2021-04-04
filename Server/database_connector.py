@@ -17,12 +17,6 @@ def commitToDB():
     if doPermanentChanges:
         db.commit()
 
-def getUserInformation():
-    cursor = db.cursor()
-    query = ("SELECT * FROM Users")
-    cursor.execute(query, params=None)
-    return cursor
-
 def addNewUser(email, password, display_name):
     cursor = db.cursor()
     query = ('''INSERT INTO Users(email, password, display_name) 
@@ -32,6 +26,12 @@ def addNewUser(email, password, display_name):
         display_name))
     cursor.execute(query, params=None)
     commitToDB()    
+
+def getUserInformation(email):
+    cursor = db.cursor()
+    query = ('''SELECT * FROM Users WHERE email="{0}"'''.format(email))
+    cursor.execute(query, params=None)
+    return cursor.fetchone()
 
 def addItem():
     cursor = db.cursor()
@@ -44,4 +44,4 @@ if __name__ == '__main__':
                               host='shelflife.cizcr7arqko1.us-east-2.rds.amazonaws.com',
                               database='shelfLifeDB')  
 
-
+    print(getUserInformation("rhys_sullivan"))        
