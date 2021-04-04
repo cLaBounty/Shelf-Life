@@ -108,7 +108,7 @@ const login = (email, password, navigation) => {
     status = json["Status"]    
     if (status == "OK") { // successful sign up    
       const displayName = json["display_name"]; // from database
-      navigation.navigate('Home', { name: displayName });
+      navigation.navigate('mainNav', { name: displayName });
     }
     else if(status == "ERROR")  
     {    
@@ -147,7 +147,7 @@ const signUp = (email, displayName, password, navigation) => {
   status = json["Status"]
   
   if (status == "OK") { // successful sign up    
-    navigation.navigate('Home', { name: displayName });
+    navigation.navigate('mainNav', { name: displayName });
   }
   else if(status == "ERROR")  
   {    
@@ -156,6 +156,7 @@ const signUp = (email, displayName, password, navigation) => {
   }).catch((error) => {
     console.error(error); // catch networking errors
   });
+}
 
 const loginStyles = StyleSheet.create({
   title: {
