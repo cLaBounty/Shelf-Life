@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ImageBackground, Image, ScrollView, Animated, TouchableOpacity, Alert } from 'react-native';
 import styles from '../Style'
+import FastImage from 'react-native-fast-image'
 
 GLOBAL = require('../Globals')
 
@@ -25,7 +26,10 @@ export default function RecipeInfoScreen({ route }) {
     return (
         <View style={styles.container}>
             <StatusBar style="black" />
-		    <ImageBackground source={require('../assets/background.jpg')} style={[styles.background, recipeInfoStyles.backgroundOverride]}/>
+			<FastImage 
+			style={styles.background}
+			source = {Image.resolveAssetSource(require('../assets/background.jpg'))}
+			/>
             <Animated.ScrollView style={recipeInfoStyles.paralaxScroll}
 				// onScroll={e => console.log(e.nativeEvent.contentOffset.y)}
                 onScroll={Animated.event(

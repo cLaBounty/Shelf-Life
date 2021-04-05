@@ -1,10 +1,12 @@
 import React,  { useState } from 'react'; 
 import { useFocusEffect } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ImageBackground, ScrollView, Image, TouchableOpacity, SafeAreaView} from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, SafeAreaView} from 'react-native';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+
+import FastImage from 'react-native-fast-image'
 
 import styles from '../Style'
 const recipesJSON = require('../assets/recipeTest.json');
@@ -58,7 +60,12 @@ export default function RecipesScreen({ navigation }) {
 	function recipeTab() {
 		return (
 		    <View style={recipeStyles.page}>
-				<ImageBackground source={require('../assets/background.jpg')} style={styles.background} />
+			
+				<FastImage 
+				style={styles.background}
+				source = {Image.resolveAssetSource(require('../assets/background.jpg'))}
+				/>
+
 		        <ScrollView style={recipeStyles.scrollable}>
 		            {getRecipes({ navigation })}
 		        </ScrollView>
@@ -69,7 +76,12 @@ export default function RecipesScreen({ navigation }) {
 	function favoriteTab() {
 		return (
 		    <View style={recipeStyles.page}>
-			<ImageBackground source={require('../assets/background.jpg')} style={styles.background} />
+			
+				<FastImage 
+				style={styles.background}
+				source = {Image.resolveAssetSource(require('../assets/background.jpg'))}
+				/>
+			
 		        <ScrollView style={recipeStyles.scrollable}>
 		            {getFavorites({ navigation })}
 		        </ScrollView>
@@ -128,7 +140,7 @@ export default function RecipesScreen({ navigation }) {
 				<Text style={recipeStyles.listItemName} numberOfLines={2} ellipsizeMode='tail'>{data.dispName}</Text>
 	                <View style={recipeStyles.listItemText, recipeStyles.listLower}>
 	                    <View>
-	                        <Image source={{ uri: data.image }} style={recipeStyles.thumbnail} />
+	                        <Image style={recipeStyles.thumbnail} source={{ uri: data.image }} />
 	                    </View>
 	                    <Text style={recipeStyles.listItemDesc} numberOfLines={6} ellipsizeMode='tail'>{data.desc}</Text>
 	                </View>

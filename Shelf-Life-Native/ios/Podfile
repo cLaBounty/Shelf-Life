@@ -21,4 +21,6 @@ target 'ShelfLifeNative' do
   #  post_install do |installer|
   #    flipper_post_install(installer)
   #  end
+  pod 'RNFastImage', :path => '../node_modules/react-native-fast-image'
+
 end
