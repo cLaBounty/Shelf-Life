@@ -11,5 +11,10 @@ npm install --save react-native-pages
 npm install react-native-section-alphabet-list
 npm install @react-navigation/bottom-tabs
 npm i react-native-floating-action --save
+
+pip install Flask
+pip install mysql-connector-python
+pip install python-dotenv
+
 cd ..
 echo -e "${GREEN}All dependencies were successfully installed"
