@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, TextInput, View, ImageBackground, TouchableOpacity } from 'react-native';
 import styles from '../Style';
+const GLOBAL = require('../Globals')
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
@@ -89,25 +90,72 @@ export default function LoginScreen({ navigation }) {
   }
 }
 
-const login = (email, password, navigation) => {
-  /*
-  if () { // successful login
-    const displayName; // from database
-    navigation.navigate('mainNav', { name: displayName });
-  }
-  */
-  const displayName = "Test123";
-  navigation.navigate('mainNav', { name: displayName });
+const login = (email, password, navigation) => {  
+
+
+  fetch(GLOBAL.BASE_URL+'/api/user/login', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      "password": password,
+      "email": email,      
+    })
+    
+  }).then((response) => response.json()).then((json) => {
+    status = json["Status"]    
+    if (status == "OK") { // successful sign up    
+      const displayName = json["display_name"]; // from database
+      navigation.navigate('mainNav', { name: displayName });
+    }
+    else if(status == "ERROR")  
+    {    
+      // TODO: Expand here with invalid error codes, i.e invalid email, password, username
+    }
+    else if(status == "INVALID PASSWORD")  
+    { 
+      console.log("Invalid Password")   
+      // TODO: Expand here with invalid error codes, i.e invalid email, password, username
+    }
+    else if(status == "INVALID EMAIL")  
+    {    
+      console.log("Invalid Email")
+      // TODO: Expand here with invalid error codes, i.e invalid email, password, username
+    }
+    }).catch((error) => {
+      console.log("Server Error") // this'll get called if the server is offline / can't be reached
+      console.error(error); // catch networking errors
+    });  
 }
 
 const signUp = (email, displayName, password, navigation) => {
-  /*
-  if () { // successful sign up
-    // TODO: create user in database
+  fetch(GLOBAL.BASE_URL+'/api/user/new', {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    "password": password,
+    "email": email,
+    "display_name": displayName
+  })
+  
+}).then((response) => response.json()).then((json) => {
+  status = json["Status"]
+  
+  if (status == "OK") { // successful sign up    
     navigation.navigate('mainNav', { name: displayName });
   }
-  */
-  navigation.navigate('mainNav', { name: displayName });
+  else if(status == "ERROR")  
+  {    
+    // TODO: Expand here with invalid error codes, i.e invalid email, password, username
+  }
+  }).catch((error) => {
+    console.error(error); // catch networking errors
+  });
 }
 
 const loginStyles = StyleSheet.create({

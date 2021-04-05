@@ -12,5 +12,12 @@ npm install @react-navigation/bottom-tabs
 npm i react-native-floating-action --save
 npm install @react-navigation/material-top-tabs react-native-tab-view@^2.16.0
 npm install @react-navigation/native
+npm install react-native-fast-image --save
+react-native link react-native-fast-image
+
+pip install Flask
+pip install mysql-connector-python
+pip install python-dotenv
+
 cd ..
 echo -e "${GREEN}All dependencies were successfully installed"
