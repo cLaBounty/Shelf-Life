@@ -5,13 +5,12 @@ import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, SafeAreaVi
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-
 import FastImage from 'react-native-fast-image'
 
 import styles from '../Style'
+
 const recipesJSON = require('../assets/recipeTest.json');
 const TopTab = createMaterialTopTabNavigator();
-
 GLOBAL = require('../Globals')
 
 export default function RecipesScreen({ navigation }) {
@@ -139,9 +138,7 @@ export default function RecipesScreen({ navigation }) {
 				>
 				<Text style={recipeStyles.listItemName} numberOfLines={2} ellipsizeMode='tail'>{data.dispName}</Text>
 	                <View style={recipeStyles.listItemText, recipeStyles.listLower}>
-	                    <View>
-	                        <Image style={recipeStyles.thumbnail} source={{ uri: data.image }} />
-	                    </View>
+	                    <Image style={recipeStyles.thumbnail} source={{ uri: data.image }} />
 	                    <Text style={recipeStyles.listItemDesc} numberOfLines={6} ellipsizeMode='tail'>{data.desc}</Text>
 	                </View>
 	            </TouchableOpacity>
@@ -199,20 +196,20 @@ const recipeStyles = StyleSheet.create({
         height: '100%',
     },
     listItem: {
-        backgroundColor: '#11111166',
+        backgroundColor: '#1116',
         marginTop: 25,
         marginLeft: 10,
         marginRight: 10,
         borderRadius: 15,
         borderWidth: 3,
-        borderColor: "#00000000",
+        borderColor: "#0000",
         paddingLeft: 10,
         paddingTop: 10,
         paddingBottom: 10,
         justifyContent: "flex-start"
     },
     favoriteListItem: {
-        backgroundColor: '#11111166',
+        backgroundColor: '#1116',
         marginTop: 25,
         marginLeft: 10,
         marginRight: 10,
@@ -242,9 +239,9 @@ const recipeStyles = StyleSheet.create({
         padding: 50,
         height: 50,
         width: 50,
-        backgroundColor: "#00000055",
+        backgroundColor: "#0005",
         borderWidth: 3,
-        borderColor: "#00000000",
+        borderColor: "#0000",
         borderRadius: 10,
     },
     listLower: {
