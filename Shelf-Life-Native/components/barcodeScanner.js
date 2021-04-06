@@ -13,17 +13,11 @@ https://blog.usejournal.com/creating-a-barcode-scanner-using-expo-barcode-scanne
 This is currently a functional component however it may be better suited as a class component
 */
 
-function Cam() {
+export default function Cam({ navigation }) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [barcode, setBarcode] = useState('');
-
-  // Some reading on 'useEffect'
-  // https://reactjs.org/docs/hooks-effect.html
-  // Important Notes:
-  // Runs on each render & every update
-  // This portion handles camera permissions
-
+  
   // In this case we are passing an anonymous function to useEffect & calling it right away
   // https://www.javascripttutorial.net/javascript-anonymous-functions/
 
@@ -86,6 +80,7 @@ function Cam() {
                       <ScanResult 
                         press={() => setScanned(false)}
                         barcode={barcode}                        
+                        goBack={() => navigation.goBack()}
                         />
                     </View>
         }
@@ -124,5 +119,3 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
   },
 });
-
-export default Cam;

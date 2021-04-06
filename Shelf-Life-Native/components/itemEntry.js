@@ -3,7 +3,7 @@ import { StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-nativ
 import styles from '../Style';
 const GLOBAL = require('../Globals')
 
-export default function ItemInfoScreen(params) {
+export default function ItemEntryPage(params) {
     const [officialName, setOfficialName] = useState(params.itemNameOfficial);
     const [name, setName] = useState(params.itemName);
     const [quantity, setQuantity] = useState(params.itemQuantity);
@@ -39,7 +39,7 @@ export default function ItemInfoScreen(params) {
 
     handleCancel = () =>
     {        
-        console.log("go home")
+        params.goBack()
     }
 
     return (
@@ -84,11 +84,12 @@ export default function ItemInfoScreen(params) {
                     onChangeText={(value) => setExpDate(value)}
                 />
             </View>
-            <View style={itemInfoStyles.button_container}>
-                
+            <View style={itemInfoStyles.button_container}>                
+                {params.resetScanner && 
                 <TouchableOpacity style={itemInfoStyles.submitBtn} onPress={() => params.resetScanner()}>
                     <Text style={itemInfoStyles.submitBtnText}>Scan Again</Text>
                 </TouchableOpacity>
+                }
                 {(itemAddingState == "EDITING_VALUES") &&
                 <TouchableOpacity style={itemInfoStyles.submitBtn} onPress={() => handleSubmit(officialName, name, quantity, price, expDate)}>
                     <Text style={itemInfoStyles.submitBtnText}>Submit</Text>

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Button, Animated, TouchableOpacity } from 'react-native';
-import ItemInfoScreen from './itemEntry'
+import ItemEntryPage from './itemEntry'
 const GLOBAL = require('../Globals')
 /*
 Data Flow From Client <-> Server
@@ -123,17 +123,18 @@ function ScanResult(props) {
                 </View>
             }
             {(parseState == 'ENTERING_INFO') &&
-                <ItemInfoScreen itemNameOfficial={officialName}
+                <ItemEntryPage itemNameOfficial={officialName}
                     itemName={commonName}
                     category={category}
                     resetScanner={props.press}
+                    goBack={() => props.goBack()}
                 />
             }
             {(parseState == 'NOT_FOUND') &&
                 <View>
                     <View style={{ flex: 0, marginBottom: 10 }}>
                         <Text style={tempStyles.btnText}>Not Found</Text>
-                        <TouchableOpacity style={tempStyles.btn} onPress={() => console.log("quitting")}>
+                        <TouchableOpacity style={tempStyles.btn} onPress={() => props.goBack()}>
                             <Text style={tempStyles.btnText}>Quit</Text>
                         </TouchableOpacity>
                     </View>

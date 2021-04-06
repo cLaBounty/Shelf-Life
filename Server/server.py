@@ -57,7 +57,6 @@ def barcode():
              return response_dict         
     return response_dict
 
-
 @app.route('/api/selection/', methods=['GET', 'POST'])
 def selection():
     """
@@ -96,14 +95,19 @@ def selection():
     response_dict['Common Name'] = data[1]
     return response_dict
 
-
-@app.route('/api/user/', methods=['GET'])
+@app.route('/api/user/get', methods=['POST'])
 def userinfo():
-    """    
-        Purely a testing function, outputs all of the user information to a webpage
-    """
-    return "depreciated"
-
+    info_dict = request.json
+    key = info_dict["key"]
+    response = {}
+    response["Status"] = "OK"
+    user = dbConnector.getUserInfoFromKey(key)    
+    if user:    
+        response["Display Name"] = user[3]        
+    else:
+        response["Status"] = "INVALID TOKEN"
+    return response
+    
 
 @app.route('/api/user/new', methods=['GET', 'POST'])
 def makeNewUser():
@@ -143,7 +147,12 @@ def makeNewUser():
     display_name = info_dict['display_name']
     print(info_dict)
     dbConnector.addNewUser(username, password, display_name)
-    
+    login_token = random.randrange(0,1000000) # TODO: Generate on client? Encrypt before sending back?            
+    while(dbConnector.checkIfTokenIsInUse(login_token)):
+        login_token = random.randrange(0,1000000)
+            
+    dbConnector.updateUserLoginToken(user_info[0], login_token)
+    response_dict["login_token"] = login_token
     response_dict = {}
     response_dict["Status"] = "OK"
     return response_dict
