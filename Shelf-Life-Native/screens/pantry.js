@@ -29,7 +29,7 @@ export default function PantryScreen({ navigation }) {
 						platform={"ios"}
 					/>
 				</View>
-
+	
 				<AlphabetList style={pantryStyles.list}
 					data={getPantry()}
 					indexLetterColor={'white'} //Color of letters on right
@@ -65,45 +65,58 @@ export default function PantryScreen({ navigation }) {
 	function updateSearch(search) {
 		setSearchQ(search)
 	}
-}
 
-function getPantry() {
-	return pantryJSON.items.map(data => {
-		return (
-			{ dispName: data.dispName, quantity: data.quantity, expDate: data.expDate, price: data.price, value: data.dispName, key: data.name }
-		)
-	})
-}
-
-function formatPantry(item, { navigation }) {
-	return (
-		<View key={item.name}>
-			<TouchableOpacity onPress={() => navigation.navigate('Item Info', { itemName: item.dispName, itemQuantity: item.quantity, itemUnitPrice: item.price, itemExpDate: item.expDate })}>
-				<View style={pantryStyles.listTextView}>
-					<Text style={pantryStyles.listText}>{item.dispName}</Text>
-				</View>
-			</TouchableOpacity>
-		</View>
-	)
-}
-
-
-const addActions = [
-	{
-		text: "Manual Entry",
-		icon: require("../assets/manual.png"),
-		name: "manual",
-		position: 1,
-		color: GLOBAL.ACCENT_COLOR
-	},
-	{
-		text: "Scan Item",
-		icon: require("../assets/scan.png"),
-		name: "scan",
-		position: 2,
-		color: GLOBAL.ACCENT_COLOR
+	function getPantry() {
+		output = pantryJSON.items.map(data => {
+			return filterPantry(data)
+		})
+		
+		output = output.filter(function( data ) {
+			return data !== null;
+		})
+		
+		return output
 	}
-]
+
+	function filterPantry(data) {
+		if (data.dispName.toLowerCase().indexOf(searchQ.toLowerCase()) > -1)
+		{
+			return ({dispName: data.dispName, quantity: data.quantity, expDate: data.expDate, price: data.price, value: data.dispName, key: data.name})
+		}
+		return null
+	}
+
+
+	function formatPantry(item, { navigation }) {
+		return (
+			<View key={item.name}>
+				<TouchableOpacity onPress={() => navigation.navigate('Item Info', { itemName: item.dispName, itemQuantity: item.quantity, itemUnitPrice: item.price, itemExpDate: item.expDate })}>
+					<View style={pantryStyles.listTextView}>
+						<Text style={pantryStyles.listText}>{item.dispName}</Text>
+					</View>
+				</TouchableOpacity>
+			</View>
+		)
+	}
+
+
+	const addActions = [
+		{
+			text: "Manual Entry",
+			icon: require("../assets/manual.png"),
+			name: "manual",
+			position: 1,
+			color: GLOBAL.ACCENT_COLOR
+		},
+		{
+			text: "Scan Item",
+			icon: require("../assets/scan.png"),
+			name: "scan",
+			position: 2,
+			color: GLOBAL.ACCENT_COLOR
+		}
+	]
+}
 
 const pantryStyles = StyleSheet.create({
 	searchView: {
