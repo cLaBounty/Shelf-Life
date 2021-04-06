@@ -5,13 +5,37 @@ import { SearchBar } from 'react-native-elements';
 import { AlphabetList } from "react-native-section-alphabet-list";
 import { FloatingAction } from "react-native-floating-action";
 import styles from '../Style';
-const GLOBAL = require('../Globals')
+import DropDownPicker from 'react-native-dropdown-picker';
+import Icon from 'react-native-vector-icons/Feather';
 
+const GLOBAL = require('../Globals')
 const pantryJSON = require('../assets/pantryTest.json')
 
 export default function PantryScreen({ navigation }) {
 
 	const [searchQ, setSearchQ] = useState("")
+	const [filter, setFilter] = useState("quantity")
+	const filters = [
+        {label: 'A-Z', value: 'alpha'},
+        {label: 'Quantity', value: 'quantity'},
+    ]
+		
+	const addActions = [
+		{
+			text: "Manual Entry",
+			icon: require("../assets/manual.png"),
+			name: "manual",
+			position: 1,
+			color: GLOBAL.ACCENT_COLOR
+		},
+		{
+			text: "Scan Item",
+			icon: require("../assets/scan.png"),
+			name: "scan",
+			position: 2,
+			color: GLOBAL.ACCENT_COLOR
+		}
+	]
 
 	return (
 		<SafeAreaView style={styles.safeArea}>
@@ -20,16 +44,26 @@ export default function PantryScreen({ navigation }) {
 				<StatusBar style="sfdsfd" />
 				<View style={pantryStyles.searchView}>
 					<Text style={pantryStyles.header}>Pantry</Text>
-					<SearchBar
-						placeholder="Search"
-						onChangeText={updateSearch}
-						value={searchQ}
-						containerStyle={pantryStyles.searchBar}
-						inputContainerStyle={{height: 30}}
-						platform={"ios"}
-					/>
+					<View style={pantryStyles.filterView}>
+						<SearchBar
+							placeholder="Search"
+							onChangeText={updateSearch}
+							value={searchQ}
+							containerStyle={pantryStyles.searchBar}
+							inputContainerStyle={{height: 30}}
+							platform={"ios"}
+						/>
+						<DropDownPicker
+						    items={filters}
+						    defaultValue={filter}
+						    containerStyle={pantryStyles.filterDropdown}
+						    style={{backgroundColor: '#fafafa'}}
+						    itemStyle={pantryStyles.filterText}
+						    dropDownStyle={{backgroundColor: '#fafafa'}}
+						    onChangeItem={item => setFilter(item.value)}
+						/>
+					</View>
 				</View>
-	
 				<AlphabetList style={pantryStyles.list}
 					data={getPantry()}
 					indexLetterColor={'white'} //Color of letters on right
@@ -43,24 +77,26 @@ export default function PantryScreen({ navigation }) {
 					)}
 				/>
 			</View>
-			<FloatingAction
-				actions={addActions}
-				color={GLOBAL.ACCENT_COLOR}
-				iconHeight={22}
-				iconWidth={22}
-				overlayColor={"rgba(0,0,0,0)"}
-				icon={require('../assets/settings.png')}
-				shadow={{ shadowOpacity: 0.3, shadowOffset: { width: 0, height: 0 }, shadowColor: "#000000", shadowRadius: 10 }}
-				onPressItem={name => {
-					if (name == "manual") {
-						navigation.navigate('Item Info', { itemName: "", itemQuantity: "", itemUnitPrice: "", itemExpDate: "" })
-					}
-					else if (name == "scan") {
-						navigation.navigate('Scan Item')
-					}
-				}} />
+					<FloatingAction
+				  actions={addActions}
+				  color={GLOBAL.ACCENT_COLOR}
+				  iconHeight = {22}
+				  iconWidth = {22}
+				  overlayColor={"rgba(0,0,0,0)"}
+				  icon={require('../assets/settings.png')}
+				  shadow={{ shadowOpacity: 0.3, shadowOffset: { width: 0, height: 0 }, shadowColor: "#000000", shadowRadius: 10 }}
+				  onPressItem={name => {
+				  	if (name == "manual")
+				  	{
+				  		navigation.navigate('Item Info', { itemName: "", itemQuantity: "", itemUnitPrice: "", itemExpDate: "" })
+				  	}
+				  	else if (name == "scan") {
+				  		navigation.navigate('Scan Item')
+				  	}
+				}}/>
 		</SafeAreaView>
 	);
+	
 
 	function updateSearch(search) {
 		setSearchQ(search)
@@ -98,24 +134,6 @@ export default function PantryScreen({ navigation }) {
 			</View>
 		)
 	}
-
-
-	const addActions = [
-		{
-			text: "Manual Entry",
-			icon: require("../assets/manual.png"),
-			name: "manual",
-			position: 1,
-			color: GLOBAL.ACCENT_COLOR
-		},
-		{
-			text: "Scan Item",
-			icon: require("../assets/scan.png"),
-			name: "scan",
-			position: 2,
-			color: GLOBAL.ACCENT_COLOR
-		}
-	]
 }
 
 const pantryStyles = StyleSheet.create({
@@ -124,14 +142,33 @@ const pantryStyles = StyleSheet.create({
 		alignItems: "center",
 		width: "100%",
 		backgroundColor: "#fff",
+		zIndex: 3,
+	},
+	filterView: {
+		backgroundColor: "#fff0",
+		width: "100%",
+		flexDirection: "row",
+		justifyContent: "center",
+		alignItems: "center",
+	},
+	filterDropdown: {
+		height: 40,
+		width: "26%",
+		maxWidth: 120,
+	},
+	filterText: {
+		color: "dodgerblue",
+		fontSize: 18,
+		justifyContent: "flex-start",
 	},
 	header: {
 		fontSize: 16,
-		fontWeight: "600",
+		fontWeight: "700",
 	},
 	searchBar: {
-		width: "100%",
+		width: "65%",
 		maxWidth: 400,
+		backgroundColor: "#0000",
 	},
 	list: {
 		width: "100%",
