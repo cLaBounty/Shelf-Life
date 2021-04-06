@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Image } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { AlphabetList } from "react-native-section-alphabet-list";
 import { FloatingAction } from "react-native-floating-action";
 import DropDownPicker from 'react-native-dropdown-picker';
+import FastImage from 'react-native-fast-image'
 import styles from '../Style';
 
 const GLOBAL = require('../Globals')
@@ -15,9 +16,9 @@ export default function PantryScreen({ navigation }) {
 	const [searchQ, setSearchQ] = useState("")
 	const [order, setOrder] = useState("alpha")
 	const orderings = [ // Order items in pantry
-        {label: 'A-Z', value: 'alpha'},
-        {label: 'Quantity', value: 'quantity'},
-    ]
+		{label: 'A-Z', value: 'alpha'},
+		{label: 'Quantity', value: 'quantity'},
+	]
 		
 	const addActions = [ // Options for adding to pantry
 		{
@@ -39,7 +40,10 @@ export default function PantryScreen({ navigation }) {
 	return (
 		<SafeAreaView style={styles.safeArea}>
 			<View style={styles.container}>
-				<ImageBackground source={require('../assets/background.jpg')} style={styles.background} />
+			<FastImage 
+			style={styles.background}
+			source = {Image.resolveAssetSource(require('../assets/background.jpg'))}
+			/>
 				<StatusBar style="sfdsfd" />
 				<View style={pantryStyles.searchView}>
 					<Text style={pantryStyles.header}>Pantry</Text>
@@ -55,11 +59,11 @@ export default function PantryScreen({ navigation }) {
 							cancleButtonProps={{disabled: true}} //Doesn't seem to be working :(
 						/>
 						<DropDownPicker
-						    items={orderings}
-						    defaultValue={order}
-						    containerStyle={pantryStyles.orderDropdown}
-						    onChangeItem={item => setOrder(item.value)}
-						    itemStyle={pantryStyles.orderText}
+						items={orderings}
+						defaultValue={order}
+						containerStyle={pantryStyles.orderDropdown}
+						onChangeItem={item => setOrder(item.value)}
+						itemStyle={pantryStyles.orderText}
 						/>
 					</View>
 				</View>
@@ -77,26 +81,25 @@ export default function PantryScreen({ navigation }) {
 				/>
 			</View>
 					<FloatingAction
-				  actions={addActions}
-				  color={GLOBAL.ACCENT_COLOR}
-				  iconHeight = {22}
-				  iconWidth = {22}
-				  overlayColor={"rgba(0,0,0,0)"}
-				  icon={require('../assets/settings.png')}
-				  shadow={{ shadowOpacity: 0.3, shadowOffset: { width: 0, height: 0 }, shadowColor: "#000000", shadowRadius: 10 }}
-				  onPressItem={name => {
-				  	if (name == "manual")
-				  	{
-				  		navigation.navigate('Item Info', { itemName: "", itemQuantity: "", itemUnitPrice: "", itemExpDate: "" })
-				  	}
-				  	else if (name == "scan") {
-				  		navigation.navigate('Scan Item')
-				  	}
+					actions={addActions}
+					color={GLOBAL.ACCENT_COLOR}
+					iconHeight = {22}
+					iconWidth = {22}
+					overlayColor={"rgba(0,0,0,0)"}
+					icon={require('../assets/settings.png')}
+					shadow={{ shadowOpacity: 0.3, shadowOffset: { width: 0, height: 0 }, shadowColor: "#000000", shadowRadius: 10 }}
+					onPressItem={name => {
+						if (name == "manual")
+						{
+							navigation.navigate('Item Info', { itemName: "", itemQuantity: "", itemUnitPrice: "", itemExpDate: "" })
+						}
+						else if (name == "scan") {
+							navigation.navigate('Scan Item')
+						}
 					}}
 					/>
 		</SafeAreaView>
 	);
-	
 
 	function updateSearch(search) {
 		setSearchQ(search)
@@ -106,11 +109,11 @@ export default function PantryScreen({ navigation }) {
 		output = pantryJSON.items.map(data => {
 			return orderPantry(data)
 		})
-		
+
 		output = output.filter(function( data ) {
 			return data !== null;
 		})
-		
+
 		return output
 	}
 
@@ -126,7 +129,6 @@ export default function PantryScreen({ navigation }) {
 		}
 		return null
 	}
-
 
 	function formatPantry(item, { navigation }) {
 		return (
@@ -181,7 +183,6 @@ const pantryStyles = StyleSheet.create({
 		justifyContent: "center",
 		backgroundColor: '#59595959',
 		paddingTop: 0,
-
 	},
 	listTextView: {
 		borderColor: "#000",
