@@ -4,9 +4,8 @@ import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, SafeAreaView
 import { SearchBar } from 'react-native-elements';
 import { AlphabetList } from "react-native-section-alphabet-list";
 import { FloatingAction } from "react-native-floating-action";
-import styles from '../Style';
 import DropDownPicker from 'react-native-dropdown-picker';
-import Icon from 'react-native-vector-icons/Feather';
+import styles from '../Style';
 
 const GLOBAL = require('../Globals')
 const pantryJSON = require('../assets/pantryTest.json')
@@ -14,7 +13,7 @@ const pantryJSON = require('../assets/pantryTest.json')
 export default function PantryScreen({ navigation }) {
 
 	const [searchQ, setSearchQ] = useState("")
-	const [filter, setFilter] = useState("quantity")
+	const [filter, setFilter] = useState("alpha")
 	const filters = [
         {label: 'A-Z', value: 'alpha'},
         {label: 'Quantity', value: 'quantity'},
@@ -52,6 +51,8 @@ export default function PantryScreen({ navigation }) {
 							containerStyle={pantryStyles.searchBar}
 							inputContainerStyle={{height: 30}}
 							platform={"ios"}
+							cancelButtonTitle=""
+							cancleButtonProps={{disabled: true}}
 						/>
 						<DropDownPicker
 						    items={filters}
@@ -117,7 +118,12 @@ export default function PantryScreen({ navigation }) {
 	function filterPantry(data) {
 		if (data.dispName.toLowerCase().indexOf(searchQ.toLowerCase()) > -1)
 		{
-			return ({dispName: data.dispName, quantity: data.quantity, expDate: data.expDate, price: data.price, value: data.dispName, key: data.name})
+			if (filter == "alpha"){
+				return ({dispName: data.dispName, name: data.name, quantity: data.quantity, expDate: data.expDate, price: data.price, value: data.dispName, key: data.name})
+			}
+			else if (filter == "quantity"){
+				return ({dispName: data.dispName, name: data.name, quantity: data.quantity, expDate: data.expDate, price: data.price, value: data.quantity, key: data.name})
+			}
 		}
 		return null
 	}
@@ -138,7 +144,7 @@ export default function PantryScreen({ navigation }) {
 
 const pantryStyles = StyleSheet.create({
 	searchView: {
-		paddingTop: 70,
+		paddingTop: 80,
 		alignItems: "center",
 		width: "100%",
 		backgroundColor: "#fff",
@@ -166,7 +172,7 @@ const pantryStyles = StyleSheet.create({
 		fontWeight: "700",
 	},
 	searchBar: {
-		width: "65%",
+		width: "69%",
 		maxWidth: 400,
 		backgroundColor: "#0000",
 	},
