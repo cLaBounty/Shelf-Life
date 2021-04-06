@@ -31,3 +31,7 @@ yarn-error.log
 #
 Shelf-Life-Native/.expo/*
 web-build/
+
+# Python Server
+/Server/__pycache__/*
+/Server/.env
