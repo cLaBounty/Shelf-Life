@@ -49,5 +49,8 @@ export default StyleSheet.create({
 		paddingLeft: 0,
 		borderColor: '#fff',
 		borderBottomWidth: 1
-	}
+	},
+	searchInput: {
+		height: 30,
+	},
 })

@@ -19,7 +19,7 @@ export default function PantryScreen({ navigation }) {
 		{label: 'A-Z', value: 'alpha'},
 		{label: 'Quantity', value: 'quantity'},
 	]
-		
+
 	const addActions = [ // Options for adding to pantry
 		{
 			text: "Manual Entry",
@@ -52,18 +52,18 @@ export default function PantryScreen({ navigation }) {
 							placeholder="Search"
 							onChangeText={updateSearch}
 							value={searchQ}
-							containerStyle={pantryStyles.searchBar}
-							inputContainerStyle={{height: 30}}
+							containerStyle={pantryStyles.searchContainer}
+							inputContainerStyle={styles.searchInput}
 							platform={"ios"}
 							cancelButtonTitle=""
 							cancleButtonProps={{disabled: true}} //Doesn't seem to be working :(
 						/>
 						<DropDownPicker
-						items={orderings}
-						defaultValue={order}
-						containerStyle={pantryStyles.orderDropdown}
-						onChangeItem={item => setOrder(item.value)}
-						itemStyle={pantryStyles.orderText}
+							items={orderings}
+							defaultValue={order}
+							containerStyle={pantryStyles.orderDropdown}
+							onChangeItem={item => setOrder(item.value)}
+							itemStyle={pantryStyles.orderText}
 						/>
 					</View>
 				</View>
@@ -81,14 +81,14 @@ export default function PantryScreen({ navigation }) {
 				/>
 			</View>
 					<FloatingAction
-					actions={addActions}
-					color={GLOBAL.ACCENT_COLOR}
-					iconHeight = {22}
-					iconWidth = {22}
-					overlayColor={"rgba(0,0,0,0)"}
-					icon={require('../assets/settings.png')}
-					shadow={{ shadowOpacity: 0.3, shadowOffset: { width: 0, height: 0 }, shadowColor: "#000000", shadowRadius: 10 }}
-					onPressItem={name => {
+						actions={addActions}
+						color={GLOBAL.ACCENT_COLOR}
+						iconHeight = {22}
+						iconWidth = {22}
+						overlayColor={"rgba(0,0,0,0)"}
+						icon={require('../assets/settings.png')}
+						shadow={{ shadowOpacity: 0.3, shadowOffset: { width: 0, height: 0 }, shadowColor: "#000000", shadowRadius: 10 }}
+						onPressItem={name => {
 						if (name == "manual")
 						{
 							navigation.navigate('Item Info', { itemName: "", itemQuantity: "", itemUnitPrice: "", itemExpDate: "" })
@@ -107,7 +107,7 @@ export default function PantryScreen({ navigation }) {
 
 	function getPantry() {
 		output = pantryJSON.items.map(data => {
-			return orderPantry(data)
+			return filterPantry(data)
 		})
 
 		output = output.filter(function( data ) {
@@ -117,7 +117,7 @@ export default function PantryScreen({ navigation }) {
 		return output
 	}
 
-	function orderPantry(data) {
+	function filterPantry(data) {
 		if (data.dispName.toLowerCase().indexOf(searchQ.toLowerCase()) > -1)
 		{
 			if (order == "alpha"){
@@ -151,6 +151,11 @@ const pantryStyles = StyleSheet.create({
 		backgroundColor: "#fff",
 		zIndex: 3,
 	},
+	searchContainer: {
+		width: "69%", // Nice
+		maxWidth: 400,
+		backgroundColor: "#0000",
+	},
 	orderView: {
 		backgroundColor: "#fff0",
 		width: "100%",
@@ -171,11 +176,6 @@ const pantryStyles = StyleSheet.create({
 	header: {
 		fontSize: 16,
 		fontWeight: "700",
-	},
-	searchBar: {
-		width: "69%", // Nice
-		maxWidth: 400,
-		backgroundColor: "#0000",
 	},
 	list: {
 		width: "100%",

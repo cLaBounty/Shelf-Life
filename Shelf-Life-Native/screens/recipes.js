@@ -6,6 +6,7 @@ import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import FastImage from 'react-native-fast-image'
+import { SearchBar } from 'react-native-elements';
 
 import styles from '../Style'
 
@@ -14,8 +15,8 @@ const TopTab = createMaterialTopTabNavigator();
 GLOBAL = require('../Globals')
 
 export default function RecipesScreen({ navigation }) {
+	const [searchQ, setSearchQ] = useState("");
 	[favorite, setFavorite] = useState("false");
-	[setJustFavorited, justFavoirted] = useState(false);
 
 	useFocusEffect(
 		React.useCallback(() => {
@@ -24,18 +25,29 @@ export default function RecipesScreen({ navigation }) {
 				GLOBAL.favStateChanged = false
 				GLOBAL.recipe.favorite = GLOBAL.favStatus
 				setFavorite({...favorite,[GLOBAL.favRecipeIndex]:GLOBAL.favStatus})
-				
+
 				//TODO: Sync with server (There's another place that needs syncing below)
 			}
 		}
 	))
-	
+
 	return (
 		<SafeAreaView style={styles.safeArea}>
 		<View style={styles.container}>
 			<StatusBar style="black" />
 			<View style={recipeStyles.maxer}>
-			
+
+			<SearchBar
+				placeholder="Search recipes"
+				onChangeText={updateSearch}
+				value={searchQ}
+				containerStyle={recipeStyles.searchContainer}
+				inputContainerStyle={styles.searchInput}
+				platform={"ios"}
+				cancelButtonTitle=""
+				cancleButtonProps={{disabled: true}} //Doesn't seem to be working :(
+			/>
+
 			<NavigationContainer independent={true}>
 				<TopTab.Navigator 
 				screenOptions={({ route }) => ({
@@ -50,13 +62,13 @@ export default function RecipesScreen({ navigation }) {
 					<TopTab.Screen name="Favorite Recipes" component={favoriteTab}/>
 				</TopTab.Navigator>
 			</NavigationContainer>
-				
+
 			</View>
 		</View>
 	</SafeAreaView>
 	);
-		
-	function recipeTab() {
+
+	function masterTab(filterFunc, { navigation }, tag) { // A single func that dictates how the favorites and recipe screens are rendered
 		return (
 			<View style={recipeStyles.page}>
 
@@ -64,28 +76,23 @@ export default function RecipesScreen({ navigation }) {
 				style={styles.background}
 				source = {Image.resolveAssetSource(require('../assets/background.jpg'))}
 				/>
-
 				<ScrollView style={recipeStyles.scrollable}>
-					{getRecipes({ navigation })}
+					{filterFunc({ navigation })}
 				</ScrollView>
 			</View>
 		)
 	}
 
+	function recipeTab() {
+		return masterTab(getRecipes, {navigation}, "Search recipes")
+	}
+
 	function favoriteTab() {
-		return (
-			<View style={recipeStyles.page}>
-
-				<FastImage 
-				style={styles.background}
-				source = {Image.resolveAssetSource(require('../assets/background.jpg'))}
-				/>
-
-				<ScrollView style={recipeStyles.scrollable}>
-					{getFavorites({ navigation })}
-				</ScrollView>
-			</View>
-		)
+		return masterTab(getFavorites, {navigation}, "Search favorites")
+	}
+	
+	function updateSearch(query) {
+		setSearchQ(query)
 	}
 
 	function goToScreen(data, index, {navigation}) {
@@ -126,6 +133,11 @@ export default function RecipesScreen({ navigation }) {
 			{
 				return null
 			}
+		}
+		
+		if (data.dispName.toLowerCase().indexOf(searchQ.toLowerCase()) < 0)
+		{
+			return null
 		}
 
 		favorite ={...favorite,[index]:data.favorite}
@@ -191,6 +203,10 @@ const recipeStyles = StyleSheet.create({
 	page: {
 		backgroundColor: "#000",
 	},
+	searchContainer: {
+		paddingLeft:  10,
+		paddingRight: 10,
+	},
 	scrollable: {
 		width: '100%',
 		height: '100%',
@@ -219,7 +235,7 @@ const recipeStyles = StyleSheet.create({
 		paddingLeft: 10,
 		paddingTop: 10,
 		paddingBottom: 10,
-		justifyContent: "flex-start"
+		justifyContent: "flex-start",
 	},
 	listItemName: {
 		color: "#fff",
