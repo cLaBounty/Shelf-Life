@@ -16,6 +16,7 @@ npm install react-native-fast-image --save
 react-native link react-native-fast-image
 
 pip install Flask
+pip install requests
 pip install mysql-connector-python
 pip install python-dotenv
 
