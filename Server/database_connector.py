@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()
 TOKEN = os.getenv('DB_PASSOWRD')
 
-doPermanentChanges = False # If this is True, the changes you make will affect the database, otherwise it will just store them locally
+doPermanentChanges = True # If this is True, the changes you make will affect the database, otherwise it will just store them locally
 db = mysql.connector.connect(user='admin', password=TOKEN,
                               host='shelflife.cizcr7arqko1.us-east-2.rds.amazonaws.com',
                               database='shelfLifeDB')                        
