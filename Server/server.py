@@ -17,7 +17,7 @@ def home():
     return "<h1> hello </h1>"
 
 
-@app.route('/api/barcode/', method='GET')
+@app.route('/api/barcode/', methods=['GET'])
 def barcode():
     """
         Handles getting the official name from the barcode API
@@ -59,7 +59,7 @@ def barcode():
         response_dict['Status'] = "NOT_FOUND"
     return response_dict
 
-@app.route('/api/selection/', method='POST')
+@app.route('/api/selection/', methods=['POST'])
 def selection():
     """
         Handles converting the selected parts of a scanned item official name into their common ingredient names.
@@ -100,7 +100,7 @@ def selection():
         pass
     return response_dict
 
-@app.route('/api/user/get/', method = 'POST')
+@app.route('/api/user/get/', methods=['POST'])
 def userinfo():
     info_dict = request.json
     key = info_dict["key"]
@@ -119,7 +119,7 @@ def userinfo():
     return response
     
 
-@app.route('/api/user/new/', method= 'POST')
+@app.route('/api/user/new/', methods=['POST'])
 def makeNewUser():
     """    
         Handles adding a new user to the database
@@ -170,7 +170,7 @@ def makeNewUser():
     response_dict["Status"] = "OK"
     return response_dict
 
-@app.route('/api/user/login/', method='POST')
+@app.route('/api/user/login/',methods=['POST'])
 def login():
     info_dict = request.json
     password = info_dict['password']
@@ -202,7 +202,7 @@ def login():
         response_dict["Status"] = "INVALID EMAIL"
         return response_dict    
 
-@app.route('/api/user/pantry/get/', method= 'POST')
+@app.route('/api/user/pantry/get/', methods=['POST'])
 def getUserPantryItems():
     # curl -d '{"key":594730}' -H "Content-Type: application/json" -X POST http://127.0.0.1:5000/api/user/pantry/get
     info_dict = request.json
@@ -231,7 +231,7 @@ def getUserPantryItems():
         response["Status"] = "INVALID TOKEN"
     return response
 
-@app.route('/api/user/pantry/add/', method='POST')
+@app.route('/api/user/pantry/add/', methods=['POST'])
 def addUserPantryItem():
     info_dict = request.json
     key = info_dict["key"]    
