@@ -37,7 +37,7 @@ def getUserInformation(email):
     output = cursor.fetchone()            
     return output
 
-def getUserInfoFromKey(key):
+def getUserInfoFromKey(key):        
     cursor = db.cursor()
     query = ('''SELECT * FROM Users WHERE login_token="{0}"'''.format(key))
     cursor.execute(query, params=None)

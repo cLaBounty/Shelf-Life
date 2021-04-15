@@ -41,20 +41,23 @@ def barcode():
     api_response_json = None
     response_dict = {}
     response_dict["Status"] = "ERROR"
-    if 'barcode' in params:
-        barcode = params['barcode']
+    try: # catch spaghetti o's error 
+        if 'barcode' in params:
+            barcode = params['barcode']
 
-        api_response = requests.get(
-            'https://world.openfoodfacts.org/api/v0/product/{0}.json'.format(barcode))
-        api_response_json = api_response.json()
-        
-        if api_response_json['status_verbose'] == 'product found':
-            response_dict['Status'] = "OK"            
-            response_dict["Official Name"] = api_response_json["product"]["product_name_en"]
-            return response_dict       
-        else:
-             response_dict['Status'] = "NOT_FOUND"   
-             return response_dict         
+            api_response = requests.get(
+                'https://world.openfoodfacts.org/api/v0/product/{0}.json'.format(barcode))
+            api_response_json = api_response.json()
+            
+            if api_response_json['status_verbose'] == 'product found':
+                response_dict['Status'] = "OK"            
+                response_dict["Official Name"] = api_response_json["product"]["product_name_en"]
+                return response_dict       
+            else:
+                response_dict['Status'] = "NOT_FOUND"   
+                return response_dict         
+    except:
+        response_dict['Status'] = "NOT_FOUND"
     return response_dict
 
 @app.route('/api/selection/', methods=['GET', 'POST'])
@@ -86,13 +89,16 @@ def selection():
     info_dict = request.json
 
     user_selection = info_dict["Selection"]
-    data = findCommonNameFromOfficial(user_selection)
-
     response_dict = {}
-    response_dict['Status'] = "OK"
-    response_dict['Official Name'] = info_dict["Official Name"]
-    response_dict['Category'] = data[0]
-    response_dict['Common Name'] = data[1]
+    response_dict['Status'] = "ERROR"
+    try:
+        data = findCommonNameFromOfficial(user_selection)        
+        response_dict['Status'] = "OK"
+        response_dict['Official Name'] = info_dict["Official Name"]
+        response_dict['Category'] = data[0]
+        response_dict['Common Name'] = data[1]
+    except:
+        pass
     return response_dict
 
 @app.route('/api/user/get', methods=['POST'])
@@ -100,12 +106,17 @@ def userinfo():
     info_dict = request.json
     key = info_dict["key"]
     response = {}
-    response["Status"] = "OK"
-    user = dbConnector.getUserInfoFromKey(key)    
-    if user:    
-        response["Display Name"] = user[3]        
-    else:
-        response["Status"] = "INVALID TOKEN"
+    response["Status"] = "ERROR"
+    try:        
+        user = dbConnector.getUserInfoFromKey(key)            
+        if user:    
+            response["Status"] = "Ok"
+            response["Display Name"] = user[3]        
+        else:
+            response["Status"] = "INVALID TOKEN"
+    except:
+        print("No database connection")
+        pass
     return response
     
 
@@ -145,15 +156,18 @@ def makeNewUser():
     password = info_dict['password']
     username = info_dict['email']
     display_name = info_dict['display_name']
-    print(info_dict)
+    
     dbConnector.addNewUser(username, password, display_name)
+    
     login_token = random.randrange(0,1000000) # TODO: Generate on client? Encrypt before sending back?            
+    response_dict = {}
     while(dbConnector.checkIfTokenIsInUse(login_token)):
         login_token = random.randrange(0,1000000)
-            
+    
+    user_info = dbConnector.getUserInformation(username)
     dbConnector.updateUserLoginToken(user_info[0], login_token)
-    response_dict["login_token"] = login_token
     response_dict = {}
+    response_dict["login_token"] = login_token    
     response_dict["Status"] = "OK"
     return response_dict
 
@@ -209,7 +223,11 @@ def getUserPantryItems():
             item_dict["expDate"] = "November 3, 2015"
             item_dict["price"] = 1.52
             items.append(item_dict)
-        response["items"] = items
+        if len(items) != 0:
+            response["items"] = items
+        else:
+            print("hello")
+            response["Status"] = "EMPTY"
     else:
         response["Status"] = "INVALID TOKEN"
     return response

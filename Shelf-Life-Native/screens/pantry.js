@@ -12,7 +12,7 @@ export default function PantryScreen({ navigation }) {
   const [pantry_data, setPantryData] = useState(getPantry());  
   useEffect(() => {
     (async () => {
-      const data = await getRemotePantry()      
+      const data = await getRemotePantry()            
       setPantryData(data)
     })();
   }, []);
@@ -74,8 +74,14 @@ async function getRemotePantry()
       if (status == "OK") { // successful sign up        
         items = json        
       }
-      else
+      else if(status == "EMPTY")
       {
+        items = json
+        console.log("hi")
+        items["items"] = []
+        return []
+      }
+      else{
         alert("Expired login token")    
       }
     }
@@ -84,6 +90,7 @@ async function getRemotePantry()
   else
   {
     alert("No login token found")
+    return []
   }  
   return items["items"].map( (data, index) => {
     return (

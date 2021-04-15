@@ -194,8 +194,8 @@ const signUp = (email, displayName, password, navigation) => {
   status = json["Status"]
   
   if (status == "OK") { // successful sign up    
-    navigation.navigate('mainNav', { name: displayName });
-    GLOBAL.LOGIN_TOKEN = json["login_token"]
+    GLOBAL.LOGIN_TOKEN = json["login_token"]    
+    navigation.navigate('mainNav', { name: displayName });    
   }
   else if(status == "ERROR")  
   {    
