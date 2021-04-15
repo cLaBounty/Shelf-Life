@@ -1,25 +1,35 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ImageBackground, Image, ScrollView, Animated } from 'react-native';
-
+import { StyleSheet, Text, View, ImageBackground, Image, ScrollView, Animated, TouchableOpacity, Alert } from 'react-native';
 import styles from '../Style'
+import FastImage from 'react-native-fast-image'
+
+GLOBAL = require('../Globals')
 
 const paralaxScroll = new Animated.Value(0);
+const pink = GLOBAL.FAVORITE_COLOR; 
+const white = "#fff";
 
-export default function RecipeInfoScreen({ navigation, route }) {
-    const [name, setName] = useState(route.params.recipeName);
-    const [dispName, setDispName] = useState(route.params.recipeDispName);
-    const [desc, setDesc] = useState(route.params.recipeDesc);
-    const [ingredients, setIngredients] = useState(route.params.recipeIngredients);
-    const [quantity, setQuantity] = useState(route.params.recipeQuantity);
-    const [favorite, setFavorite] = useState(route.params.recipeFavorite);
-    const [image, setImage] = useState(route.params.recipeImage);
+export default function RecipeInfoScreen({ route }) {
+    const [favorite, setFavorite] = useState(route.params.data.favorite);
+	[buttonColor, setButtonColor] = useState({pink});
 
+	if (favorite == "true") //Setting initial border color
+	{
+		buttonColor = pink //Don't use setButtonColor(), it'd cause a loop
+	}
+	else
+	{
+		buttonColor = white
+	}
 
     return (
         <View style={styles.container}>
             <StatusBar style="black" />
-		    <ImageBackground source={require('../assets/background.jpg')} style={[styles.background, recipeInfoStyles.backgroundOverride]}/>
+			<FastImage 
+			style={styles.background}
+			source = {Image.resolveAssetSource(require('../assets/background.jpg'))}
+			/>
             <Animated.ScrollView style={recipeInfoStyles.paralaxScroll}
 				// onScroll={e => console.log(e.nativeEvent.contentOffset.y)}
                 onScroll={Animated.event(
@@ -27,34 +37,53 @@ export default function RecipeInfoScreen({ navigation, route }) {
                     { useNativeDriver: true },
                 )}
                 scrollEventThrottle={16}
-            >
-				<Animated.Image source={{ uri: image }} style={recipeInfoStyles.foodImage(paralaxScroll)} />
+        >
+				<Animated.Image source={{ uri: route.params.data.image }} style={recipeInfoStyles.foodImage(paralaxScroll)} />
 
                 <View style={[recipeInfoStyles.content, recipeInfoStyles.shadow]}>
 
-                    <Animated.View style={[recipeInfoStyles.headerView(paralaxScroll), recipeInfoStyles.tray ]}>
-                        <Text style={recipeInfoStyles.header}>{dispName}</Text>
+                    <Animated.View style={[recipeInfoStyles.headerView(paralaxScroll), recipeInfoStyles.tray, { borderColor: buttonColor }]}>
+						<TouchableOpacity onLongPress={() => handleFavoriteChange()}>
+							<Text style={recipeInfoStyles.header}>{route.params.data.dispName}</Text>
+						</TouchableOpacity>
                     </Animated.View>
 
 					<View style={[recipeInfoStyles.tray]}>
 	                    <Text style={[recipeInfoStyles.header2]}>About</Text>
 						<View style={[recipeInfoStyles.tray, recipeInfoStyles.miniTray]}>
-		                    <Text style={[styles.text, recipeInfoStyles.trayText]}>{desc}</Text>
+		                    <Text style={[styles.text, recipeInfoStyles.trayText]}>{route.params.data.desc}</Text>
 						</View>
 					</View>
 
 					<View style={[recipeInfoStyles.tray]}>
 	                    <Text style={[recipeInfoStyles.header2]}>Ingredients</Text>
-	                    {amounts(quantity, ingredients)}
+	                    {amounts(route.params.data.quantity, route.params.data.ingredients)}
 					</View>
 
                 </View>
             </Animated.ScrollView>
         </View>
     );
+	
+	
+	function handleFavoriteChange() {
+		GLOBAL.favStateChanged=true
+		GLOBAL.favRecipeIndex=route.params.index
+		GLOBAL.recipe = route.params.data
+		
+		if (favorite == "false")
+		{
+			GLOBAL.favStatus="true"
+			setFavorite("true")
+			setButtonColor(pink)
+		}
+		else {
+			GLOBAL.favStatus="false"
+			setFavorite("false")
+			setButtonColor(white)
+		}
+	}
 }
-
-
 
 function amounts(quantity, ingredients) {
     if (quantity.length != ingredients.length) { //Error handling
@@ -70,8 +99,8 @@ function amounts(quantity, ingredients) {
             count = quantity[i],
             ingredient = ingredients[i],
             retVal.concat(
-				<View style={[recipeInfoStyles.tray, recipeInfoStyles.miniTray]}>
-	                <Text style={[styles.text, recipeInfoStyles.trayText]} key={ingredient[i]}>• {count}x {ingredient}</Text>
+				<View style={[recipeInfoStyles.tray, recipeInfoStyles.miniTray]} key={ingredient[i]}>
+	                <Text style={[styles.text, recipeInfoStyles.trayText]}>• {count}x {ingredient}</Text>
 				</View>
             )
         )
@@ -123,10 +152,10 @@ const recipeInfoStyles = StyleSheet.create({
                 })}]
     }),
 	tray:{
-		backgroundColor: "#E3E1DA",
-		borderColor: "#00000000",
+		backgroundColor: "#fff",
 		borderRadius: 20,
-		borderWidth: 1,
+		borderWidth: 3,
+		borderColor: "#00000000",
         overflow: "hidden",
 		paddingTop: 15,
 		paddingBottom: 15,
@@ -135,7 +164,8 @@ const recipeInfoStyles = StyleSheet.create({
 		marginBottom: 40,
 	},
 	miniTray: {
-		backgroundColor: "#D9D7D0",
+		backgroundColor: "#eee",
+		borderColor: "#00000000",
 		marginBottom: 0,
 		marginTop: 3,
 		paddingTop: 4,
