@@ -21,11 +21,18 @@ async function getUserInformation()
     }).then((response) => response.json()).then((json) => {
       status = json["Status"]
       if (status == "OK") { // successful sign up        
-        userInfo = json
+        userInfo = json        
       }
-      else
+      else if (status == "INVALID TOKEN")
       {
         alert("Expired login token")    
+      }
+      else if(status == "ERROR")
+      {
+        alert("Unknown server error")
+      }
+      else{
+        alert(status)
       }
     }
     );    

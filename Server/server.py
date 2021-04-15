@@ -109,7 +109,7 @@ def userinfo():
     try:        
         user = dbConnector.getUserInfoFromKey(key)            
         if user:    
-            response["Status"] = "Ok"
+            response["Status"] = "OK"
             response["Display Name"] = user[3]        
         else:
             response["Status"] = "INVALID TOKEN"
