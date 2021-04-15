@@ -11,8 +11,7 @@ import random
 # ref: https://programminghistorian.org/en/lessons/creating-apis-with-python-and-flask
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
-
-
+app.url_map.strict_slashes = False
 @app.route('/', methods=['GET'])
 def home():
     return "<h1> hello </h1>"
@@ -101,7 +100,7 @@ def selection():
         pass
     return response_dict
 
-@app.route('/api/user/get', methods=['POST'])
+@app.route('/api/user/get/', methods=['POST'])
 def userinfo():
     info_dict = request.json
     key = info_dict["key"]
@@ -120,7 +119,7 @@ def userinfo():
     return response
     
 
-@app.route('/api/user/new', methods=['GET', 'POST'])
+@app.route('/api/user/new/', methods=['GET', 'POST'])
 def makeNewUser():
     """    
         Handles adding a new user to the database
@@ -171,7 +170,7 @@ def makeNewUser():
     response_dict["Status"] = "OK"
     return response_dict
 
-@app.route('/api/user/login', methods=['GET', 'POST'])
+@app.route('/api/user/login/', methods=['GET', 'POST'])
 def login():
     info_dict = request.json
     password = info_dict['password']
@@ -203,7 +202,7 @@ def login():
         response_dict["Status"] = "INVALID EMAIL"
         return response_dict    
 
-@app.route('/api/user/pantry/get', methods=['GET', 'POST'])
+@app.route('/api/user/pantry/get/', methods=['GET', 'POST'])
 def getUserPantryItems():
     # curl -d '{"key":594730}' -H "Content-Type: application/json" -X POST http://127.0.0.1:5000/api/user/pantry/get
     info_dict = request.json
@@ -232,7 +231,7 @@ def getUserPantryItems():
         response["Status"] = "INVALID TOKEN"
     return response
 
-@app.route('/api/user/pantry/add', methods=['GET', 'POST'])
+@app.route('/api/user/pantry/add/', methods=['GET', 'POST'])
 def addUserPantryItem():
     info_dict = request.json
     key = info_dict["key"]    
@@ -246,4 +245,5 @@ def addUserPantryItem():
         response_dict["Status"] = "INVALID TOKEN"
     return response_dict
 
-app.run(host="0.0.0.0")
+if __name__== '__main__':
+    app.run()
