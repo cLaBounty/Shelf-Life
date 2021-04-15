@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Button, Animated, TouchableOpacity } from 'react-native';
-
+import ItemEntryPage from './itemEntry'
+const GLOBAL = require('../Globals')
 /*
 Data Flow From Client <-> Server
 
@@ -22,85 +23,71 @@ ParseStates:
 2 - received common name and category
 */
 
+
+
+
 function ScanResult(props) {
     const [parseState, setParseState] = useState('CODE');
+    const [officialNameSplit, setOfficialNameSplit] = useState([]);
     const [officialName, setOfficialName] = useState([]);
     const [commonName, setCommonName] = useState('');
     const [category, setCategory] = useState('');
-    const [ws, setWs] = useState(new WebSocket('ws://143.198.232.184:20500'));
     const [selected, setSelected] = useState([])
-    // it would be good to find a way to keep this persistantly open
-    ws.onopen = () => {
-        // connection opened
-        console.log('Connected to Server')        
-        if (parseState == 'CODE') // only run if we haven't started to parse this barcode
-        {
-            message = "CODE^" + props.barcode
-            console.log(message)
-            ws.send(message); // send the barcode that was scanned to kick off conversation
+
+    useEffect(() => {
+        (async () => {
+            if (parseState == "CODE") {
+                sendBarcodeToServer(props.barcode)
+            }
+        })();
+    }, []);
+
+    sendBarcodeToServer = (barcode) => {
+        fetch(GLOBAL.BASE_URL + '/api/barcode/?barcode=' + barcode).then((response) => response.json()).then((json) => {
+            status = json["Status"]
+            if (status == "OK") { // successful sign up        
+                setParseState("NEED_SELECTION")
+                setOfficialName(json["Official Name"])
+                setOfficialNameSplit(json["Official Name"].split(" "))
+            } else if (status == "NOT_FOUND") {
+                setParseState("NOT_FOUND")
+            }
         }
-    };
+        );
+    }
 
-    ws.onmessage = (e) => {
-        console.log(`SERVER MESSAGE: ${e.data}`);
-        split_message = e.data.split('^');
-        status = split_message[0]
-        data = split_message[1]
-        switch (split_message[0]) {
-            case 'NEED_SELECTION':
-                setParseState(split_message[0])
-                console.log(data.split('|'))
-                setOfficialName(data.split('|'))
-                break
-            case 'ALL_INFO': // formatted as ALL_INFO|Official|Category|Common
-                setParseState(split_message[0])
-                data = data.split('|')
-                setOfficialName(data[0])
-                setCategory(data[1])
-                setCommonName(data[2])
-                break
-            case 'ERROR':
-                alert(data)
-                setParseState('')
-            default:
-                break
-        }
-
-
-    };
-
-    ws.onerror = (e) => {
-        console.log(`SERVER ERROR: ${e.message}`);
-    };
-
-    ws.onclose = (e) => {
-        console.log(`Closed Connection - Code: ${e.code} Reason: ${e.reason}`);
-    };
-    /*
-    alert(`Barcode: ${props.barcode}
-           Official Name: ${officalName}
-           Common Name: ${commonName}
-           Category: ${category}`);
-    */
-
-
-    
     sendSelectionToServer = () => {
-        message = 'SELECTION^'
-        if(selected.length == 0)
-        {
+        if (selected.length == 0) {
             // TODO: ADD PROPER ERROR HANDLING
             alert('no selection')
-
             return
         }
-        for(var i = 0; i < selected.length-1; i++)
-        {
-            message += officialName[selected[i]] + '|'
+        selected_parts = []
+        for (var i = 0; i < selected.length; i++) {
+            selected_parts.push(officialNameSplit[selected[i]])
         }
-        message += officialName[selected[selected.length-1]]
-        console.log(message)
-        ws.send(message);
+        selection_message = {}
+        fetch(GLOBAL.BASE_URL + '/api/selection/', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "Selection": selected_parts,
+                "Official Name": "Official Name"
+            })
+
+        }).then((response) => response.json()).then((json) => {
+            status = json["Status"]
+            if (status == "OK") { // successful sign up        
+                setParseState("ENTERING_INFO")
+                setOfficialNameSplit(json["Official Name"])
+                setCategory(json["Category"])
+                setCommonName(json["Common Name"])
+            }
+        }
+        );
     }
 
     updateSelected = (index) => {
@@ -111,34 +98,56 @@ function ScanResult(props) {
         else {
             newSelected.push(index)
         }
-        setSelected(newSelected)        
+        setSelected(newSelected)
     }
+
 
     return (
         <View style={styles.container}>
             {(parseState == 'CODE') && <Text style={tempStyles.btnText}>Awaiting Response from Server</Text>}
             {(parseState == '') && <Button title={'Tap to Scan Again'} onPress={props.press} />}
             {(parseState == 'NEED_SELECTION') &&
-                <View>
-                    {officialName.map((part, index) =>
-                        <TouchableOpacity
-                            style={selected.includes(index) ? tempStyles.selected_btn : tempStyles.btn}
-                            key={index}
-                            onPress={() => updateSelected(index)}>
-                            <Text style={tempStyles.btnText}>{part}</Text>
-                        </TouchableOpacity>
+                <View >
+                    {officialNameSplit.map((part, index) =>
+                        <View style={{ flex: 0, marginBottom: 10 }} key={index}>
+                            <TouchableOpacity
+                                style={selected.includes(index) ? tempStyles.selected_btn : tempStyles.btn}                                
+                                onPress={() => updateSelected(index)}>
+                                <Text style={tempStyles.btnText}>{part}</Text>
+                            </TouchableOpacity>
+                        </View>
                     )}
-                    <TouchableOpacity style={tempStyles.btn} onPress={()=>sendSelectionToServer()}>
+                    <TouchableOpacity style={tempStyles.btn} onPress={() => sendSelectionToServer()}>
                         <Text style={tempStyles.btnText}>Send To Server</Text>
                     </TouchableOpacity>
                 </View>
             }
-            {(parseState == 'ALL_INFO') && 
+            {(parseState == 'ENTERING_INFO') &&
+                <ItemEntryPage itemNameOfficial={officialName}
+                    itemName={commonName}
+                    category={category}
+                    resetScanner={props.press}
+                    goBack={() => props.goBack()}
+                />
+            }
+            {(parseState == 'NOT_FOUND') &&
                 <View>
-                    <Text style={tempStyles.btnText}>Official Name: {officialName}</Text>
-                    <Text style={tempStyles.btnText}>Category: {category}</Text>
-                    <Text style={tempStyles.btnText}>Common Name: {commonName}</Text>
-                    <Button title={'Tap to Scan Again'} onPress={props.press} />
+                    <View style={{ flex: 0, marginBottom: 10 }}>
+                        <Text style={tempStyles.btnText}>Not Found</Text>
+                        <TouchableOpacity style={tempStyles.btn} onPress={() => props.goBack()}>
+                            <Text style={tempStyles.btnText}>Quit</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{ flex: 0, marginBottom: 10 }}>
+                        <TouchableOpacity style={tempStyles.btn} onPress={() => setParseState("ENTERING_INFO")}>
+                            <Text style={tempStyles.btnText}>Manual Entry</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{ flex: 0, marginBottom: 10 }}>
+                        <TouchableOpacity style={tempStyles.btn} onPress={() => props.press()}>
+                            <Text style={tempStyles.btnText}>Scan Again</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             }
         </View>
@@ -200,24 +209,20 @@ const tempStyles = StyleSheet.create({
         margin: 10
     },
     btn: {
-        backgroundColor: '#595959',
-        borderColor: '#fff',
-        borderWidth: 1,
-        borderRadius: 10,
-        margin: 5
+        backgroundColor: '#5296E7',
+        borderWidth: 0,
+        borderRadius: 10
     },
     selected_btn: {
-        backgroundColor: '#000000',
-        borderColor: '#fff',
-        borderWidth: 1,
-        borderRadius: 10,
-        margin: 5
+        backgroundColor: '#38689E',
+        borderWidth: 0,
+        borderRadius: 10
     },
     btnText: {
-        fontSize: 14,
+        fontSize: 16,
         color: '#fff',
         padding: 8,
-        letterSpacing: 1.5
+        letterSpacing: 2
     }
 });
 

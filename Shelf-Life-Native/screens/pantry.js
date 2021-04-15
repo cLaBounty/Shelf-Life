@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, SafeAreaView } from 'react-native';
 import { AlphabetList } from "react-native-section-alphabet-list";
@@ -9,12 +9,20 @@ const GLOBAL = require('../Globals')
 const pantryJSON = require('../assets/pantryTest.json')
 
 export default function PantryScreen({ navigation }) {
+  const [pantry_data, setPantryData] = useState(getPantry());  
+  useEffect(() => {
+    (async () => {
+      const data = await getRemotePantry()            
+      setPantryData(data)
+    })();
+  }, []);
+
   return (
 	  <SafeAreaView style={styles.safeArea}>
 	      <View style={styles.container}>
 			  <ImageBackground source={require('../assets/background.jpg')} style={styles.background} />
 		      <AlphabetList style={pantryStyles.list}
-		  		 data={getPantry()}
+		  		 data={pantry_data}
 		        indexLetterColor={'white'} //Color of letters on right
 
 		  			renderCustomItem={(item) => ( //Make the data fancy lookin'
@@ -47,12 +55,56 @@ export default function PantryScreen({ navigation }) {
   );
 }
 
+async function getRemotePantry()
+{
+  items = null
+  if (GLOBAL.LOGIN_TOKEN) {
+    await fetch(GLOBAL.BASE_URL + '/api/user/pantry/get', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "key": GLOBAL.LOGIN_TOKEN,
+      })
+
+    }).then((response) => response.json()).then((json) => {
+      status = json["Status"]
+      if (status == "OK") { // successful sign up        
+        items = json        
+      }
+      else if(status == "EMPTY")
+      {
+        items = json
+        console.log("hi")
+        items["items"] = []
+        return []
+      }
+      else{
+        alert("Expired login token")    
+      }
+    }
+    );
+  }
+  else
+  {
+    alert("No login token found")
+    return []
+  }  
+  return items["items"].map( (data, index) => {
+    return (
+      { dispName: data.dispName, quantity: data.quantity, expDate: data.expDate, price: data.price, value: data.name, key: index }
+    )
+  })
+}
+
 function getPantry() {
-	return pantryJSON.items.map(data => {
-		return (
-			{ dispName: data.dispName, quantity: data.quantity, expDate: data.expDate, price: data.price, value: data.name, key: data.dispName }
-		)
-	})
+    return pantryJSON.items.map(data => {
+      return (
+        { dispName: data.dispName, quantity: data.quantity, expDate: data.expDate, price: data.price, value: data.name, key: data.dispName }
+      )
+    })
 }
 
 function formatPantry(item, { navigation } ){

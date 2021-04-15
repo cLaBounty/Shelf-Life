@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import ScanItemScreen from './scanItem';
+import Cam from '../components/barcodeScanner';
 import ItemInfoScreen from './itemInfo';
 import PantryScreen from './pantry';
 
@@ -15,7 +16,7 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen name="Pantry" component={PantryScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Item Info" component={ItemInfoScreen} options={{ headerShown: true }} />
-        <Stack.Screen name="Scan Item" component={ScanItemScreen} options={{ headerShown: true }} />
+        <Stack.Screen name="Scan Item" component={Cam} options={{ headerShown: true }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
