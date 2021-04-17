@@ -17,9 +17,8 @@ def getDatabase():
 def closeDatabase(db):
     db.close()
 
-def commitToDB():
-    if doPermanentChanges:
-        db = getDatabase()
+def commitToDB(db):
+    if doPermanentChanges:        
         db.commit()
         closeDatabase(db)
 
@@ -34,7 +33,7 @@ def addNewUser(email, password, display_name):
         display_name,
         pantry_id))
     cursor.execute(query, params=None)
-    commitToDB()    
+    commitToDB(db)    
     closeDatabase(db)
 
 def getUserInformation(email):
@@ -69,7 +68,7 @@ def updateUserLoginToken(user_id, new_login_token):
     cursor = db.cursor()
     query = ('''UPDATE Users SET login_token={0} WHERE user_id={1}'''.format(new_login_token, user_id))
     cursor.execute(query, params=None)
-    commitToDB()
+    commitToDB(db)
     closeDatabase(db)
 
 def getAllItemsInPantry(pantry_id):
@@ -90,7 +89,7 @@ def addItem(pantry_id, item_info):
     VALUES ({0}, {1}, "{2}")'''
     .format(pantry_id, ingredient_id, item_official_name))
     cursor.execute(query, params=None)    
-    commitToDB()
+    commitToDB(db)
     closeDatabase(db)
 
 def generateNewPantry():
@@ -99,7 +98,7 @@ def generateNewPantry():
     pantry_id = 1
     query = ('''INSERT INTO Pantries(pantry_id) VALUES ({0})'''.format(pantry_id))
     cursor.execute(query, params=None)
-    commitToDB()    
+    commitToDB(db)    
     closeDatabase(db)
 
 if __name__ == '__main__':
