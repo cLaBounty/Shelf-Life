@@ -8,10 +8,10 @@ export default function ItemEntryPage(params) {
     const [name, setName] = useState(params.itemName);
     const [quantity, setQuantity] = useState(params.itemQuantity);
     const [price, setPrice] = useState(params.itemUnitPrice);
-    const [expDate, setExpDate] = useState(params.itemExpDate);
+    const [expDate, setExpDate] = useState(params.itemExpDate);    
     const [itemAddingState, setItemAddingState] = useState("EDITING_VALUES");
 
-    handleSubmit = (officialName, name, quantity, price, expDate) => {
+    handleSubmit = (officialName, commonName, quantity, price, expDate) => {        
         setItemAddingState("SENDING_TO_SERVER")
         fetch(GLOBAL.BASE_URL + '/api/user/pantry/add', {
             method: 'POST',
@@ -21,7 +21,8 @@ export default function ItemEntryPage(params) {
             },
             body: JSON.stringify({
                 "key": GLOBAL.LOGIN_TOKEN,
-                "item_official_name": officialName
+                "item_official_name": officialName,
+                "ingredient_id": params.id,                
             })
     
         }).then((response) => response.json()).then((json) => {

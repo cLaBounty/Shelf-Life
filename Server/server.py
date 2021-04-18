@@ -1,7 +1,7 @@
 import flask
 from flask import request, jsonify
 import json
-from barcode_parser import findCommonNameFromOfficial
+from ingredient_matcher import findCommonNameFromOfficial
 import requests
 import mysql.connector
 import database_connector as dbConnector
@@ -92,10 +92,13 @@ def selection():
     response_dict['Status'] = "ERROR"
     try:
         data = findCommonNameFromOfficial(user_selection)        
+        if data[1] == -1:
+            data = findCommonNameFromOfficial(user_selection, True)        
         response_dict['Status'] = "OK"
+        response_dict['Ingredient ID'] = data[1]
         response_dict['Official Name'] = info_dict["Official Name"]
-        response_dict['Category'] = data[0]
-        response_dict['Common Name'] = data[1]
+        response_dict['Category'] = "DEPREICATED"
+        response_dict['Common Name'] = data[0]
     except:
         pass
     return response_dict
@@ -110,7 +113,7 @@ def userinfo():
         user = dbConnector.getUserInfoFromKey(key)            
         if user:    
             response["Status"] = "OK"
-            response["Display Name"] = user[3]        
+            response["Display Name"] = user["display_name"]
         else:
             response["Status"] = "INVALID TOKEN"
     except:
@@ -118,7 +121,6 @@ def userinfo():
         pass
     return response
     
-
 @app.route('/api/user/new/', methods=['POST'])
 def makeNewUser():
     """    
@@ -211,7 +213,7 @@ def getUserPantryItems():
     response["Status"] = "OK"
     user = dbConnector.getUserInfoFromKey(key)    
     if user:    
-        pantry_items = dbConnector.getAllItemsInPantry(user[5])
+        pantry_items = dbConnector.getAllItemsInPantry(user["pantry_id"])
         
         items = []
         for item in pantry_items:
@@ -237,10 +239,26 @@ def addUserPantryItem():
     key = info_dict["key"]    
     user = dbConnector.getUserInfoFromKey(key)    
     pantry_item = info_dict # TODO: Add input validation
-    if user:
-        dbConnector.addItem(user[5], pantry_item)    
-        response_dict = {}
+    response_dict = {}
+    if user:        
+        dbConnector.addItem(user["pantry_id"], pantry_item)            
         response_dict["Status"] = "OK"
+    else:
+        response_dict["Status"] = "INVALID TOKEN"
+    return response_dict
+
+@app.route('/api/user/pantry/recipes/matching', methods=['POST'])
+def getMatchingRecipes():
+    # curl -d '{"key":'868911'}' -H "Content-Type: application/json" -X POST http://127.0.0.1:5000/api/user/pantry/recipes/matching
+    info_dict = request.json
+    key = info_dict["key"]    
+    user = dbConnector.getUserInfoFromKey(key)    
+    response_dict = {}
+    if user:
+        recipe_matches = dbConnector.getMatchingRecipes(user["pantry_id"], min_number_matched_ingredients=4)
+        response_dict["Status"] = "OK"
+        recipe_ids = [x[1] for x in recipe_matches]        
+        response_dict["recipes"] = dbConnector.getRecipesByIDs(recipe_ids)
     else:
         response_dict["Status"] = "INVALID TOKEN"
     return response_dict

@@ -33,7 +33,7 @@ function ScanResult(props) {
     const [commonName, setCommonName] = useState('');
     const [category, setCategory] = useState('');
     const [selected, setSelected] = useState([])
-
+    const [id, setID] = useState(-1)
     useEffect(() => {
         (async () => {
             if (parseState == "CODE") {
@@ -85,6 +85,7 @@ function ScanResult(props) {
                 setOfficialNameSplit(json["Official Name"])
                 setCategory(json["Category"])
                 setCommonName(json["Common Name"])
+                setID(json["Ingredient ID"])
             }
         }
         );
@@ -126,6 +127,7 @@ function ScanResult(props) {
                 <ItemEntryPage itemNameOfficial={officialName}
                     itemName={commonName}
                     category={category}
+                    id={id}
                     resetScanner={props.press}
                     goBack={() => props.goBack()}
                 />

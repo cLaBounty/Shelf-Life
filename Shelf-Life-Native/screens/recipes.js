@@ -1,21 +1,26 @@
-import React,  { useState } from 'react'; 
+import React,  { useState, useEffect } from 'react'; 
 import { useFocusEffect } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, SafeAreaView} from 'react-native';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import FastImage from 'react-native-fast-image'
-
+import CachedImage from '../components/CachedImage'
 import styles from '../Style'
 
-const recipesJSON = require('../assets/recipeTest.json');
 const TopTab = createMaterialTopTabNavigator();
 GLOBAL = require('../Globals')
 
 export default function RecipesScreen({ navigation }) {
 	[favorite, setFavorite] = useState("false");
 	[setJustFavorited, justFavoirted] = useState(false);
+	[recipesJSON, setRecipesJSON] = useState(require('../assets/recipeTest.json'))
+	useEffect(() => {
+		(async () => {
+		  const data = await getCookableRecipes()            
+		  setRecipesJSON(data)
+		})();
+	  }, []);
 
 	useFocusEffect(
 		React.useCallback(() => {
@@ -59,11 +64,11 @@ export default function RecipesScreen({ navigation }) {
 	function recipeTab() {
 		return (
 		    <View style={recipeStyles.page}>
-			
-				<FastImage 
-				style={styles.background}
-				source = {Image.resolveAssetSource(require('../assets/background.jpg'))}
-				/>
+				<CachedImage
+          		source = {Image.resolveAssetSource(require('../assets/background.jpg'))}          		
+				cacheKey = {`background`}
+          		style={styles.background}
+        		/>				
 
 		        <ScrollView style={recipeStyles.scrollable}>
 		            {getRecipes({ navigation })}
@@ -76,10 +81,11 @@ export default function RecipesScreen({ navigation }) {
 		return (
 		    <View style={recipeStyles.page}>
 			
-				<FastImage 
-				style={styles.background}
-				source = {Image.resolveAssetSource(require('../assets/background.jpg'))}
-				/>
+			<CachedImage
+          		source = {Image.resolveAssetSource(require('../assets/background.jpg'))}          		
+				cacheKey = {`background`}
+          		style={styles.background}
+        		/>
 			
 		        <ScrollView style={recipeStyles.scrollable}>
 		            {getFavorites({ navigation })}
@@ -178,6 +184,45 @@ export default function RecipesScreen({ navigation }) {
 		
 		// TODO: Sync with server
 	}s
+}
+
+async function getCookableRecipes()
+{
+  recipes = null
+  if (GLOBAL.LOGIN_TOKEN) {
+    await fetch(GLOBAL.BASE_URL + '/api/user/pantry/recipes/matching', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "key": GLOBAL.LOGIN_TOKEN,
+      })
+
+    }).then((response) => response.json()).then((json) => {
+      status = json["Status"]
+      if (status == "OK") { // successful sign up        
+        recipes = json        
+      }
+      else if(status == "EMPTY")
+      {
+		alert("No recipes that match ingredients")        
+        recipes = []
+      }
+      else{
+        alert("Expired login token")    
+		recipes = []
+      }
+    }
+    );
+  }
+  else
+  {
+    alert("No login token found")
+    return []
+  }  
+  return recipes
 }
 
 const recipeStyles = StyleSheet.create({
