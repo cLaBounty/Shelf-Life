@@ -14,7 +14,7 @@ def findCommonNameFromOfficial(broken_up_name, doWeakMatch=False):
     
     all_ingredients = readFileIntoArray('FoodMasterLists/all_ingredients.txt')                
     
-    info = 'NOT FOUND'
+    info = ('NOT FOUND', -1)
     most_partial_match = 0
     for i in range(len(all_ingredients)):
         common_ingredient = all_ingredients[i]
@@ -37,14 +37,14 @@ def findCommonNameFromOfficial(broken_up_name, doWeakMatch=False):
             partial_match = number_of_matching_name_parts == len(broken_up_name) and len(broken_up_name) == len(common_ingredient.split(" "))
             if doWeakMatch:
                 if perfect_match or number_of_matching_name_parts > most_partial_match:
-                    info = common_ingredient                    
+                    info = (common_ingredient, i)
                     if perfect_match:
-                        return (info, i)
+                        return info
             else:
                 if partial_match or perfect_match:                    
-                    info = common_ingredient                    
+                    info = (common_ingredient, i)
                     if perfect_match:
-                        return (info, i)
+                        return info
 
     return info
 

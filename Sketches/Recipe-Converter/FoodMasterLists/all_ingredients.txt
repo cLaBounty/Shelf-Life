@@ -5,7 +5,7 @@ cavatappi
 cellentani
 chifferi
 ditalini
-fideuà
+fideua
 gomito
 elicoidali
 fagioloni
@@ -39,7 +39,7 @@ tortiglioni
 tuffoli
 gnocchi
 passatelli
-spätzle
+spatzle
 acai
 apples
 apricots
@@ -204,9 +204,9 @@ taglierini
 trenette
 tripoline
 shahe fen
-biáng biáng noodles
+biang biang noodles
 agnolotti
-casoncelli or casonsèi
+casoncelli or casonsei
 casunziei
 fagottini
 maultasche
@@ -256,15 +256,15 @@ kale
 komatsuna
 kuka
 lagos bologi
-lamb’s lettuce
-lamb’s quarters
+lamb's lettuce
+lamb's quarters
 land cress
 lettuce
-lizard’s tail
+lizard's tail
 malabar spinach
 mallow
 melokhia
-miner’s lettuce
+miner's lettuce
 winter purslane
 mizuna greens
 mustard
@@ -283,7 +283,7 @@ sculpit
 stridolo
 sea beet
 sea kale
-shepherd’s purse
+shepherd's purse
 sierra leone bologi
 soko
 sorrel
@@ -342,7 +342,7 @@ ginger
 hamburg parsley
 horseradish
 jerusalem artichoke
-jícama
+jicama
 mashua
 parsnip
 pignut
@@ -364,7 +364,7 @@ ulluco
 wasabi
 water caltrop
 water chestnut
-yacón
+yacon
 yam
 aonori
 arame
@@ -512,7 +512,7 @@ baking powder
 soba noodles
 bouillon
 bay leaves
-consomm�
+consomm_
 tomato
 fried tofu
 rice vinegar
@@ -532,7 +532,6 @@ wasabi root/wasabi
 eel
 fillet of tuna
 dried gourd shavings
-kombu*
 scallops
 trout
 saltwater eel
@@ -563,7 +562,6 @@ garnish
 granulated sugar
 liqueur
 vanilla extract
-caramel*
 kinako
 crab
 cream cheese
@@ -595,8 +593,6 @@ decorative items: double sided flag, pudding/custard, olives, and octopus hotdog
 beets
 beef tendon
 bread bun
-lettuce*
-tomato*
 relish
 dough
 items to serve: two side flag, cherry tomatoes, pudding/custard, olives, curly parsley
@@ -730,14 +726,14 @@ yellow bell pepper
 meat juice
 goya
 clams
-strawberry�
-apple�
-cherry�
-muskmelon�
-banana�
-orange�
-pineapple�
-kiwi�
+strawberry_
+apple_
+cherry_
+muskmelon_
+banana_
+orange_
+pineapple_
+kiwi_
 horse mackerel
 dried scallop
 scallop soup stock
@@ -754,7 +750,6 @@ fried fish paste
 burdock roll
 almond jelly powder
 lamb with bone
-garlic/mustard*
 condensed milk
 spicy bean paste
 orange juice
@@ -807,13 +802,13 @@ summer roll
 shishito pepper
 bread/toast
 soybean flour
-nestlɮ toll house� semi sweet morsels
+nestl_ toll house_ semi sweet morsels
 baking soda
 brown sugar
 snow crab claws
 powdered cheese
 marshmallows
-nestlɮ carnation� evaporated milk
+nestl_ carnation_ evaporated milk
 meat
 deep fried tofu
 sugar cone
@@ -848,7 +843,7 @@ somen noodles
 truffle
 rainbow trout
 spices
-jam�n serrano
+jam_n serrano
 powdered matcha tea
 oysters
 ground chicken meat
@@ -856,7 +851,7 @@ pastry shell
 seasoning
 red wine vinegar
 rice bran
-decorated with�nanten
+decorated with_nanten
 pumpkin
 sage
 ramen cup
@@ -960,7 +955,6 @@ black pepper topping
 tomato slices topping
 parsley topping
 herb topping
-yeast*
 yogurt cultures
 pancake premix
 bone in chicken leg
@@ -977,6 +971,7 @@ sakura powder
 green tea powder
 vanilla beans
 caramel tablet
+caramel
 tiger prawn
 garlic paste
 barbecued pork
@@ -1012,7 +1007,7 @@ glutinous rice
 mitsuba
 crackers
 pink candy hearts
-silver drag�es
+silver drag_es
 yellow candy stars
 pickle
 liquid jelly
@@ -1034,7 +1029,7 @@ salmon steaks
 tortilla chips
 chickpeas
 sesame paste
-decorated�with�nanten
+decorated_with_nanten
 cilantro
 decorated with bamboo branches
 decorated with hibiscus flowers and banana leaves
@@ -1125,7 +1120,7 @@ yellow dye
 green dye
 blue dye
 purple dye
-strawberry�powder
+strawberry_powder
 shwarma meat
 tzatziki
 hot sauce
@@ -1144,7 +1139,7 @@ chocolate sauce
 chioggia beet
 beaten egg
 green onions
-soy�sauce
+soy_sauce
 greek yogurt
 activated charcoal
 gold dust

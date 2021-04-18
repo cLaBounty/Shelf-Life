@@ -1,4 +1,4 @@
-from barcode_parser import findCommonNameFromOfficial
+from recipe_matcher import findCommonNameFromOfficial
 from os import listdir
 from os.path import isfile, join
 import json
@@ -59,7 +59,7 @@ for file in onlyfiles:
 
 
             common_ingredient = findCommonNameFromOfficial(ingredient_name_parts, False)
-            if common_ingredient == 'NOT FOUND':
+            if common_ingredient[1] == -1:
                 manual_entry = False
                 if manual_entry and not(ingredient in blocked_ings):
                     print(ingredient + ' (y/n) ')                

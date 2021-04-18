@@ -13,7 +13,8 @@ doPermanentChanges = True # If this is True, the changes you make will affect th
 def getDatabase():
     return mysql.connector.connect(user='admin', password=TOKEN,
                               host='shelflife.cizcr7arqko1.us-east-2.rds.amazonaws.com',
-                              database='shelfLifeDB', buffered=True)                        
+                              database='shelfLifeDB', buffered=True)    
+
 def closeDatabase(db):
     db.close()
 
@@ -102,12 +103,51 @@ def generateNewPantry():
     commitToDB()    
     closeDatabase(db)
 
+def convertCursorOutputToJSON(output):
+    recipe_dict = {}  
+    recipe_dict["Name"] = output[1]
+    recipe_dict["Image"] = output[2]
+    recipe_dict["Recipe URL"] = output[3]
+    recipe_dict["Category"] = output[4]
+    recipe_dict["Number of Ingredients"] = output[5]
+    return recipe_dict
+
+def getRecipeByID(id):
+    db = getDatabase()
+    cursor = db.cursor()
+    query = ('''SELECT * FROM Recipes WHERE recipe_id={0}'''.format(id))
+    cursor.execute(query, params=None)
+    output = cursor.fetchone()       
+    
+    recipe_dict = convertCursorOutputToJSON(output)      
+    closeDatabase(db)
+
+# TODO: Result caching so we don't constantly call out to SQL database?
+def getAllRecipes():
+    db = getDatabase()
+    cursor = db.cursor()
+    query = ('''SELECT * FROM Recipes''')
+    cursor.execute(query, params=None)
+    output = cursor.fetchall()            
+    closeDatabase(db)
+
+def getSearchableIngredientsOfRecipe(id):
+    db = getDatabase()
+    cursor = db.cursor()
+    query = ('''SELECT ingredient_id FROM recipes_searchable_ingredients_xref WHERE recipe_id={0}'''.format(id))
+    cursor.execute(query, params=None)
+    output = cursor.fetchall()            
+    closeDatabase(db)
+    return output
+
 if __name__ == '__main__':
-    info = getUserInformation("rhys")    
-    pantry_id = info[5]
-    item_info = {}
-    item_info["item_official_name"] = "roscco spaghetti"
+    getAllRecipes()
+    print(getSearchableIngredientsOfRecipe(3))
+    #info = getUserInformation("rhys")    
+    #pantry_id = info[5]
+    #item_info = {}
+    #item_info["item_official_name"] = "roscco spaghetti"
     #addItem(pantry_id, item_info)
     #print(getAllItemsInPantry(pantry_id))
     #print(checkIfTokenIsInUse(233))
-    print(getUserInfoFromKey(332026))
+    #print(getUserInfoFromKey(332026))
