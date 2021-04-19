@@ -94,7 +94,10 @@ def addItem(pantry_id, item_info):
     db = getDatabase()
     cursor = db.cursor()            
     item_official_name = item_info["item_official_name"]
-    ingredient_id = item_info["ingredient_id"]        
+    try:
+        ingredient_id = item_info["ingredient_id"]        
+    except:
+        ingredient_id = -1
     query = ('''INSERT INTO pantries_ingredients_xref(pantry_id, ingredient_id, item_official_name)
     VALUES ({0}, {1}, "{2}")'''
     .format(pantry_id, ingredient_id, item_official_name))
