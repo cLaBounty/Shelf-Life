@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Image } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Image, Alert } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { AlphabetList } from "react-native-section-alphabet-list";
 import { FloatingAction } from "react-native-floating-action";
@@ -13,9 +14,10 @@ const pantryJSON = require('../assets/pantryTest.json')
 
 export default function PantryScreen({ navigation }) {
 
-	const [searchQ, setSearchQ] = useState("")
-	const [order, setOrder] = useState("alpha")
-	const orderings = [ // Order items in pantry
+	[itemChanged, setItemChanged] = useState(0)
+	const [searchQ, setSearchQ] = useState("") //Search query
+	const [order, setOrder] = useState("alpha") //Current ordering method
+	const orderings = [ //Selection for ordering
 		{label: 'A-Z', value: 'alpha'},
 		{label: 'Quantity', value: 'quantity'},
 	]
@@ -37,14 +39,24 @@ export default function PantryScreen({ navigation }) {
 		}
 	]
 
+	useFocusEffect(
+		React.useCallback(() => {
+			if (GLOBAL.pantryItemChange == true) {
+				Alert.alert("Refresh")
+				GLOBAL.pantryItemChange = false
+				setItemChanged(itemChanged + 1)
+			}
+		})
+	)
+
 	return (
 		<SafeAreaView style={styles.safeArea}>
 			<View style={styles.container}>
-			<FastImage 
-			style={styles.background}
-			source = {Image.resolveAssetSource(require('../assets/background.jpg'))}
-			/>
-				<StatusBar style="sfdsfd" />
+				<FastImage 
+					style={styles.background}
+					source = {Image.resolveAssetSource(require('../assets/background.jpg'))}
+				/>
+				<StatusBar style="black?" />
 				<View style={pantryStyles.searchView}>
 					<Text style={pantryStyles.header}>Pantry</Text>
 					<View style={pantryStyles.orderView}>
@@ -56,7 +68,7 @@ export default function PantryScreen({ navigation }) {
 							inputContainerStyle={styles.searchInput}
 							platform={"ios"}
 							cancelButtonTitle=""
-							cancleButtonProps={{disabled: true}} //Doesn't seem to be working :(
+							cancleButtonProps={{disabled: true}} //Doesn't seem to be working
 						/>
 						<DropDownPicker
 							items={orderings}
@@ -80,60 +92,61 @@ export default function PantryScreen({ navigation }) {
 					)}
 				/>
 			</View>
-					<FloatingAction
-						actions={addActions}
-						color={GLOBAL.ACCENT_COLOR}
-						iconHeight = {22}
-						iconWidth = {22}
-						overlayColor={"rgba(0,0,0,0)"}
-						icon={require('../assets/settings.png')}
-						shadow={{ shadowOpacity: 0.3, shadowOffset: { width: 0, height: 0 }, shadowColor: "#000000", shadowRadius: 10 }}
-						onPressItem={name => {
+				<FloatingAction
+					actions={addActions}
+					color={GLOBAL.ACCENT_COLOR}
+					iconHeight = {22}
+					iconWidth = {22}
+					overlayColor={"rgba(0,0,0,0)"}
+					icon={require('../assets/settings.png')}
+					shadow={{ shadowOpacity: 0.3, shadowOffset: { width: 0, height: 0 }, shadowColor: "#000000", shadowRadius: 10 }}
+					onPressItem={name => {
 						if (name == "manual")
 						{
-							navigation.navigate('Item Info', { itemName: "", itemQuantity: "", itemUnitPrice: "", itemExpDate: "" })
+							navigation.navigate('Item Info', { })
 						}
 						else if (name == "scan") {
 							navigation.navigate('Scan Item')
 						}
 					}}
-					/>
+				/>
 		</SafeAreaView>
 	);
 
-	function updateSearch(search) {
-		setSearchQ(search)
-	}
-
 	function getPantry() {
-		output = pantryJSON.items.map(data => {
-			return filterPantry(data)
+		getRemotePantry()
+
+		output = GLOBAL.pantryData.map((data, index) => {
+			return filterPantry(data, index)
 		})
 
 		output = output.filter(function( data ) {
 			return data !== null;
 		})
-
 		return output
 	}
 
-	function filterPantry(data) {
+	function filterPantry(data, index) {
 		if (data.dispName.toLowerCase().indexOf(searchQ.toLowerCase()) > -1)
 		{
 			if (order == "alpha"){
-				return ({dispName: data.dispName, name: data.name, quantity: data.quantity, expDate: data.expDate, price: data.price, value: data.dispName, key: data.name})
+				return ({dispName: data.dispName, name: data.name, quantity: data.quantity, expDate: data.expDate, price: data.price, value: data.name, key: index})
 			}
 			else if (order == "quantity"){
-				return ({dispName: data.dispName, name: data.name, quantity: data.quantity, expDate: data.expDate, price: data.price, value: data.quantity, key: data.name})
+				return ({dispName: data.dispName, name: data.name, quantity: data.quantity, expDate: data.expDate, price: data.price, value: data.quantity, key: index})
 			}
 		}
 		return null
+	}
+	
+	function updateSearch(search) {
+		setSearchQ(search)
 	}
 
 	function formatPantry(item, { navigation }) {
 		return (
 			<View key={item.name}>
-				<TouchableOpacity onPress={() => navigation.navigate('Item Info', { itemName: item.dispName, itemQuantity: item.quantity, itemUnitPrice: item.price, itemExpDate: item.expDate })}>
+				<TouchableOpacity onPress={() => navigation.navigate('Item Info', { item })}>
 					<View style={pantryStyles.listTextView}>
 						<Text style={pantryStyles.listText}>{item.dispName}</Text>
 					</View>
@@ -141,6 +154,44 @@ export default function PantryScreen({ navigation }) {
 			</View>
 		)
 	}
+}
+
+async function getRemotePantry() {
+	items = null
+	if (GLOBAL.LOGIN_TOKEN) {
+		await fetch(GLOBAL.BASE_URL + '/api/user/pantry/get', {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				"key": GLOBAL.LOGIN_TOKEN,
+			})
+		}).then((response) => response.json()).then((json) => {
+			status = json["Status"]
+			if (status == "OK") { // Successful sign up
+				items = json		
+			}
+			else if (status == "EMPTY") {
+				items = json
+				console.log("hi")
+				items["items"] = []
+				return []
+			}
+			else {
+				alert("Expired login token")
+			}
+		}
+	);
+	}
+	else {
+		alert("No login token found")
+		return []
+	}	
+	GLOBAL.pantryData = items["items"].map( (data) => {
+		return ( data )
+	})
 }
 
 const pantryStyles = StyleSheet.create({
@@ -182,12 +233,12 @@ const pantryStyles = StyleSheet.create({
 		height: "100%",
 		justifyContent: "center",
 		backgroundColor: '#59595959',
-		paddingTop: 0,
+		paddingTop: 1,
 	},
 	listTextView: {
 		borderColor: "#000",
-		borderTopWidth: 1,
-		borderBottomWidth: 1
+		borderTopWidth: 0.5,
+		borderBottomWidth: 0.5
 	},
 	listText: {
 		width: "100%",
