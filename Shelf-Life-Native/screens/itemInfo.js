@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View, ImageBackground, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, Text, TextInput, View, ImageBackground, TouchableOpacity, Image } from 'react-native';
 import styles from '../Style';
 import ItemEntryPage from '../components/itemEntry'
+import FastImage from 'react-native-fast-image'
 
 export default function ItemInfoScreen({ navigation, route }) {
 
@@ -14,7 +15,10 @@ export default function ItemInfoScreen({ navigation, route }) {
 	return (
 		<View style={styles.container}>
 			<StatusBar style="auto" />
-			<ImageBackground source={require('../assets/background.jpg')} style={styles.background}/>
+			<FastImage
+				style={styles.background}
+				source = {Image.resolveAssetSource(require('../assets/background.jpg'))}
+			/>
 			<ItemEntryPage 
 				item={passData}
 				goBack={() => navigation.goBack()}

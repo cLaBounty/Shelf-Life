@@ -15,6 +15,7 @@ const pantryJSON = require('../assets/pantryTest.json')
 export default function PantryScreen({ navigation }) {
 
 	[itemChanged, setItemChanged] = useState(0)
+	const [pantryData, setPantryData] = useState("")
 	const [searchQ, setSearchQ] = useState("") //Search query
 	const [order, setOrder] = useState("alpha") //Current ordering method
 	const orderings = [ //Selection for ordering
@@ -39,10 +40,15 @@ export default function PantryScreen({ navigation }) {
 		}
 	]
 
+	useEffect(() => {
+		(async () => {
+			const data = await getRemotePantry()
+		})();
+	}, []);
+
 	useFocusEffect(
 		React.useCallback(() => {
 			if (GLOBAL.pantryItemChange == true) {
-				Alert.alert("Refresh")
 				GLOBAL.pantryItemChange = false
 				setItemChanged(itemChanged + 1)
 			}
@@ -52,13 +58,48 @@ export default function PantryScreen({ navigation }) {
 	return (
 		<SafeAreaView style={styles.safeArea}>
 			<View style={styles.container}>
-				<FastImage 
+				<FastImage
 					style={styles.background}
 					source = {Image.resolveAssetSource(require('../assets/background.jpg'))}
 				/>
 				<StatusBar style="black?" />
 				<View style={pantryStyles.searchView}>
 					<Text style={pantryStyles.header}>Pantry</Text>
+					{ renderPantry() }
+				</View>
+			</View>
+				<FloatingAction
+					actions={addActions}
+					color={GLOBAL.ACCENT_COLOR}
+					iconHeight = {22}
+					iconWidth = {22}
+					overlayColor={"rgba(0,0,0,0)"}
+					icon={require('../assets/settings.png')}
+					shadow={{ shadowOpacity: 0.3, shadowOffset: { width: 0, height: 0 }, shadowColor: "#000000", shadowRadius: 10 }}
+					onPressItem={name => {
+						if (name == "manual") {
+							navigation.navigate('Item Info', { })
+						}
+						else if (name == "scan") {
+							navigation.navigate('Scan Item')
+						}
+					}}
+				/>
+		</SafeAreaView>
+	);
+
+	function renderPantry() {
+		if (pantryData == "" || pantryData == null) {
+			//Text saying there is no data in the pantry
+			output = (
+				<View style={{height: "100%"}}>
+					<Text style={pantryStyles.noData}>No data in pantry</Text>
+				</View>
+			)
+		}
+		else {
+			output = (
+				<View style={{width: "100%"}}>
 					<View style={pantryStyles.orderView}>
 						<SearchBar
 							placeholder="Search"
@@ -78,45 +119,26 @@ export default function PantryScreen({ navigation }) {
 							itemStyle={pantryStyles.orderText}
 						/>
 					</View>
+					<AlphabetList style={pantryStyles.list}
+						data={getPantry()}
+						indexLetterColor={'white'} //Color of letters on right
+
+						renderCustomItem={(item) => ( //Make the data fancy lookin'
+							formatPantry(item, { navigation })
+						)}
+
+						renderCustomSectionHeader={(section) => ( //Seperators
+							<Text style={pantryStyles.seperatorText}>{section.title}</Text>
+						)}
+					/>
 				</View>
-				<AlphabetList style={pantryStyles.list}
-					data={getPantry()}
-					indexLetterColor={'white'} //Color of letters on right
-
-					renderCustomItem={(item) => ( //Make the data fancy lookin'
-						formatPantry(item, { navigation })
-					)}
-
-					renderCustomSectionHeader={(section) => ( //Seperators
-						<Text style={pantryStyles.seperatorText}>{section.title}</Text>
-					)}
-				/>
-			</View>
-				<FloatingAction
-					actions={addActions}
-					color={GLOBAL.ACCENT_COLOR}
-					iconHeight = {22}
-					iconWidth = {22}
-					overlayColor={"rgba(0,0,0,0)"}
-					icon={require('../assets/settings.png')}
-					shadow={{ shadowOpacity: 0.3, shadowOffset: { width: 0, height: 0 }, shadowColor: "#000000", shadowRadius: 10 }}
-					onPressItem={name => {
-						if (name == "manual")
-						{
-							navigation.navigate('Item Info', { })
-						}
-						else if (name == "scan") {
-							navigation.navigate('Scan Item')
-						}
-					}}
-				/>
-		</SafeAreaView>
-	);
+			)
+		}
+		return output
+	}
 
 	function getPantry() {
-		getRemotePantry()
-
-		output = GLOBAL.pantryData.map((data, index) => {
+		output = pantryData.map((data, index) => {
 			return filterPantry(data, index)
 		})
 
@@ -127,18 +149,17 @@ export default function PantryScreen({ navigation }) {
 	}
 
 	function filterPantry(data, index) {
-		if (data.dispName.toLowerCase().indexOf(searchQ.toLowerCase()) > -1)
-		{
-			if (order == "alpha"){
+		if (data.dispName.toLowerCase().indexOf(searchQ.toLowerCase()) > -1) {
+			if (order == "alpha") {
 				return ({dispName: data.dispName, name: data.name, quantity: data.quantity, expDate: data.expDate, price: data.price, value: data.name, key: index})
 			}
-			else if (order == "quantity"){
+			else if (order == "quantity") {
 				return ({dispName: data.dispName, name: data.name, quantity: data.quantity, expDate: data.expDate, price: data.price, value: data.quantity, key: index})
 			}
 		}
 		return null
 	}
-	
+
 	function updateSearch(search) {
 		setSearchQ(search)
 	}
@@ -154,49 +175,52 @@ export default function PantryScreen({ navigation }) {
 			</View>
 		)
 	}
-}
 
-async function getRemotePantry() {
-	items = null
-	if (GLOBAL.LOGIN_TOKEN) {
-		await fetch(GLOBAL.BASE_URL + '/api/user/pantry/get', {
-			method: 'POST',
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
-				"key": GLOBAL.LOGIN_TOKEN,
-			})
-		}).then((response) => response.json()).then((json) => {
-			status = json["Status"]
-			if (status == "OK") { // Successful sign up
-				items = json		
+	async function getRemotePantry() {
+		console.log("Downloading pantry data")
+		items = null
+		if (GLOBAL.LOGIN_TOKEN) {
+			await fetch(GLOBAL.BASE_URL + '/api/user/pantry/get', {
+				method: 'POST',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					"key": GLOBAL.LOGIN_TOKEN,
+				})
+			}).then((response) => response.json()).then((json) => {
+				status = json["Status"]
+				if (status == "OK") { // Successful sign up
+					items = json
+				}
+				else if (status == "EMPTY") {
+					items = json
+					console.log("hi")
+					items["items"] = []
+					return []
+				}
+				else {
+					alert("Expired login token")
+				}
 			}
-			else if (status == "EMPTY") {
-				items = json
-				console.log("hi")
-				items["items"] = []
-				return []
-			}
-			else {
-				alert("Expired login token")
-			}
+		);
 		}
-	);
+		else {
+			alert("No login token found")
+			return []
+		}	
+		setPantryData(items["items"].map( (data) => { // Cause app to reload with downloaded pantry data
+			return ( data )
+		}))
 	}
-	else {
-		alert("No login token found")
-		return []
-	}	
-	GLOBAL.pantryData = items["items"].map( (data) => {
-		return ( data )
-	})
+	
+	
+	
 }
-
 const pantryStyles = StyleSheet.create({
 	searchView: {
-		paddingTop: 80,
+		paddingTop: 5,
 		alignItems: "center",
 		width: "100%",
 		backgroundColor: "#fff",
@@ -229,8 +253,9 @@ const pantryStyles = StyleSheet.create({
 		fontWeight: "700",
 	},
 	list: {
+		zIndex: -1,
 		width: "100%",
-		height: "100%",
+		height: "90.7%",
 		justifyContent: "center",
 		backgroundColor: '#59595959',
 		paddingTop: 1,
@@ -266,5 +291,8 @@ const pantryStyles = StyleSheet.create({
 		color: "#fff",
 		justifyContent: 'center',
 		textAlign: 'center',
+	},
+	noData: {
+		height: "90%",
 	}
 });
