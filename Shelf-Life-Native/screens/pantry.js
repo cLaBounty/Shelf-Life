@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Image, Alert } from 'react-native';
+import { Pressable, Animated, StyleSheet, Text, View, TouchableOpacity, SafeAreaView, Image, Alert } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { AlphabetList } from "react-native-section-alphabet-list";
 import { FloatingAction } from "react-native-floating-action";
+import { Swipeable } from "react-native-gesture-handler"
 import DropDownPicker from 'react-native-dropdown-picker';
 import FastImage from 'react-native-fast-image'
 import styles from '../Style';
@@ -167,14 +168,64 @@ export default function PantryScreen({ navigation }) {
 	}
 
 	function formatPantry(item, { navigation }) {
-		return (
-			<View key={item.name}>
-				<TouchableOpacity onPress={() => navigation.navigate('Item Info', { item })}>
-					<View style={pantryStyles.listTextView}>
-						<Text style={pantryStyles.listText}>{item.dispName}</Text>
-					</View>
-				</TouchableOpacity>
+		function promptDelete() {
+			Alert.alert(
+				"Delete Food Entry", 
+				("Are you sure you want to delete your "+ item.dispName + "?"),
+				[
+					{
+						text: "Remove",
+						onPress: () => deleteItem(),
+						style: "destructive"
+					},
+					{
+						text: "Cancel",
+						style: "cancel"
+					}
+				]
+			)
+		}
+		
+		function deleteItem() {
+			Alert.alert("Consider it gone!","The item would be deleted if the code were in place yet")
+		}
+		
+		function renderRightAction(content, func, buttonStyle) 
+		{ //Context button template
+			return (
+				<Animated.View style={pantryStyles.contextButtonBase}>
+					<TouchableOpacity
+						style={buttonStyle}
+						onPress={func}
+					>
+						{content}
+					</TouchableOpacity>
+				</Animated.View>
+			);
+		};
+
+		renderRightActions = () => (
+			<View style={pantryStyles.contextButtonView}>
+				{renderRightAction(<Image source={require('../assets/delete.png')} style={{width: "100%", height: "100%", resizeMode: "contain"}}/>, promptDelete, pantryStyles.deleteButton)}
 			</View>
+			);
+		
+		return (
+			<Swipeable
+				friction={2}
+				renderRightActions={renderRightActions}
+			>
+				<View key={item.name}>
+					<Pressable
+						onPress={() => navigation.navigate('Item Info', { item })}
+						onLongPress={() => promptDelete()}
+					>
+						<View style={pantryStyles.listTextView}>
+							<Text style={pantryStyles.listText}>{item.dispName}</Text>
+						</View>
+					</Pressable>
+				</View>
+			</Swipeable>
 		)
 	}
 
@@ -296,5 +347,13 @@ const pantryStyles = StyleSheet.create({
 	},
 	noData: {
 		height: "90%",
-	}
+	},
+	contextButtonView: {
+		width: 60,
+	},
+	deleteButton: {
+		backgroundColor: "#ff5555",
+		height: "100%",
+		width: "100%",
+	},
 });
