@@ -10,7 +10,6 @@ export default function ItemEntryPage(params) {
 	quantity = ""
 	price = ""
 	expDate = ""
-	GLOBAL.pantryItemChange = "new"
 	const [itemAddingState, setItemAddingState] = useState("EDITING_VALUES")
 
 	if (params.item) { //Check data for existing item in if one is passed
@@ -19,7 +18,6 @@ export default function ItemEntryPage(params) {
 		quantity = params.item.quantity
 		price = params.item.price.toString()
 		expDate = params.item.expDate
-		GLOBAL.pantryItemChange = "edit"
 	}
 	else if (params.itemName) {
 		name=params.itemName
@@ -28,6 +26,8 @@ export default function ItemEntryPage(params) {
 	}
 
 	handleSubmit = (officialName, name, quantity, price, expDate) => {
+		GLOBAL.pantryItemChange = true
+		Alert.alert("Set pantryItemChange to " + GLOBAL.pantryItemChange)
 		setItemAddingState("SENDING_TO_SERVER")
 		fetch(GLOBAL.BASE_URL + '/api/user/pantry/add', {
 			method: 'POST',

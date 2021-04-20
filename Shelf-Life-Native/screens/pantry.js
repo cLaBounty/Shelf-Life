@@ -14,8 +14,8 @@ const pantryJSON = require('../assets/pantryTest.json')
 
 export default function PantryScreen({ navigation }) {
 
-	[itemChanged, setItemChanged] = useState(0)
-	const [pantryData, setPantryData] = useState("")
+	const [itemChanged, setItemChanged] = useState(0)
+	const [pantryData, setPantryData] = useState("") //Pantry items
 	const [searchQ, setSearchQ] = useState("") //Search query
 	const [order, setOrder] = useState("alpha") //Current ordering method
 	const orderings = [ //Selection for ordering
@@ -48,10 +48,15 @@ export default function PantryScreen({ navigation }) {
 
 	useFocusEffect(
 		React.useCallback(() => {
+			Alert.alert("Checking")
+			console.log(GLOBAL.pantryItemChange.toString())
 			if (GLOBAL.pantryItemChange == true) {
+				console.log("Found to be true")
 				GLOBAL.pantryItemChange = false
+				getRemotePantry()
 				setItemChanged(itemChanged + 1)
 			}
+			
 		})
 	)
 

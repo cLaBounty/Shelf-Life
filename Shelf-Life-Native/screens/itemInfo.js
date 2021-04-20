@@ -27,11 +27,6 @@ export default function ItemInfoScreen({ navigation, route }) {
 	);
 }
 
-const handleSubmit = (name, quantity, price, expDate, navigation) => {
-	// TODO: Add item to pantry
-	navigation.goBack()
-}
-
 const itemInfoStyles = StyleSheet.create({
 	submitBtn: {
 		backgroundColor:'#5296E7',
