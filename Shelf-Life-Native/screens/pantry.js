@@ -61,10 +61,6 @@ export default function PantryScreen({ navigation }) {
 	return (
 		<SafeAreaView style={styles.safeArea}>
 			<View style={styles.container}>
-				<FastImage
-					style={styles.background}
-					source = {Image.resolveAssetSource(require('../assets/background.jpg'))}
-				/>
 				<StatusBar style="black?" />
 				<View style={pantryStyles.searchView}>
 					<Text style={pantryStyles.header}>Pantry</Text>
@@ -124,7 +120,7 @@ export default function PantryScreen({ navigation }) {
 					</View>
 					<AlphabetList style={pantryStyles.list}
 						data={getPantry()}
-						indexLetterColor={'white'} //Color of letters on right
+						indexLetterStyle={{color: '#55f'}} //Color of letters on right
 
 						renderCustomItem={(item) => ( //Make the data fancy lookin'
 							formatPantry(item, { navigation })

@@ -10,6 +10,7 @@ export default function ItemEntryPage(params) {
 	quantity = ""
 	price = ""
 	expDate = ""
+	mode = "new" //set to "edit" for editing an ingredient
 	const [itemAddingState, setItemAddingState] = useState("EDITING_VALUES")
 
 	if (params.item) { //Check data for existing item in if one is passed
@@ -18,8 +19,9 @@ export default function ItemEntryPage(params) {
 		quantity = params.item.quantity
 		price = params.item.price.toString()
 		expDate = params.item.expDate
+		mode = "edit"
 	}
-	else if (params.itemName) {
+	else if (params.itemName) { //Adding a new pantry item
 		name=params.itemName
 		dispName=name
 		category=params.category
@@ -28,28 +30,35 @@ export default function ItemEntryPage(params) {
 	handleSubmit = () => {
 		GLOBAL.pantryItemChange = true
 		setItemAddingState("SENDING_TO_SERVER")
-		fetch(GLOBAL.BASE_URL + '/api/user/pantry/add', {
-			method: 'POST',
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
-				"key": GLOBAL.LOGIN_TOKEN,
-				"item_official_name": name
-				})
+		if (mode == "new") {
+			fetch(GLOBAL.BASE_URL + '/api/user/pantry/add', {
+				method: 'POST',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					"key": GLOBAL.LOGIN_TOKEN,
+					"item_official_name": name
+					})
 	
-			}).then((response) => response.json()).then((json) => {
-				status = json["Status"]
-				if (status == "OK") { // successful sign up
-					setItemAddingState("ADDED")
+				}).then((response) => response.json()).then((json) => {
+					status = json["Status"]
+					if (status == "OK") { // successful sign up
+						setItemAddingState("ADDED")
+					}
+					else if (status = "INVALID TOKEN")
+					{
+						alert("Invalid login token, log in again")
+					}
 				}
-				else if (status = "INVALID TOKEN")
-				{
-					alert("Invalid login token, log in again")
-				}
+				);
 			}
-			);
+			if (mode == "edit") {
+				//TODO: Add pantry server code
+				setItemAddingState("UPDATED")
+				Alert.alert("Sure...", "Let's say that the pantry item was actually updated. It was detected, but the server code is TBD.")
+			}
 		}
 
 	handleCancel = () => {
@@ -113,7 +122,7 @@ export default function ItemEntryPage(params) {
 				{(itemAddingState == "SENDING_TO_SERVER") &&
 					<Text style={itemInfoStyles.submitBtnText}>Sending to Server</Text>
 				}
-				{(itemAddingState == "ADDED") &&
+				{(itemAddingState == "ADDED" || itemAddingState == "UPDATED") &&
 					<TouchableOpacity style={itemInfoStyles.submitBtn} onPress={() => handleCancel()}>
 						<Text style={itemInfoStyles.submitBtnText}>Done</Text>
 					</TouchableOpacity>
