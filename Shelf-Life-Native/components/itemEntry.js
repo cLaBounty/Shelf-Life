@@ -25,9 +25,8 @@ export default function ItemEntryPage(params) {
 		category=params.category
 	}
 
-	handleSubmit = (officialName, name, quantity, price, expDate) => {
+	handleSubmit = () => {
 		GLOBAL.pantryItemChange = true
-		Alert.alert("Set pantryItemChange to " + GLOBAL.pantryItemChange)
 		setItemAddingState("SENDING_TO_SERVER")
 		fetch(GLOBAL.BASE_URL + '/api/user/pantry/add', {
 			method: 'POST',
@@ -37,7 +36,7 @@ export default function ItemEntryPage(params) {
 			},
 			body: JSON.stringify({
 				"key": GLOBAL.LOGIN_TOKEN,
-				"item_official_name": officialName
+				"item_official_name": name
 				})
 	
 			}).then((response) => response.json()).then((json) => {
@@ -107,7 +106,7 @@ export default function ItemEntryPage(params) {
 					</TouchableOpacity>
 				}
 				{(itemAddingState == "EDITING_VALUES") &&
-					<TouchableOpacity style={itemInfoStyles.submitBtn} onPress={() => handleSubmit(name, dispName, quantity, price, expDate)}>
+					<TouchableOpacity style={itemInfoStyles.submitBtn} onPress={() => handleSubmit()}>
 						<Text style={itemInfoStyles.submitBtnText}>Submit</Text>
 					</TouchableOpacity>
 				}
