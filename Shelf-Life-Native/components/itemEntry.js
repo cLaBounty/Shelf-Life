@@ -21,6 +21,11 @@ export default function ItemEntryPage(params) {
 		expDate = params.item.expDate
 		GLOBAL.pantryItemChange = "edit"
 	}
+	else if (params.itemName) {
+		name=params.itemName
+		dispName=name
+		category=params.category
+	}
 
 	handleSubmit = (officialName, name, quantity, price, expDate) => {
 		setItemAddingState("SENDING_TO_SERVER")
