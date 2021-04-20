@@ -14,6 +14,7 @@ npm install @react-navigation/material-top-tabs react-native-tab-view@^2.16.0
 npm install @react-navigation/native
 npm install react-native-fast-image --save
 react-native link react-native-fast-image
+npm i expo-chart-kit
 npm install react-native-chart-kit
 npm install react-native-svg
 
