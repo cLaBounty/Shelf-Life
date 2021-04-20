@@ -48,10 +48,7 @@ export default function PantryScreen({ navigation }) {
 
 	useFocusEffect(
 		React.useCallback(() => {
-			Alert.alert("Checking")
-			console.log(GLOBAL.pantryItemChange.toString())
 			if (GLOBAL.pantryItemChange == true) {
-				console.log("Found to be true")
 				GLOBAL.pantryItemChange = false
 				getRemotePantry()
 				setItemChanged(itemChanged + 1)
