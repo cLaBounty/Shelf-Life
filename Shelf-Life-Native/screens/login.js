@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View, ImageBackground, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TextInput, View, ImageBackground, TouchableOpacity, Alert } from 'react-native';
 import styles from '../Style';
 const GLOBAL = require('../Globals')
 
@@ -142,9 +142,7 @@ export default function LoginScreen({ navigation }) {
   }
 }
 
-const login = (email, password, navigation) => {  
-
-
+const login = (email, password, navigation) => {
   fetch(GLOBAL.BASE_URL+'/api/user/login', {
     method: 'POST',
     headers: {
@@ -165,23 +163,29 @@ const login = (email, password, navigation) => {
 
     }
     else if(status == "ERROR")  
-    {    
-      // TODO: Expand here with invalid error codes, i.e invalid email, password, username
+    {
+      Alert.alert('ERROR', 'Something went wrong. Please try again later.', [
+        {text: 'OK'}
+      ]);
     }
     else if(status == "INVALID PASSWORD")  
-    { 
-      console.log("Invalid Password")   
-      // TODO: Expand here with invalid error codes, i.e invalid email, password, username
+    {
+      Alert.alert('ERROR: Invalid Password', 'You have entered an invalid password. Please try again with a different password.', [
+        {text: 'OK'}
+      ]);
     }
     else if(status == "INVALID EMAIL")  
     {    
-      console.log("Invalid Email")
-      // TODO: Expand here with invalid error codes, i.e invalid email, password, username
+      Alert.alert('ERROR: Invalid Email', '\"' + email + '\" is not a valid email. Please try again with a different email.', [
+        {text: 'OK'}
+      ]);
     }
-    }).catch((error) => {
-      console.log("Server Error") // this'll get called if the server is offline / can't be reached
-      //console.error(error); // catch networking errors
-    });  
+    }).catch((error) => { // this'll get called if the server is offline / can't be reached
+      console.error(error); // catch networking errors
+      Alert.alert('ERROR: Server is offline', 'There server is offline or cannot be reached. Please try again later.', [
+        {text: 'OK'}
+      ]);
+    });
 }
 
 const signUp = (email, displayName, password, navigation) => {
@@ -206,10 +210,15 @@ const signUp = (email, displayName, password, navigation) => {
   }
   else if(status == "ERROR")  
   {    
-    // TODO: Expand here with invalid error codes, i.e invalid email, password, username
+    Alert.alert('ERROR', 'Something went wrong. Please try again later.', [
+      {text: 'OK'}
+    ]);
   }
   }).catch((error) => {
     console.error(error); // catch networking errors
+    Alert.alert('ERROR: Server is offline', 'There server is offline or cannot be reached. Please try again later.', [
+      {text: 'OK'}
+    ]);
   });
 }
 
