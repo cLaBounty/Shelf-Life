@@ -25,12 +25,14 @@ export default function RecipeInfoScreen({ route }) {
 
 
 	return (
-		<CachedImage
+		<View style={styles.container}>
+			<StatusBar style="black" />
+			<CachedImage
           		source = {Image.resolveAssetSource(require('../assets/background.jpg'))}          		
 				cacheKey = {`background`}
           		style={styles.background}
         		/>	
-            <Animated.ScrollView style={recipeInfoStyles.paralaxScroll}
+			<Animated.ScrollView style={recipeInfoStyles.paralaxScroll}
 				// onScroll={e => console.log(e.nativeEvent.contentOffset.y)}
 				onScroll={Animated.event(
 					[{ nativeEvent: { contentOffset: { y: paralaxScroll } } }],
@@ -62,7 +64,7 @@ export default function RecipeInfoScreen({ route }) {
 
 				</View>
 			</Animated.ScrollView>
-		</View>
+		</View>	
 	);
 	
 	
