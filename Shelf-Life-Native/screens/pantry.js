@@ -171,7 +171,7 @@ export default function PantryScreen({ navigation }) {
 				[
 					{
 						text: "Remove",
-						onPress: () => deleteItem(),
+						onPress: () => deleteItem(item.id),
 						style: "destructive"
 					},
 					{
@@ -182,7 +182,7 @@ export default function PantryScreen({ navigation }) {
 			)
 		}
 		
-		function deleteItem() {
+		function deleteItem(item_id) {
 			GLOBAL.pantryItemChange = true					
         fetch(GLOBAL.BASE_URL + '/api/user/pantry/remove', {
             method: 'POST',
@@ -192,7 +192,7 @@ export default function PantryScreen({ navigation }) {
             },
             body: JSON.stringify({
                 "key": GLOBAL.LOGIN_TOKEN,
-                "item_id": params.id,                
+                "item_id": item_id,                
             })
     
         }).then((response) => response.json()).then((json) => {
