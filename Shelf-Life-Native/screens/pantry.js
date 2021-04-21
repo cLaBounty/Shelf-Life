@@ -183,7 +183,32 @@ export default function PantryScreen({ navigation }) {
 		}
 		
 		function deleteItem() {
-			Alert.alert("Consider it gone!","The item would be deleted if the code were in place yet")
+			GLOBAL.pantryItemChange = true					
+        fetch(GLOBAL.BASE_URL + '/api/user/pantry/remove', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "key": GLOBAL.LOGIN_TOKEN,
+                "item_id": params.id,                
+            })
+    
+        }).then((response) => response.json()).then((json) => {
+            status = json["Status"]
+            if (status == "OK") { // successful sign up        
+                alert("success")
+            }
+            else if (status = "INVALID TOKEN")
+            {
+                alert("Invalid login token, log in again")
+            }else if(status = "INVALID ITEM ID")			
+			{
+				alert("Item ID not found in database")
+			}
+        }
+        );
 		}
 		
 		function renderRightAction(content, func, buttonStyle) 

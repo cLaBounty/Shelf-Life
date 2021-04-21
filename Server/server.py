@@ -247,7 +247,7 @@ def addUserPantryItem():
         response_dict["Status"] = "INVALID TOKEN"
     return response_dict
 
-@app.route('/api/user/pantry/add/', methods=['POST'])
+@app.route('/api/user/pantry/remove/', methods=['POST'])
 def removeUserPantryItem():
     info_dict = request.json
     key = info_dict["key"]    
@@ -259,7 +259,7 @@ def removeUserPantryItem():
     except:
         response_dict["Status"] = "INVALID ITEM ID"
         return response_dict
-                
+
     if user:        
         dbConnector.addItem(user["pantry_id"], item_id)            
         response_dict["Status"] = "OK"
