@@ -16,18 +16,6 @@ def getDatabase():
                               host='shelflife.cizcr7arqko1.us-east-2.rds.amazonaws.com',
                               database='shelfLifeDB', buffered=True)    
 
-def getNameFromID(id):
-    if onlineIDs:
-        db = getDatabase()
-        cursor = db.cursor()
-        query = ('''SELECT name FROM Ingredients WHERE ingredient_id={0};'''.format(id))
-        cursor.execute(query, params=None)
-        output = cursor.fetchone()            
-        closeDatabase(db)
-        return output[0]
-    else:
-        return convertIDtoName(id)
-
 def closeDatabase(db):
     db.close()
 
@@ -130,6 +118,14 @@ def addItem(pantry_id, item_info):
     commitToDB(db)
     closeDatabase(db)
 
+def deleteItemFromPantry(pantry_id, item_id):
+    db = getDatabase()
+    cursor = db.cursor()    
+    query = ('''DELETE FROM pantries_ingredients_xref WHERE pantry_id={0} AND item_id={1};'''.format(pantry_id, item_id))
+    cursor.execute(query, params=None)
+    commitToDB(db)    
+    closeDatabase(db)
+
 def generateNewPantry():
     db = getDatabase()
     cursor = db.cursor()
@@ -138,6 +134,13 @@ def generateNewPantry():
     cursor.execute(query, params=None)
     commitToDB(db)    
     closeDatabase(db)
+
+"""
+
+RECIPE STUFF
+
+"""
+
 
 def convertCursorOutputToJSON(output):
     recipe_dict = {}  
@@ -317,6 +320,17 @@ def getMatchingRecipes(pantry_id, min_number_matched_ingredients=1):
     result.sort(reverse=True)    
     return result
     
+def getNameFromID(id):
+    if onlineIDs:
+        db = getDatabase()
+        cursor = db.cursor()
+        query = ('''SELECT name FROM Ingredients WHERE ingredient_id={0};'''.format(id))
+        cursor.execute(query, params=None)
+        output = cursor.fetchone()            
+        closeDatabase(db)
+        return output[0]
+    else:
+        return convertIDtoName(id)
 
 if __name__ == '__main__':
     #print(getNameFromID(3))
@@ -332,7 +346,8 @@ if __name__ == '__main__':
     pantry_id = info[5]
     item_info = {}
     item_info["item_official_name"] = "roscco spaghetti"
-    addItem(pantry_id, item_info)
+    #addItem(pantry_id, item_info)
+    deleteItemFromPantry(pantry_id, 1)
     #print(getAllItemsInPantry(pantry_id))
     #print(checkIfTokenIsInUse(233))
     #print(getNameFromID(4))

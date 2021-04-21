@@ -247,6 +247,26 @@ def addUserPantryItem():
         response_dict["Status"] = "INVALID TOKEN"
     return response_dict
 
+@app.route('/api/user/pantry/add/', methods=['POST'])
+def removeUserPantryItem():
+    info_dict = request.json
+    key = info_dict["key"]    
+    user = dbConnector.getUserInfoFromKey(key)    
+    pantry_item = info_dict # TODO: Add input validation
+    response_dict = {}
+    try:
+        item_id = pantry_item["item_id"]
+    except:
+        response_dict["Status"] = "INVALID ITEM ID"
+        return response_dict
+                
+    if user:        
+        dbConnector.addItem(user["pantry_id"], item_id)            
+        response_dict["Status"] = "OK"
+    else:
+        response_dict["Status"] = "INVALID TOKEN"
+    return response_dict
+
 @app.route('/api/user/pantry/recipes/matching', methods=['POST'])
 def getMatchingRecipes():
     # curl -d '{"key":'868911'}' -H "Content-Type: application/json" -X POST http://127.0.0.1:5000/api/user/pantry/recipes/matching
