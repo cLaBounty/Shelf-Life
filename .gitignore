@@ -16,6 +16,7 @@ local.properties
 /Shelf-Life-Native/android/java_pid15484.hprof
 /Shelf-Life-Native/android/gradlew
 /Shelf-Life-Native/android/java_pid17317.hprof
+Shelf-Life-Native/android/java_pid34243.hprof
 
 # node.js
 #
@@ -31,3 +32,7 @@ yarn-error.log
 #
 Shelf-Life-Native/.expo/*
 web-build/
+
+# Python Server
+/Server/__pycache__/*
+/Server/.env

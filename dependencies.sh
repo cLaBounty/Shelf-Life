@@ -14,6 +14,8 @@ npm install @react-navigation/material-top-tabs react-native-tab-view@^2.16.0
 npm install @react-navigation/native
 npm install react-native-fast-image --save
 react-native link react-native-fast-image
+npm install react-native-dropdown-picker --save
+npm install --save react-native-vector-icons
 
 pip install Flask
 pip install requests
