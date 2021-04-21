@@ -121,7 +121,7 @@ def addItem(pantry_id, item_info):
 def deleteItemFromPantry(pantry_id, item_id):
     db = getDatabase()
     cursor = db.cursor()    
-    query = ('''DELETE FROM pantries_ingredients_xref WHERE pantry_id={0} AND item_id={1};'''.format(pantry_id, item_id))
+    query = ('''DELETE FROM pantries_ingredients_xref WHERE pantry_id={0} AND item_id={1};'''.format(pantry_id, item_id))    
     cursor.execute(query, params=None)
     commitToDB(db)    
     closeDatabase(db)
@@ -347,7 +347,7 @@ if __name__ == '__main__':
     item_info = {}
     item_info["item_official_name"] = "roscco spaghetti"
     #addItem(pantry_id, item_info)
-    deleteItemFromPantry(pantry_id, 1)
+    deleteItemFromPantry(pantry_id, 3)
     #print(getAllItemsInPantry(pantry_id))
     #print(checkIfTokenIsInUse(233))
     #print(getNameFromID(4))

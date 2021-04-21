@@ -222,13 +222,12 @@ def getUserPantryItems():
             item_dict["dispName"] = item[4]
             item_dict["quantity"] = "32"
             item_dict["expDate"] = "November 3, 2015"
-            item_dict["price"] = 1.52
+            item_dict["price"] = 1.52            
             item_dict["id"] = item[5]
             items.append(item_dict)
         if len(items) != 0:
             response["items"] = items
-        else:
-            print("hello")
+        else:            
             response["Status"] = "EMPTY"
     else:
         response["Status"] = "INVALID TOKEN"
@@ -251,16 +250,17 @@ def addUserPantryItem():
 @app.route('/api/user/pantry/remove/', methods=['POST'])
 def removeUserPantryItem():
     info_dict = request.json
-    key = info_dict["key"]    
+    key = info_dict["key"]       
     user = dbConnector.getUserInfoFromKey(key)         
     response_dict = {}
     try:
         item_id = info_dict["item_id"]
+        print(item_id)        
     except:
-        response_dict["Status"] = "INVALID ITEM ID"
-        return response_dict
+        response_dict["Status"] = "INVALID ITEM ID"        
+        return response_dict    
     if user:        
-        dbConnector.addItem(user["pantry_id"], item_id)            
+        dbConnector.deleteItemFromPantry(user["pantry_id"], item_id)            
         response_dict["Status"] = "OK"
     else:
         response_dict["Status"] = "INVALID TOKEN"

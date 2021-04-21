@@ -150,10 +150,10 @@ export default function PantryScreen({ navigation }) {
 	function filterPantry(data, index) {
 		if (data.dispName.toLowerCase().indexOf(searchQ.toLowerCase()) > -1) {
 			if (order == "alpha") {
-				return ({dispName: data.dispName, name: data.name, quantity: data.quantity, expDate: data.expDate, price: data.price, value: data.name, key: index})
+				return ({dispName: data.dispName, name: data.name, quantity: data.quantity, expDate: data.expDate, price: data.price, value: data.name, key: index, id: data.id})
 			}
 			else if (order == "quantity") {
-				return ({dispName: data.dispName, name: data.name, quantity: data.quantity, expDate: data.expDate, price: data.price, value: data.quantity, key: index})
+				return ({dispName: data.dispName, name: data.name, quantity: data.quantity, expDate: data.expDate, price: data.price, value: data.quantity, key: index,  id: data.id})
 			}
 		}
 		return null
@@ -184,7 +184,7 @@ export default function PantryScreen({ navigation }) {
 		
 		function deleteItem(item_id) {
 			GLOBAL.pantryItemChange = true					
-        fetch(GLOBAL.BASE_URL + '/api/user/pantry/remove', {
+        	fetch(GLOBAL.BASE_URL + '/api/user/pantry/remove', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -198,12 +198,12 @@ export default function PantryScreen({ navigation }) {
         }).then((response) => response.json()).then((json) => {
             status = json["Status"]
             if (status == "OK") { // successful sign up        
-                alert("success")
+                getRemotePantry()
             }
-            else if (status = "INVALID TOKEN")
+            else if (status == "INVALID TOKEN")
             {
                 alert("Invalid login token, log in again")
-            }else if(status = "INVALID ITEM ID")			
+            }else if(status == "INVALID ITEM ID")			
 			{
 				alert("Item ID not found in database")
 			}
