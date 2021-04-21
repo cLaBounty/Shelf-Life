@@ -112,7 +112,7 @@ function ScanResult(props) {
                     {officialNameSplit.map((part, index) =>
                         <View style={{ flex: 0, marginBottom: 10 }} key={index}>
                             <TouchableOpacity
-                                style={selected.includes(index) ? tempStyles.selected_btn : tempStyles.btn}                                
+                                style={selected.includes(index) ? tempStyles.selected_btn : tempStyles.btn}
                                 onPress={() => updateSelected(index)}>
                                 <Text style={tempStyles.btnText}>{part}</Text>
                             </TouchableOpacity>

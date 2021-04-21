@@ -10,6 +10,7 @@ load_dotenv()
 TOKEN = os.getenv('DB_PASSOWRD')
 
 doPermanentChanges = True # If this is True, the changes you make will affect the database, otherwise it will just store them locally
+
 def getDatabase():
     return mysql.connector.connect(user='admin', password=TOKEN,
                               host='shelflife.cizcr7arqko1.us-east-2.rds.amazonaws.com',
@@ -309,4 +310,3 @@ if __name__ == '__main__':
     #addItem(pantry_id, item_info)
     #print(getAllItemsInPantry(pantry_id))
     #print(checkIfTokenIsInUse(233))
-    #print(getUserInfoFromKey(332026))
