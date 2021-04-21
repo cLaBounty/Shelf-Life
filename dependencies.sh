@@ -18,6 +18,7 @@ npm install react-native-dropdown-picker --save
 npm install --save react-native-vector-icons
 
 pip install Flask
+pip install requests
 pip install mysql-connector-python
 pip install python-dotenv
 
