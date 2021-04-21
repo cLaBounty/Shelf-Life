@@ -4,7 +4,6 @@ import styles from '../Style';
 const GLOBAL = require('../Globals')
 
 export default function ItemEntryPage(params) {
-
 	name = ""
 	dispName = ""
 	quantity = ""
@@ -31,28 +30,30 @@ export default function ItemEntryPage(params) {
 		GLOBAL.pantryItemChange = true
 		setItemAddingState("SENDING_TO_SERVER")
 		if (mode == "new") {
-			fetch(GLOBAL.BASE_URL + '/api/user/pantry/add', {
-				method: 'POST',
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					"key": GLOBAL.LOGIN_TOKEN,
-					"item_official_name": name
-					})
-	
-				}).then((response) => response.json()).then((json) => {
-					status = json["Status"]
-					if (status == "OK") { // successful sign up
-						setItemAddingState("ADDED")
-					}
-					else if (status = "INVALID TOKEN")
-					{
-						alert("Invalid login token, log in again")
-					}
-				}
-				);
+			setItemAddingState("SENDING_TO_SERVER")
+        fetch(GLOBAL.BASE_URL + '/api/user/pantry/add', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "key": GLOBAL.LOGIN_TOKEN,
+                "item_official_name": officialName,
+                "ingredient_id": params.id,                
+            })
+    
+        }).then((response) => response.json()).then((json) => {
+            status = json["Status"]
+            if (status == "OK") { // successful sign up        
+                setItemAddingState("ADDED")
+            }
+            else if (status = "INVALID TOKEN")
+            {
+                alert("Invalid login token, log in again")
+            }
+        }
+        );
 			}
 			if (mode == "edit") {
 				//TODO: Add pantry server code

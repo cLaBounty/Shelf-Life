@@ -1,22 +1,31 @@
-import React, { useState } from 'react';
+import React,  { useState, useEffect } from 'react'; 
 import { useFocusEffect } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ScrollView, Image, TouchableOpacity, SafeAreaView} from 'react-native';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import CachedImage from '../components/CachedImage'
 import FastImage from 'react-native-fast-image'
 import { SearchBar } from 'react-native-elements';
 
 import styles from '../Style'
 
-const recipesJSON = require('../assets/recipeTest.json');
 const TopTab = createMaterialTopTabNavigator();
 GLOBAL = require('../Globals')
 
 export default function RecipesScreen({ navigation }) {
 	const [searchQ, setSearchQ] = useState("");
 	[favorite, setFavorite] = useState("false");
+
+	[setJustFavorited, justFavoirted] = useState(false);
+	[recipesJSON, setRecipesJSON] = useState(require('../assets/recipeTest.json'))
+	useEffect(() => {
+		(async () => {
+		  const data = await getCookableRecipes()            
+		  setRecipesJSON(data)
+		})();
+	  }, []);
 
 	useFocusEffect(
 		React.useCallback(() => {
@@ -70,16 +79,17 @@ export default function RecipesScreen({ navigation }) {
 
 	function masterTab(filterFunc, { navigation }, tag) { // A single func that dictates how the favorites and recipe screens are rendered
 		return (
-			<View style={recipeStyles.page}>
+		    <View style={recipeStyles.page}>
+				<CachedImage
+          		source = {Image.resolveAssetSource(require('../assets/background.jpg'))}          		
+				cacheKey = {`background`}
+          		style={styles.background}
+        		/>				
 
-				<FastImage 
-				style={styles.background}
-				source = {Image.resolveAssetSource(require('../assets/background.jpg'))}
-				/>
-				<ScrollView style={recipeStyles.scrollable}>
-					{filterFunc({ navigation })}
-				</ScrollView>
-			</View>
+		        <ScrollView style={recipeStyles.scrollable}>
+		            {getRecipes({ navigation })}
+		        </ScrollView>
+		    </View>
 		)
 	}
 
@@ -189,7 +199,46 @@ export default function RecipesScreen({ navigation }) {
 		setFavorite({...favorite,[index]:data.favorite})
 		
 		// TODO: Sync with server
-	}s
+	}
+}
+
+async function getCookableRecipes()
+{
+  recipes = null
+  if (GLOBAL.LOGIN_TOKEN) {
+    await fetch(GLOBAL.BASE_URL + '/api/user/pantry/recipes/matching', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "key": GLOBAL.LOGIN_TOKEN,
+      })
+
+    }).then((response) => response.json()).then((json) => {
+      status = json["Status"]
+      if (status == "OK") { // successful sign up        
+        recipes = json        
+      }
+      else if(status == "EMPTY")
+      {
+		alert("No recipes that match ingredients")        
+        recipes = []
+      }
+      else{
+        alert("Expired login token")    
+		recipes = []
+      }
+    }
+    );
+  }
+  else
+  {
+    alert("No login token found")
+    return []
+  }  
+  return recipes
 }
 
 const recipeStyles = StyleSheet.create({
