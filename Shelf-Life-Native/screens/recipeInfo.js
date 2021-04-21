@@ -11,7 +11,7 @@ const pink = GLOBAL.FAVORITE_COLOR;
 const white = "#fff";
 
 export default function RecipeInfoScreen({ route }) {
-    const [favorite, setFavorite] = useState(route.params.data.favorite);
+	const [favorite, setFavorite] = useState(route.params.data.favorite);
 	[buttonColor, setButtonColor] = useState({pink});
 
 	if (favorite == "true") //Setting initial border color
@@ -23,47 +23,47 @@ export default function RecipeInfoScreen({ route }) {
 		buttonColor = white
 	}
 
-    return (
-        <View style={styles.container}>
-            <StatusBar style="black" />
+	return (
+		<View style={styles.container}>
+			<StatusBar style="black" />
 			<FastImage 
 			style={styles.background}
 			source = {Image.resolveAssetSource(require('../assets/background.jpg'))}
 			/>
-            <Animated.ScrollView style={recipeInfoStyles.paralaxScroll}
+			<Animated.ScrollView style={recipeInfoStyles.paralaxScroll}
 				// onScroll={e => console.log(e.nativeEvent.contentOffset.y)}
-                onScroll={Animated.event(
-                    [{ nativeEvent: { contentOffset: { y: paralaxScroll } } }],
-                    { useNativeDriver: true },
-                )}
-                scrollEventThrottle={16}
-        >
+				onScroll={Animated.event(
+					[{ nativeEvent: { contentOffset: { y: paralaxScroll } } }],
+					{ useNativeDriver: true },
+				)}
+				scrollEventThrottle={16}
+		>
 				<Animated.Image source={{ uri: route.params.data.image }} style={recipeInfoStyles.foodImage(paralaxScroll)} />
 
-                <View style={[recipeInfoStyles.content, recipeInfoStyles.shadow]}>
+				<View style={[recipeInfoStyles.content, recipeInfoStyles.shadow]}>
 
-                    <Animated.View style={[recipeInfoStyles.headerView(paralaxScroll), recipeInfoStyles.tray, { borderColor: buttonColor }]}>
+					<Animated.View style={[recipeInfoStyles.headerView(paralaxScroll), recipeInfoStyles.tray, { borderColor: buttonColor }]}>
 						<TouchableOpacity onLongPress={() => handleFavoriteChange()}>
 							<Text style={recipeInfoStyles.header}>{route.params.data.dispName}</Text>
 						</TouchableOpacity>
-                    </Animated.View>
+					</Animated.View>
 
 					<View style={[recipeInfoStyles.tray]}>
-	                    <Text style={[recipeInfoStyles.header2]}>About</Text>
+						<Text style={[recipeInfoStyles.header2]}>About</Text>
 						<View style={[recipeInfoStyles.tray, recipeInfoStyles.miniTray]}>
-		                    <Text style={[styles.text, recipeInfoStyles.trayText]}>{route.params.data.desc}</Text>
+							<Text style={[styles.text, recipeInfoStyles.trayText]}>{route.params.data.desc}</Text>
 						</View>
 					</View>
 
 					<View style={[recipeInfoStyles.tray]}>
-	                    <Text style={[recipeInfoStyles.header2]}>Ingredients</Text>
-	                    {amounts(route.params.data.quantity, route.params.data.ingredients)}
+						<Text style={[recipeInfoStyles.header2]}>Ingredients</Text>
+						{amounts(route.params.data.quantity, route.params.data.ingredients)}
 					</View>
 
-                </View>
-            </Animated.ScrollView>
-        </View>
-    );
+				</View>
+			</Animated.ScrollView>
+		</View>
+	);
 	
 	
 	function handleFavoriteChange() {
@@ -86,25 +86,25 @@ export default function RecipeInfoScreen({ route }) {
 }
 
 function amounts(quantity, ingredients) {
-    if (quantity.length != ingredients.length) { //Error handling
-        return <Text style={styles.text}>Count mismatch. Take this one up with the devs.</Text>
-    }
+	if (quantity.length != ingredients.length) { //Error handling
+		return <Text style={styles.text}>Count mismatch. Take this one up with the devs.</Text>
+	}
 
-    i = -1 //Yes I know this is a hack. Fight me. It's 2:40 AM.
-    return quantity.map(data => {
-        i++
-        return (
-            retVal = [],
+	i = -1 //Yes I know this is a hack. Fight me. It's 2:40 AM.
+	return quantity.map(data => {
+		i++
+		return (
+			retVal = [],
 
-            count = quantity[i],
-            ingredient = ingredients[i],
-            retVal.concat(
+			count = quantity[i],
+			ingredient = ingredients[i],
+			retVal.concat(
 				<View style={[recipeInfoStyles.tray, recipeInfoStyles.miniTray]} key={ingredient[i]}>
-	                <Text style={[styles.text, recipeInfoStyles.trayText]}>• {count}x {ingredient}</Text>
+					<Text style={[styles.text, recipeInfoStyles.trayText]}>• {count}x {ingredient}</Text>
 				</View>
-            )
-        )
-    })
+			)
+		)
+	})
 }
 
 
@@ -122,41 +122,41 @@ const recipeInfoStyles = StyleSheet.create({
 		shadowOpacity: 1,
 		shadowRadius: 50,
 	},
-    paralaxScroll: {
-        width: "100%",
-    },
-    content: {
-        marginBottom: 50,
-        height: "100%",
-    },
-    header: {
-        fontSize: headerFontSize,
-        textAlign: 'center',
+	paralaxScroll: {
+		width: "100%",
+	},
+	content: {
+		marginBottom: 50,
+		height: "100%",
+	},
+	header: {
+		fontSize: headerFontSize,
+		textAlign: 'center',
 		fontWeight: "bold",
-    },
-    header2: {
-        fontSize: headerFontSize * 0.75,
-        color: '#000',
-        fontWeight: "bold",
-        marginLeft: 8,
-        marginBottom: 12,
-    },
-    headerView: paralaxScroll => ({
-        width: "100%",
-        overflow: "hidden",
-        transform: [
-            {
-                translateY: paralaxScroll.interpolate({
-                    inputRange: [-bannerHeight, 0, bannerHeight],
-                    outputRange: [-220, -20 , 0],
-                })}]
-    }),
+	},
+	header2: {
+		fontSize: headerFontSize * 0.75,
+		color: '#000',
+		fontWeight: "bold",
+		marginLeft: 8,
+		marginBottom: 12,
+	},
+	headerView: paralaxScroll => ({
+		width: "100%",
+		overflow: "hidden",
+		transform: [
+			{
+				translateY: paralaxScroll.interpolate({
+					inputRange: [-bannerHeight, 0, bannerHeight],
+					outputRange: [-220, -20 , 0],
+				})}]
+	}),
 	tray:{
 		backgroundColor: "#fff",
 		borderRadius: 20,
 		borderWidth: 3,
 		borderColor: "#00000000",
-        overflow: "hidden",
+		overflow: "hidden",
 		paddingTop: 15,
 		paddingBottom: 15,
 		paddingLeft: 5,
@@ -176,24 +176,24 @@ const recipeInfoStyles = StyleSheet.create({
 		fontSize: 19,
 		marginLeft: 10
 	},
-    foodImage: paralaxScroll => ({
-        resizeMode: 'cover',
-        width: "100%",
-        height: bannerHeight,
+	foodImage: paralaxScroll => ({
+		resizeMode: 'cover',
+		width: "100%",
+		height: bannerHeight,
 		marginTop: 29,
 		backgroundColor: "#000",
-        transform: [
-            {
-                translateY: paralaxScroll.interpolate({
-                    inputRange: [-bannerHeight, 0, bannerHeight],
-                    outputRange: [-245, -20 , 40],
-                })
-            },
-            {
-                scale: paralaxScroll.interpolate({
-                    inputRange: [-bannerHeight, 0, bannerHeight],
-                    outputRange: [1.3, 1.1, 1], //Starts at 110% scale, and shrink to 100%.
-                })}
+		transform: [
+			{
+				translateY: paralaxScroll.interpolate({
+					inputRange: [-bannerHeight, 0, bannerHeight],
+					outputRange: [-245, -20 , 40],
+				})
+			},
+			{
+				scale: paralaxScroll.interpolate({
+					inputRange: [-bannerHeight, 0, bannerHeight],
+					outputRange: [1.3, 1.1, 1], //Starts at 110% scale, and shrink to 100%.
+				})}
 		]
 	}),
 });
