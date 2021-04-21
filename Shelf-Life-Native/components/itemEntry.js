@@ -39,7 +39,7 @@ export default function ItemEntryPage(params) {
             },
             body: JSON.stringify({
                 "key": GLOBAL.LOGIN_TOKEN,
-                "item_official_name": officialName,
+                "item_official_name": name,
                 "ingredient_id": params.id,                
             })
     
