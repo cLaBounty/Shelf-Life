@@ -10,12 +10,23 @@ load_dotenv()
 TOKEN = os.getenv('DB_PASSOWRD')
 
 doPermanentChanges = True # If this is True, the changes you make will affect the database, otherwise it will just store them locally
-
+onlineIDs = True
 def getDatabase():
     return mysql.connector.connect(user='admin', password=TOKEN,
                               host='shelflife.cizcr7arqko1.us-east-2.rds.amazonaws.com',
                               database='shelfLifeDB', buffered=True)    
 
+def getNameFromID(id):
+    if onlineIDs:
+        db = getDatabase()
+        cursor = db.cursor()
+        query = ('''SELECT name FROM Ingredients WHERE ingredient_id={0};'''.format(id))
+        cursor.execute(query, params=None)
+        output = cursor.fetchone()            
+        closeDatabase(db)
+        return output[0]
+    else:
+        return convertIDtoName(id)
 def closeDatabase(db):
     db.close()
 
@@ -196,7 +207,7 @@ def getSearchableIngredientsOfIDs(ids):
     recipe_table = {}
     for entry in output:
         key = str(entry[0])
-        ing_name = convertIDtoName(entry[1])
+        ing_name = getNameFromID(entry[1])
         try:
             table_entry = recipe_table[key]                    
             table_entry.append(ing_name)
@@ -233,7 +244,7 @@ def getSearchableIngredientsOfRecipe(id, convertFromIDs=False):
     output = cursor.fetchall()               
     closeDatabase(db)
     if convertFromIDs:
-        output = [convertIDtoName(x[0]) for x in output]
+        output = [getNameFromID(x[0]) for x in output]
     return output
 
 def getIngredientsOfRecipe(id):
@@ -295,9 +306,10 @@ def getMatchingRecipes(pantry_id, min_number_matched_ingredients=1):
     
 
 if __name__ == '__main__':
+    print(getNameFromID(3))
     #getIngredientsOfIDs([1,2])
     #getSearchableIngredientsOfIDs([1,2,3])
-    getRecipesByIDs([1,2])
+    #getRecipesByIDs([1,2])
     #getMatchingRecipes(1)
     #print(getRecipeByID(43))
     #print(convertIDtoName(1072))
@@ -310,3 +322,4 @@ if __name__ == '__main__':
     #addItem(pantry_id, item_info)
     #print(getAllItemsInPantry(pantry_id))
     #print(checkIfTokenIsInUse(233))
+    print(getNameFromID(4))
