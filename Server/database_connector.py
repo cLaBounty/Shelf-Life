@@ -27,6 +27,7 @@ def getNameFromID(id):
         return output[0]
     else:
         return convertIDtoName(id)
+
 def closeDatabase(db):
     db.close()
 
@@ -105,14 +106,26 @@ def getAllItemsInPantry(pantry_id):
 def addItem(pantry_id, item_info):
     db = getDatabase()
     cursor = db.cursor()            
+
+    item_id_query = ('''SELECT MAX(item_id) FROM shelfLifeDB.pantries_ingredients_xref WHERE pantry_id={0};'''.format(pantry_id))
+    cursor.execute(item_id_query, params=None)    
+    item_id = cursor.fetchone()            
+    if item_id[0] == None:
+        item_id = 1
+    else:
+        item_id = item_id[0] + 1
+
+
     item_official_name = item_info["item_official_name"]
     try:
         ingredient_id = item_info["ingredient_id"]        
     except:
         ingredient_id = -1
-    query = ('''INSERT INTO pantries_ingredients_xref(pantry_id, ingredient_id, item_official_name)
-    VALUES ({0}, {1}, "{2}")'''
-    .format(pantry_id, ingredient_id, item_official_name))
+
+
+    query = ('''INSERT INTO pantries_ingredients_xref(pantry_id, ingredient_id, item_official_name, item_id)
+    VALUES ({0}, {1}, "{2}", {3})'''
+    .format(pantry_id, ingredient_id, item_official_name, item_id))
     cursor.execute(query, params=None)    
     commitToDB(db)
     closeDatabase(db)
@@ -306,7 +319,7 @@ def getMatchingRecipes(pantry_id, min_number_matched_ingredients=1):
     
 
 if __name__ == '__main__':
-    print(getNameFromID(3))
+    #print(getNameFromID(3))
     #getIngredientsOfIDs([1,2])
     #getSearchableIngredientsOfIDs([1,2,3])
     #getRecipesByIDs([1,2])
@@ -315,11 +328,11 @@ if __name__ == '__main__':
     #print(convertIDtoName(1072))
     #getMatchingRecipes()    
     #print(getUserSearchableIngredients())
-    #info = getUserInformation("rhys")    
-    #pantry_id = info[5]
-    #item_info = {}
-    #item_info["item_official_name"] = "roscco spaghetti"
-    #addItem(pantry_id, item_info)
+    info = getUserInformation("rhys")    
+    pantry_id = info[5]
+    item_info = {}
+    item_info["item_official_name"] = "roscco spaghetti"
+    addItem(pantry_id, item_info)
     #print(getAllItemsInPantry(pantry_id))
     #print(checkIfTokenIsInUse(233))
-    print(getNameFromID(4))
+    #print(getNameFromID(4))
