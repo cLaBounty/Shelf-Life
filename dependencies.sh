@@ -16,6 +16,9 @@ npm install react-native-fast-image --save
 react-native link react-native-fast-image
 npm install react-native-dropdown-picker --save
 npm install --save react-native-vector-icons
+npm i expo-chart-kit
+npm install react-native-chart-kit
+npm install react-native-svg
 
 pip install Flask
 pip install requests
