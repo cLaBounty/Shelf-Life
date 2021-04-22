@@ -21,8 +21,8 @@ export default function ItemEntryPage(params) {
 		mode = "edit"
 	}
 	else if (params.itemName) { //Adding a new pantry item
-		name=params.itemName
-		dispName=name
+		name=params.itemNameOfficial
+		dispName=params.itemName
 		category=params.category
 	}
 

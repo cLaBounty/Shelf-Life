@@ -150,10 +150,10 @@ export default function PantryScreen({ navigation }) {
 	function filterPantry(data, index) {
 		if (data.dispName.toLowerCase().indexOf(searchQ.toLowerCase()) > -1) {
 			if (order == "alpha") {
-				return ({dispName: data.dispName, name: data.name, quantity: data.quantity, expDate: data.expDate, price: data.price, value: data.name, key: index, id: data.id})
+				return ({dispName: data.dispName, name: data.name, quantity: data.quantity, expDate: data.expDate, price: data.price, value: data.name, key: data.id, id: data.id})
 			}
 			else if (order == "quantity") {
-				return ({dispName: data.dispName, name: data.name, quantity: data.quantity, expDate: data.expDate, price: data.price, value: data.quantity, key: index,  id: data.id})
+				return ({dispName: data.dispName, name: data.name, quantity: data.quantity, expDate: data.expDate, price: data.price, value: data.quantity, key: data.id,  id: data.id})
 			}
 		}
 		return null
@@ -236,7 +236,7 @@ export default function PantryScreen({ navigation }) {
 				friction={2}
 				renderRightActions={renderRightActions}
 			>
-				<View key={item.name}>
+				<View key={item.id}>
 					<Pressable
 						onPress={() => navigation.navigate('Item Info', { item })}
 						onLongPress={() => promptDelete()}
