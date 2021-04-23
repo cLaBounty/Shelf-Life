@@ -19,6 +19,9 @@ npm install --save react-native-vector-icons
 npm i expo-chart-kit
 npm install react-native-chart-kit
 npm install react-native-svg
+react-native link react-native-svg
+react-native link react-native-svg
+
 
 pip install Flask
 pip install requests
