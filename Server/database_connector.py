@@ -16,17 +16,6 @@ def getDatabase():
                               host='shelflife.cizcr7arqko1.us-east-2.rds.amazonaws.com',
                               database='shelfLifeDB', buffered=True)    
 
-def getNameFromID(id):
-    if onlineIDs:
-        db = getDatabase()
-        cursor = db.cursor()
-        query = ('''SELECT name FROM Ingredients WHERE ingredient_id={0};'''.format(id))
-        cursor.execute(query, params=None)
-        output = cursor.fetchone()            
-        closeDatabase(db)
-        return output[0]
-    else:
-        return convertIDtoName(id)
 def closeDatabase(db):
     db.close()
 
@@ -105,16 +94,36 @@ def getAllItemsInPantry(pantry_id):
 def addItem(pantry_id, item_info):
     db = getDatabase()
     cursor = db.cursor()            
+
+    item_id_query = ('''SELECT MAX(item_id) FROM shelfLifeDB.pantries_ingredients_xref WHERE pantry_id={0};'''.format(pantry_id))
+    cursor.execute(item_id_query, params=None)    
+    item_id = cursor.fetchone()            
+    if item_id[0] == None:
+        item_id = 1
+    else:
+        item_id = item_id[0] + 1
+
+
     item_official_name = item_info["item_official_name"]
     try:
         ingredient_id = item_info["ingredient_id"]        
     except:
         ingredient_id = -1
-    query = ('''INSERT INTO pantries_ingredients_xref(pantry_id, ingredient_id, item_official_name)
-    VALUES ({0}, {1}, "{2}")'''
-    .format(pantry_id, ingredient_id, item_official_name))
+
+
+    query = ('''INSERT INTO pantries_ingredients_xref(pantry_id, ingredient_id, item_official_name, item_id)
+    VALUES ({0}, {1}, "{2}", {3})'''
+    .format(pantry_id, ingredient_id, item_official_name, item_id))
     cursor.execute(query, params=None)    
     commitToDB(db)
+    closeDatabase(db)
+
+def deleteItemFromPantry(pantry_id, item_id):
+    db = getDatabase()
+    cursor = db.cursor()    
+    query = ('''DELETE FROM pantries_ingredients_xref WHERE pantry_id={0} AND item_id={1};'''.format(pantry_id, item_id))    
+    cursor.execute(query, params=None)
+    commitToDB(db)    
     closeDatabase(db)
 
 def generateNewPantry():
@@ -125,6 +134,13 @@ def generateNewPantry():
     cursor.execute(query, params=None)
     commitToDB(db)    
     closeDatabase(db)
+
+"""
+
+RECIPE STUFF
+
+"""
+
 
 def convertCursorOutputToJSON(output):
     recipe_dict = {}  
@@ -304,9 +320,20 @@ def getMatchingRecipes(pantry_id, min_number_matched_ingredients=1):
     result.sort(reverse=True)    
     return result
     
+def getNameFromID(id):
+    if onlineIDs:
+        db = getDatabase()
+        cursor = db.cursor()
+        query = ('''SELECT name FROM Ingredients WHERE ingredient_id={0};'''.format(id))
+        cursor.execute(query, params=None)
+        output = cursor.fetchone()            
+        closeDatabase(db)
+        return output[0]
+    else:
+        return convertIDtoName(id)
 
 if __name__ == '__main__':
-    print(getNameFromID(3))
+    #print(getNameFromID(3))
     #getIngredientsOfIDs([1,2])
     #getSearchableIngredientsOfIDs([1,2,3])
     #getRecipesByIDs([1,2])
@@ -315,11 +342,12 @@ if __name__ == '__main__':
     #print(convertIDtoName(1072))
     #getMatchingRecipes()    
     #print(getUserSearchableIngredients())
-    #info = getUserInformation("rhys")    
-    #pantry_id = info[5]
-    #item_info = {}
-    #item_info["item_official_name"] = "roscco spaghetti"
+    info = getUserInformation("rhys")    
+    pantry_id = info[5]
+    item_info = {}
+    item_info["item_official_name"] = "roscco spaghetti"
     #addItem(pantry_id, item_info)
+    deleteItemFromPantry(pantry_id, 3)
     #print(getAllItemsInPantry(pantry_id))
     #print(checkIfTokenIsInUse(233))
-    print(getNameFromID(4))
+    #print(getNameFromID(4))

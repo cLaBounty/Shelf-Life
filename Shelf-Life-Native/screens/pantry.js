@@ -150,10 +150,10 @@ export default function PantryScreen({ navigation }) {
 	function filterPantry(data, index) {
 		if (data.dispName.toLowerCase().indexOf(searchQ.toLowerCase()) > -1) {
 			if (order == "alpha") {
-				return ({dispName: data.dispName, name: data.name, quantity: data.quantity, expDate: data.expDate, price: data.price, value: data.name, key: index})
+				return ({dispName: data.dispName, name: data.name, quantity: data.quantity, expDate: data.expDate, price: data.price, value: data.name, key: data.id, id: data.id})
 			}
 			else if (order == "quantity") {
-				return ({dispName: data.dispName, name: data.name, quantity: data.quantity, expDate: data.expDate, price: data.price, value: data.quantity, key: index})
+				return ({dispName: data.dispName, name: data.name, quantity: data.quantity, expDate: data.expDate, price: data.price, value: data.quantity, key: data.id,  id: data.id})
 			}
 		}
 		return null
@@ -171,7 +171,7 @@ export default function PantryScreen({ navigation }) {
 				[
 					{
 						text: "Remove",
-						onPress: () => deleteItem(),
+						onPress: () => deleteItem(item.id),
 						style: "destructive"
 					},
 					{
@@ -182,8 +182,33 @@ export default function PantryScreen({ navigation }) {
 			)
 		}
 		
-		function deleteItem() {
-			Alert.alert("Consider it gone!","The item would be deleted if the code were in place yet")
+		function deleteItem(item_id) {
+			GLOBAL.pantryItemChange = true					
+        	fetch(GLOBAL.BASE_URL + '/api/user/pantry/remove', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "key": GLOBAL.LOGIN_TOKEN,
+                "item_id": item_id,                
+            })
+    
+        }).then((response) => response.json()).then((json) => {
+            status = json["Status"]
+            if (status == "OK") { // successful sign up        
+                getRemotePantry()
+            }
+            else if (status == "INVALID TOKEN")
+            {
+                alert("Invalid login token, log in again")
+            }else if(status == "INVALID ITEM ID")			
+			{
+				alert("Item ID not found in database")
+			}
+        }
+        );
 		}
 		
 		function renderRightAction(content, func, buttonStyle) 
@@ -211,7 +236,7 @@ export default function PantryScreen({ navigation }) {
 				friction={2}
 				renderRightActions={renderRightActions}
 			>
-				<View key={item.name}>
+				<View key={item.id}>
 					<Pressable
 						onPress={() => navigation.navigate('Item Info', { item })}
 						onLongPress={() => promptDelete()}
