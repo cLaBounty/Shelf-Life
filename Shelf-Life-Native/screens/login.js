@@ -1,14 +1,66 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View, ImageBackground, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TextInput, View, ImageBackground, TouchableOpacity, Alert } from 'react-native';
 import styles from '../Style';
 const GLOBAL = require('../Globals')
+
+async function getUserInformation()
+{  
+  userInfo = null
+  if (GLOBAL.LOGIN_TOKEN) {
+    await fetch(GLOBAL.BASE_URL + '/api/user/get', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "key": GLOBAL.LOGIN_TOKEN,
+      })
+
+    }).then((response) => response.json()).then((json) => {
+      status = json["Status"]
+      if (status == "OK") { // successful sign up        
+        userInfo = json        
+      }
+      else if (status == "INVALID TOKEN")
+      {
+        alert("Expired login token")    
+      }
+      else if(status == "ERROR")
+      {
+        alert("Unknown server error")
+      }
+      else{
+        alert(status)
+      }
+    }
+    );    
+  }
+  else
+  {
+    alert("No login token found")
+  }  
+  return userInfo
+}
+
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [password, setPassword] = useState("");
   const [tab, setTab] = useState("Login");
+  
+  useEffect(() => {
+    (async () => {
+      const data = await getUserInformation()      
+      if(data)
+      {
+        const displayName = data["Display Name"]; // from database        
+        navigation.navigate('mainNav', { name: displayName });
+      }
+    })();
+  }, []);
 
   if (tab === "Login") {
     return (
@@ -90,9 +142,7 @@ export default function LoginScreen({ navigation }) {
   }
 }
 
-const login = (email, password, navigation) => {  
-
-
+const login = (email, password, navigation) => {
   fetch(GLOBAL.BASE_URL+'/api/user/login', {
     method: 'POST',
     headers: {
@@ -108,26 +158,34 @@ const login = (email, password, navigation) => {
     status = json["Status"]    
     if (status == "OK") { // successful sign up    
       const displayName = json["display_name"]; // from database
+      GLOBAL.LOGIN_TOKEN = json["login_token"]
       navigation.navigate('mainNav', { name: displayName });
+
     }
     else if(status == "ERROR")  
-    {    
-      // TODO: Expand here with invalid error codes, i.e invalid email, password, username
+    {
+      Alert.alert('ERROR', 'Something went wrong. Please try again later.', [
+        {text: 'OK'}
+      ]);
     }
     else if(status == "INVALID PASSWORD")  
-    { 
-      console.log("Invalid Password")   
-      // TODO: Expand here with invalid error codes, i.e invalid email, password, username
+    {
+      Alert.alert('ERROR: Invalid Password', 'You have entered an invalid password. Please try again with a different password.', [
+        {text: 'OK'}
+      ]);
     }
     else if(status == "INVALID EMAIL")  
     {    
-      console.log("Invalid Email")
-      // TODO: Expand here with invalid error codes, i.e invalid email, password, username
+      Alert.alert('ERROR: Invalid Email', '\"' + email + '\" is not a valid email. Please try again with a different email.', [
+        {text: 'OK'}
+      ]);
     }
-    }).catch((error) => {
-      console.log("Server Error") // this'll get called if the server is offline / can't be reached
+    }).catch((error) => { // this'll get called if the server is offline / can't be reached
       console.error(error); // catch networking errors
-    });  
+      Alert.alert('ERROR: Server is offline', 'There server is offline or cannot be reached. Please try again later.', [
+        {text: 'OK'}
+      ]);
+    });
 }
 
 const signUp = (email, displayName, password, navigation) => {
@@ -147,14 +205,20 @@ const signUp = (email, displayName, password, navigation) => {
   status = json["Status"]
   
   if (status == "OK") { // successful sign up    
-    navigation.navigate('mainNav', { name: displayName });
+    GLOBAL.LOGIN_TOKEN = json["login_token"]    
+    navigation.navigate('mainNav', { name: displayName });    
   }
   else if(status == "ERROR")  
   {    
-    // TODO: Expand here with invalid error codes, i.e invalid email, password, username
+    Alert.alert('ERROR', 'Something went wrong. Please try again later.', [
+      {text: 'OK'}
+    ]);
   }
   }).catch((error) => {
     console.error(error); // catch networking errors
+    Alert.alert('ERROR: Server is offline', 'There server is offline or cannot be reached. Please try again later.', [
+      {text: 'OK'}
+    ]);
   });
 }
 
