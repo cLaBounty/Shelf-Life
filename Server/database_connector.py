@@ -203,7 +203,7 @@ def getPantryPriceInfo(pantry_id):
     db = getDatabase()
     cursor = db.cursor()
     pricing_query = ('''
-    SELECT price, category FROM pantries_ingredients_xref WHERE pantry_id={0} AND category IS NOT NULL AND price IS NOT NULL
+    SELECT price, category FROM pantries_ingredients_xref WHERE pantry_id={0} AND category IS NOT NULL AND price IS NOT NULL AND price > 0
     '''.format(pantry_id))
     cursor.execute(pricing_query, params=None)
     output = cursor.fetchall()           
