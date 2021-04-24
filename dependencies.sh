@@ -21,7 +21,7 @@ npm install react-native-chart-kit
 npm install react-native-svg
 react-native link react-native-svg
 react-native link react-native-svg
-
+npm install @react-native-async-storage/async-storage
 
 pip install Flask
 pip install requests
