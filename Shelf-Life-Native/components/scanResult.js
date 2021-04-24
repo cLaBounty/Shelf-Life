@@ -30,8 +30,9 @@ function ScanResult(props) {
     const [parseState, setParseState] = useState('CODE');
     const [officialNameSplit, setOfficialNameSplit] = useState([]);
     const [officialName, setOfficialName] = useState([]);
-    const [commonName, setCommonName] = useState('');
+    const [commonName, setCommonName] = useState('');    
     const [category, setCategory] = useState('');
+    const [nutritionInfo, setNutritionInfo] = useState();
     const [selected, setSelected] = useState([])
     const [id, setID] = useState(-1)
     useEffect(() => {
@@ -49,6 +50,11 @@ function ScanResult(props) {
                 setParseState("NEED_SELECTION")
                 setOfficialName(json["Official Name"])
                 setOfficialNameSplit(json["Official Name"].split(" "))
+                if(json["Nutrition"]["Status"] == "OK")
+                {
+                    setNutritionInfo(json["Nutrition"])
+                    console.log(json["Nutrition"])
+                }
             } else if (status == "NOT_FOUND") {
                 setParseState("NOT_FOUND")
             }
@@ -127,7 +133,9 @@ function ScanResult(props) {
                 <ItemEntryPage itemNameOfficial={officialName}
                     itemName={commonName}
                     category={category}
+                    barcode={props.barcode}
                     id={id}
+                    nutritionInfo={nutritionInfo}
                     resetScanner={props.press}
                     goBack={() => props.goBack()}
                 />

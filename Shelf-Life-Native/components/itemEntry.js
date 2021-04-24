@@ -9,6 +9,10 @@ export default function ItemEntryPage(params) {
 	quantity = ""
 	price = ""
 	expDate = ""
+	barcode = ""
+	nutritionInfo = {
+		Status: "ERROR"
+	}
 	mode = "new" //set to "edit" for editing an ingredient
 	const [itemAddingState, setItemAddingState] = useState("EDITING_VALUES")
 
@@ -24,6 +28,8 @@ export default function ItemEntryPage(params) {
 		name=params.itemNameOfficial
 		dispName=params.itemName
 		category=params.category
+		barcode = params.barcode
+		nutritionInfo = params.nutritionInfo
 	}
 
 	handleSubmit = () => {
@@ -40,7 +46,9 @@ export default function ItemEntryPage(params) {
             body: JSON.stringify({
                 "key": GLOBAL.LOGIN_TOKEN,
                 "item_official_name": name,
-                "ingredient_id": params.id,                
+                "ingredient_id": params.id,  
+				"barcode": barcode,
+				"nutrition_info": nutritionInfo
             })
     
         }).then((response) => response.json()).then((json) => {

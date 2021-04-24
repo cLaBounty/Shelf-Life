@@ -110,10 +110,42 @@ def addItem(pantry_id, item_info):
     except:
         ingredient_id = -1
 
+    try:
+        barcode = int(item_info["barcode"])
+    except:
+        barcode = -1
+    
+    try:
+        barcode_already_exists_query = ('''SELECT * FROM barcode_nutrition_xref WHERE barcode={0}'''.format(barcode))
+        cursor.execute(barcode_already_exists_query, params=None)    
+        output = cursor.fetchall()
+        if len(output) == 0:
+            nutrition_info = item_info["nutrition_info"]        
+            if nutrition_info["Status"] == 'OK':            
+                fields = "barcode, "
+                values = "{0}, ".format(barcode)            
+                nutrition_fields = ["fat","carbohydrates","cholesterol","proteins","sodium" ]
+                for i in range(len(nutrition_fields)):                
+                    field = nutrition_fields[i]
+                    try:
+                        val = nutrition_info[field]
+                    except:
+                        continue
+                    values += str(val)
+                    fields += field
 
-    query = ('''INSERT INTO pantries_ingredients_xref(pantry_id, ingredient_id, item_official_name, item_id)
-    VALUES ({0}, {1}, "{2}", {3})'''
-    .format(pantry_id, ingredient_id, item_official_name, item_id))
+                    if i != len(nutrition_fields)-1:
+                        fields += ',' 
+                        values += ','            
+                    
+                nutrition_query = ('''INSERT INTO barcode_nutrition_xref({0}) VALUES ({1})'''.format(fields, values))            
+                cursor.execute(nutrition_query, params=None)            
+    except:
+        pass
+
+    query = ('''INSERT INTO pantries_ingredients_xref(pantry_id, ingredient_id, item_official_name, item_id, barcode)
+    VALUES ({0}, {1}, "{2}", {3}, {4})'''
+    .format(pantry_id, ingredient_id, item_official_name, item_id, barcode))
     cursor.execute(query, params=None)    
     commitToDB(db)
     closeDatabase(db)
@@ -135,6 +167,30 @@ def generateNewPantry():
     commitToDB(db)    
     closeDatabase(db)
 
+def getPantryNutritionInfo(pantry_id):
+    db = getDatabase()
+    cursor = db.cursor()
+    barcode_query = ('''SELECT barcode FROM pantries_ingredients_xref WHERE barcode > 0 AND pantry_id = {0};'''.format(pantry_id))
+    cursor.execute(barcode_query, params=None)
+    output = cursor.fetchall()           
+    barcodes = [x[0] for x in output]
+    where_clause = generateWhereClauseForIDs(barcodes)
+    nutrition_query = ('''SELECT * FROM barcode_nutrition_xref WHERE barcode IN ({0})'''.format(where_clause))    
+    cursor.execute(nutrition_query, params=None)
+    all_nutrition_info = cursor.fetchall()     
+
+    
+    nutrition_fields = ["fat","carbohydrates","cholesterol","proteins","sodium" ]
+    pantry_nutrition = {}
+    for field in nutrition_fields:
+        pantry_nutrition[field] = 0
+         
+    for nutrition_info in all_nutrition_info:     
+        for i in range(len(nutrition_fields)):
+            field = nutrition_fields[i]
+            if nutrition_info[i+1] != None:
+                pantry_nutrition[field] += nutrition_info[i+1]    
+    return pantry_nutrition
 """
 
 RECIPE STUFF
@@ -342,12 +398,13 @@ if __name__ == '__main__':
     #print(convertIDtoName(1072))
     #getMatchingRecipes()    
     #print(getUserSearchableIngredients())
-    info = getUserInformation("rhys")    
-    pantry_id = info[5]
-    item_info = {}
-    item_info["item_official_name"] = "roscco spaghetti"
+    #info = getUserInformation("rhys")    
+    #pantry_id = info[5]
+    #item_info = {}
+    #item_info["item_official_name"] = "roscco spaghetti"
     #addItem(pantry_id, item_info)
-    deleteItemFromPantry(pantry_id, 3)
+    #deleteItemFromPantry(pantry_id, 3)
+    getPantryNutritionInfo(1)
     #print(getAllItemsInPantry(pantry_id))
     #print(checkIfTokenIsInUse(233))
     #print(getNameFromID(4))
