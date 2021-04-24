@@ -71,7 +71,7 @@ def barcode():
                 response_dict["Nutrition"] = parsed_nutrition_info
                 response_dict["Category"] = "Misc"
                 try:
-                    cat = api_response_json["product"]["categories_hierarchy"][0]
+                    cat = api_response_json["product"]["categories_tags"][0]
                     if 'en:' in cat:
                         response_dict["Category"] = cat[cat.index('en:')+len('en:'):]
                 except:
