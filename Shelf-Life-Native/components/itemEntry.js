@@ -9,10 +9,13 @@ export default function ItemEntryPage(params) {
 	let dispName = ""
 	let quantity = ""
 	let price = ""
-	let mode = "new" //set to "edit" for editing an ingredient
+	let mode = "new" //set to "edit" for editing an ingredient	
 	let exp_date = ""
-	
-	const [expDate, setExpDate] = useState();
+	if (params.item)
+	{
+		exp_date = params.item.expDate
+	}
+	const [expDate, setExpDate] = useState(exp_date);
 	const [itemAddingState, setItemAddingState] = useState("EDITING_VALUES")
 
 	if (params.item) { //Check data for existing item in if one is passed
@@ -20,8 +23,7 @@ export default function ItemEntryPage(params) {
 		dispName = params.item.dispName
 		quantity = params.item.quantity
 		price = params.item.price.toString()		
-		mode = "edit"
-		setExpDate(params.item.exp_date)
+		mode = "edit"		
 	}
 	else if (params.itemName) { //Adding a new pantry item
 		name=params.itemNameOfficial
