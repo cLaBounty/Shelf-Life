@@ -50,6 +50,7 @@ function ScanResult(props) {
                 setParseState("NEED_SELECTION")
                 setOfficialName(json["Official Name"])
                 setOfficialNameSplit(json["Official Name"].split(" "))
+                setCategory(json["Category"])
                 if(json["Nutrition"]["Status"] == "OK")
                 {
                     setNutritionInfo(json["Nutrition"])
@@ -88,8 +89,7 @@ function ScanResult(props) {
             status = json["Status"]
             if (status == "OK") { // successful sign up        
                 setParseState("ENTERING_INFO")
-                setOfficialNameSplit(json["Official Name"])
-                setCategory(json["Category"])
+                setOfficialNameSplit(json["Official Name"])                
                 setCommonName(json["Common Name"])
                 setID(json["Ingredient ID"])
             }

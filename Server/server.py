@@ -69,6 +69,13 @@ def barcode():
                 if nutrion_fields_read >= 1:
                     parsed_nutrition_info["Status"] = "OK"
                 response_dict["Nutrition"] = parsed_nutrition_info
+                response_dict["Category"] = "Misc"
+                try:
+                    cat = api_response_json["product"]["categories_hierarchy"][0]
+                    if 'en:' in cat:
+                        response_dict["Category"] = cat[cat.index('en:')+len('en:'):]
+                except:
+                    pass
                 return response_dict
             else:
                 response_dict['Status'] = "NOT_FOUND"
@@ -312,8 +319,7 @@ def getMatchingRecipes():
 def getPantryNutritionInfo():
     info_dict = request.json
     key = info_dict["key"]
-    user = dbConnector.getUserInfoFromKey(key)
-    pantry_item = info_dict  # TODO: Add input validation
+    user = dbConnector.getUserInfoFromKey(key)    
     response_dict = {}
     if user:        
         response_dict["Status"] = "OK"
@@ -322,6 +328,18 @@ def getPantryNutritionInfo():
         response_dict["Status"] = "INVALID TOKEN"
     return response_dict
     
+@app.route('/api/user/pantry/price/', methods=['POST'])
+def getPantryPriceInfo():
+    info_dict = request.json
+    key = info_dict["key"]
+    user = dbConnector.getUserInfoFromKey(key)
+    response_dict = {}
+    if user:        
+        response_dict["Status"] = "OK"
+        response_dict["Price Info"] = dbConnector.getPantryPriceInfo(user["pantry_id"])
+    else:
+        response_dict["Status"] = "INVALID TOKEN"
+    return response_dict
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0")

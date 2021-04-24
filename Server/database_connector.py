@@ -142,10 +142,17 @@ def addItem(pantry_id, item_info):
                 cursor.execute(nutrition_query, params=None)            
     except:
         pass
-
-    query = ('''INSERT INTO pantries_ingredients_xref(pantry_id, ingredient_id, item_official_name, item_id, barcode)
-    VALUES ({0}, {1}, "{2}", {3}, {4})'''
-    .format(pantry_id, ingredient_id, item_official_name, item_id, barcode))
+    
+    category = item_info["category"]
+    price = item_info["price"]    
+    if type(price) != int:
+        if type(price) == str and len(price) > 0:
+            price = int(price)
+        else:
+            price = -1
+    query = ('''INSERT INTO pantries_ingredients_xref(pantry_id, ingredient_id, item_official_name, item_id, barcode, category, price)
+    VALUES ({0}, {1}, "{2}", {3}, {4}, "{5}", {6})'''
+    .format(pantry_id, ingredient_id, item_official_name, item_id, barcode, category, price))
     cursor.execute(query, params=None)    
     commitToDB(db)
     closeDatabase(db)
@@ -191,6 +198,40 @@ def getPantryNutritionInfo(pantry_id):
             if nutrition_info[i+1] != None:
                 pantry_nutrition[field] += nutrition_info[i+1]    
     return pantry_nutrition
+
+def getPantryPriceInfo(pantry_id):
+    db = getDatabase()
+    cursor = db.cursor()
+    pricing_query = ('''
+    SELECT price, category FROM pantries_ingredients_xref WHERE pantry_id={0} AND category IS NOT NULL AND price IS NOT NULL
+    '''.format(pantry_id))
+    cursor.execute(pricing_query, params=None)
+    output = cursor.fetchall()           
+    all_categories = []
+    chart_dict = {}
+    total = 0
+    for entry in output:
+        amount = entry[0]
+        category = entry[1]        
+        total += amount        
+        if not(category in all_categories):
+            all_categories.append(category)
+            chart_dict[category] = amount
+        else:
+            chart_dict[category] += amount
+    
+    for category in all_categories:
+        chart_dict[category] = chart_dict[category] / total
+    response_dict = {}
+    if len(all_categories) > 0:
+        response_dict["success"] = "OK"
+    else:
+        response_dict["success"] = "ERROR"
+    response_dict["all_categories"] = all_categories
+    response_dict["data"] = chart_dict
+    return response_dict
+    
+    
 """
 
 RECIPE STUFF
@@ -404,7 +445,8 @@ if __name__ == '__main__':
     #item_info["item_official_name"] = "roscco spaghetti"
     #addItem(pantry_id, item_info)
     #deleteItemFromPantry(pantry_id, 3)
-    getPantryNutritionInfo(1)
+    #getPantryNutritionInfo(1)
+    getPantryPriceInfo(1)
     #print(getAllItemsInPantry(pantry_id))
     #print(checkIfTokenIsInUse(233))
     #print(getNameFromID(4))

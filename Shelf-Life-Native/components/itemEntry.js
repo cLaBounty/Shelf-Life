@@ -48,7 +48,9 @@ export default function ItemEntryPage(params) {
                 "item_official_name": name,
                 "ingredient_id": params.id,  
 				"barcode": barcode,
-				"nutrition_info": nutritionInfo
+				"nutrition_info": nutritionInfo,
+				"category": category,
+				"price": price
             })
     
         }).then((response) => response.json()).then((json) => {
