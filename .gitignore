@@ -5,7 +5,8 @@
 # Xcode
 #
 Shelf-Life-Native/build/
-*/ios/*
+Shelf-Life-Native/ios/
+!Shelf-Life-Native/ios/ShelfLifeNative/
 
 # Android/IntelliJ
 #
@@ -13,9 +14,9 @@ build/
 .idea
 .gradle
 local.properties
-/Shelf-Life-Native/android/java_pid15484.hprof
-/Shelf-Life-Native/android/gradlew
-/Shelf-Life-Native/android/java_pid17317.hprof
+Shelf-Life-Native/android/java_pid15484.hprof
+Shelf-Life-Native/android/gradlew
+Shelf-Life-Native/android/java_pid17317.hprof
 Shelf-Life-Native/android/java_pid34243.hprof
 
 # node.js
