@@ -9,4 +9,6 @@ module.exports = {
 	favStatus: "false",
 	favRecipeIndex: 0,
 	recipe: "",
+	DISPLAY_NAME: "Name",
+	PANTRY_ID: 0
   };
