@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View, ScrollView, ImageBackground, Switch, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, TextInput, View, ScrollView, ImageBackground, Switch, SafeAreaView, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from '../Style';
+const GLOBAL = require('../Globals');
 
 export default function SettingsScreen({ navigation, route }) {
-  const [username, setUsername] = useState(route.params.username);
-  const [linkedPantry, setLinkedPantry] = useState("");
+  const [displayName, setDisplayName] = useState(GLOBAL.DISPLAY_NAME);
+  const [linkedPantry, setLinkedPantry] = useState(GLOBAL.PANTRY_ID);
 
   // general notification setting
   const [allowNotifications, setAllowNotifications] = useState();
@@ -128,6 +129,33 @@ export default function SettingsScreen({ navigation, route }) {
     }
   }
 
+  const updateDisplayNameDb = (value) => {
+    console.log(value)
+  }
+
+  const updatePantryIdDb = (value) => {
+    const pantryId = parseInt(value);
+    if (isNaN(pantryId)) {
+      Alert.alert('ERROR: Invalid Pantry ID', '\"' + value + '\" is not valid. Please enter a different pantry id.', [
+        {text: 'OK'}
+      ]);
+    }
+    else {
+      console.log(pantryId)
+      /*
+      if (pantryId exists in db) {
+        update users pantryID in db;
+        reload items in pantry;
+      }
+      else {
+        Alert.alert('ERROR: Unknown Pantry ID', '\"' + pantryId + '\" does not exist. Please enter a different pantry id.', [
+          {text: 'OK'}
+        ]);
+      }
+      */
+    }
+  }
+
   useEffect(() => {
     loadData();
   }, []);
@@ -139,21 +167,24 @@ export default function SettingsScreen({ navigation, route }) {
       <ImageBackground source={require('../assets/background.jpg')} style={styles.background}/>
 
       <ScrollView>
-        <Text style={settingsStyles.settingName}>Change Display Name</Text>
+        <Text style={settingsStyles.settingName}>Display Name</Text>
         <TextInput
           style={settingsStyles.inputField}
           placeholder="Display Name"
           placeholderTextColor="#9E9791"
-          defaultValue={route.params.username}
-          onChangeText={(value) => setUsername(value)}
+          defaultValue={displayName}
+          onChangeText={(value) => setDisplayName(value)}
+          onEndEditing={(e) => updateDisplayNameDb(e.nativeEvent.text)}
         />
-        <Text style={settingsStyles.settingName}>Link Pantry</Text>
+        <Text style={settingsStyles.settingName}>Pantry ID</Text>
         <TextInput
           style={settingsStyles.inputField}
-          placeholder="Pantry #"
+          placeholder="Pantry ID"
           placeholderTextColor="#9E9791"
+          defaultValue={linkedPantry.toString()}
           keyboardType="numeric"
           onChangeText={(value) => setLinkedPantry(value)}
+          onEndEditing={(e) => updatePantryIdDb(e.nativeEvent.text)}
         />
         <View style={settingsStyles.toggleSetting}>
           <Text style={settingsStyles.settingName}>Push Notifications</Text>
@@ -255,7 +286,7 @@ const settingsStyles = StyleSheet.create({
   inputField: {
 		width: '85%',
 		fontSize: 22,
-		color: '#fff',
+		color: '#9E9791',
 		margin: '7.5%',
     marginTop: 10,
     marginBottom: 0,
