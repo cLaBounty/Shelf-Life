@@ -22,8 +22,9 @@ export default function RecipesScreen({ navigation }) {
 	[recipesJSON, setRecipesJSON] = useState(require('../assets/recipeTest.json'))
 	useEffect(() => {
 		(async () => {
-		  const data = await getCookableRecipes()            
-		  setRecipesJSON(data)
+		  const data = await getCookableRecipes()     
+		  if (data.length > 0)
+		  	setRecipesJSON(data)
 		})();
 	  }, []);
 
@@ -226,6 +227,10 @@ async function getCookableRecipes()
 		alert("No recipes that match ingredients")        
         recipes = []
       }
+	  else if(status == "NO MATCHES")
+	  {
+		  alert("No cookable recipes")
+	  }
       else{
         alert("Expired login token")    
 		recipes = []
