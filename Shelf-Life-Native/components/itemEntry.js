@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, View, TouchableOpacity, Alert } from 'react-native';
 import DatePicker from 'react-native-datepicker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from '../Style';
-const GLOBAL = require('../Globals')
+import { scheduleNotification } from '../Notifications';
+import { exp } from 'react-native-reanimated';
+const GLOBAL = require('../Globals');
 
 export default function ItemEntryPage(params) {
 	let name = ""
 	let dispName = ""
-	let quantity = ""
-	let price = ""
+	let quantity = "1"
+	let price = "1"
 	let mode = "new" //set to "edit" for editing an ingredient	
 	let exp_date = ""
 	if (params.item)
@@ -32,43 +35,149 @@ export default function ItemEntryPage(params) {
 	}
 
 	const handleSubmit = () => {
-		GLOBAL.pantryItemChange = true
-		setItemAddingState("SENDING_TO_SERVER")
-		if (mode == "new") {
-			setItemAddingState("SENDING_TO_SERVER")
-        fetch(GLOBAL.BASE_URL + '/api/user/pantry/add', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                "key": GLOBAL.LOGIN_TOKEN,
-                "item_official_name": name,
-                "ingredient_id": params.id,                
-            })
-    
-        }).then((response) => response.json()).then((json) => {
-            status = json["Status"]
-            if (status == "OK") { // successful sign up        
-                setItemAddingState("ADDED")
-            }
-            else if (status = "INVALID TOKEN")
-            {
-                alert("Invalid login token, log in again")
-            }
+		const quantityInt = parseInt(quantity);
+        const priceFloat = parseFloat(price).toFixed(2);
+        if (isNaN(quantityInt)) {
+            Alert.alert('ERROR: Invalid Quantity', '\"' + quantity + '\" is not valid. Please try again with a different quantity.', [
+                {text: 'OK'}
+            ]);
         }
-        );
+        else if (isNaN(priceFloat)) {
+            Alert.alert('ERROR: Invalid Price', '\"' + price + '\" is not valid. Please try again with a different price.', [
+                {text: 'OK'}
+            ]);
+        }
+		else { // successful
+			GLOBAL.pantryItemChange = true
+			setItemAddingState("SENDING_TO_SERVER")
+			if (mode == "new") {
+				setItemAddingState("SENDING_TO_SERVER")
+				fetch(GLOBAL.BASE_URL + '/api/user/pantry/add', {
+					method: 'POST',
+					headers: {
+						Accept: 'application/json',
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({
+						"key": GLOBAL.LOGIN_TOKEN,
+						"item_official_name": name,
+						"ingredient_id": params.id,                
+					})
+				}).then((response) => response.json()).then((json) => {
+					status = json["Status"]
+					if (status == "OK") { // successful sign up        
+						setItemAddingState("ADDED")
+					}
+					else if (status = "INVALID TOKEN")
+					{
+						alert("Invalid login token, log in again")
+					}
+				});
 			}
 			if (mode == "edit") {
 				//TODO: Add pantry server code
 				setItemAddingState("UPDATED")
 				Alert.alert("Sure...", "Let's say that the pantry item was actually updated. It was detected, but the server code is TBD.")
 			}
+
+			// schedule notifications
+			// try individually
+			let data = [];
+			loadData(data);
+			console.log(data)
+
+			let data2 = [true, true, false, true, true, false]
+			console.log(data2)
+
+
+
+			if (data[0]) {
+				let date = new Date(expDate);
+				date.setHours(9); // send at 9:00am
+				
+				if (data[1]) {
+					let dayAfter = new Date(date.getTime());
+					dayAfter.setDate(date.getDate() + 1);
+					if (!isPastDate(dayAfter)) {
+						scheduleNotification("Expired: " + name, name + " expired yesterday", dayAfter);
+					}
+				}
+				if (data[2]) {
+					if (!isPastDate(date)) {
+						scheduleNotification("Expiring Soon: " + name, name + " expires today", date);
+					}
+				}
+				if (data[3]) {
+					let threeDaysBefore = new Date(date.getTime());
+					threeDaysBefore.setDate(date.getDate() - 3);
+					if (!isPastDate(threeDaysBefore)) {
+						scheduleNotification("Expiring Soon: " + name, name + " expires in 3 days", threeDaysBefore);
+					}
+				}
+				if (data[4]) {
+					let weekBefore = new Date(date.getTime());
+					weekBefore.setDate(date.getDate() - 7);
+					if (!isPastDate(weekBefore)) {
+						scheduleNotification("Expiring Soon: " + name, name + " expires in 1 week", weekBefore);
+					}
+				}
+				if (data[5]) {
+					let twoWeeksBefore = new Date(date.getTime());
+					twoWeeksBefore.setDate(date.getDate() - 14);
+					if (!isPastDate(twoWeeksBefore)) {
+						scheduleNotification("Expiring Soon: " + name, name + " expires in 2 weeks", twoWeeksBefore);
+					}
+				}
+				console.log("Allowed")
+			}
+			else {
+				console.log("Not Allowed")
+			}
 		}
+	}
 
 	const handleCancel = () => {
 		params.goBack(params.itemUnitPrice)
+	}
+
+	function isPastDate(date) {
+		const now = new Date();
+		if (date < now) return true;
+		return false;
+	}
+
+	// get setting preferences from AsyncStorage
+	const loadData = async (data) => {
+		let allowNotifications = true;
+		let allowNotifications_dayAfter = true;
+		let allowNotifications_expDate = true;
+		let allowNotifications_3daysBefore = true;
+		let allowNotifications_weekBefore = true;
+		let allowNotifications_2weeksBefore = true;
+
+		try {
+			if(await AsyncStorage.getItem('@allowNotifications') == "false")
+				allowNotifications = false;
+			if(await AsyncStorage.getItem('@allowNotifications_dayAfter') == "false")
+				allowNotifications_dayAfter = false;
+			if(await AsyncStorage.getItem('@allowNotifications_expDate') == "false")
+				allowNotifications_expDate = false;
+			if(await AsyncStorage.getItem('@allowNotifications_3daysBefore') == "false")
+				allowNotifications_3daysBefore = false;
+			if(await AsyncStorage.getItem('@allowNotifications_weekBefore') == "false")
+				allowNotifications_weekBefore = false;
+			if(await AsyncStorage.getItem('@allowNotifications_2weeksBefore') == "false")
+				allowNotifications_2weeksBefore = false;
+		} catch(err) {
+			console.error(err);
+		}
+
+		data.push(allowNotifications);
+		data.push(allowNotifications_dayAfter);
+		data.push(allowNotifications_expDate);
+		data.push(allowNotifications_3daysBefore);
+		data.push(allowNotifications_weekBefore);
+		data.push(allowNotifications_2weeksBefore);
 	}
 
 	return (
@@ -109,7 +218,7 @@ export default function ItemEntryPage(params) {
 					date={expDate}
 					mode="date"
 					placeholder="Expiration Date"
-					format="MMMM Do, YYYY"
+					format="MMM DD, YYYY"
 					minDate={new Date()}
 					confirmBtnText="Confirm"
 					cancelBtnText="Cancel"
