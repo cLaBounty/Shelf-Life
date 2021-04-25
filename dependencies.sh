@@ -23,10 +23,6 @@ react-native link react-native-svg
 react-native link react-native-svg
 npm install react-native-datepicker --save
 
-cd ios/
-pod install
-cd ..
-
 pip install Flask
 pip install requests
 pip install mysql-connector-python
