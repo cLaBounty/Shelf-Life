@@ -315,7 +315,10 @@ def getMatchingRecipes():
             user["pantry_id"], min_number_matched_ingredients=4)
         response_dict["Status"] = "OK"
         recipe_ids = [x[1] for x in recipe_matches]
-        response_dict["recipes"] = dbConnector.getRecipesByIDs(recipe_ids)
+        try:
+            response_dict["recipes"] = dbConnector.getRecipesByIDs(recipe_ids)
+        except:
+            response_dict["Status"] = "NO MATCHES"
     else:
         response_dict["Status"] = "INVALID TOKEN"
     return response_dict

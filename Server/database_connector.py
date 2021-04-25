@@ -156,7 +156,7 @@ def addItem(pantry_id, item_info):
     print(quantity)
     if type(quantity) != int:
         if type(quantity) == str and len(quantity) > 0:
-            quantity = int(price)
+            quantity = int(quantity)
         else:
             quantity = 1
     
@@ -451,7 +451,7 @@ if __name__ == '__main__':
     #print(getNameFromID(3))
     #getIngredientsOfIDs([1,2])
     #getSearchableIngredientsOfIDs([1,2,3])
-    #getRecipesByIDs([1,2])
+    getRecipesByIDs([1,2])
     #getMatchingRecipes(1)
     #print(getRecipeByID(43))
     #print(convertIDtoName(1072))
