@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, ImageBackground, SafeAreaView} from 'react-nati
 import styles from '../Style';
 import { PieChart } from 'react-native-chart-kit'
 import { Dimensions } from 'react-native'
+import { TouchableOpacity } from 'react-native-gesture-handler';
 const screenWidth = Dimensions.get('window').width
 
 const chartConfig = {
@@ -40,6 +41,7 @@ export default function ExpensesScreen({ navigation }) {
 			/>
 	    </View>
 	</SafeAreaView>
+	
   );
 }
 

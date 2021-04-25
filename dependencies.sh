@@ -21,11 +21,10 @@ npm install react-native-chart-kit
 npm install react-native-svg
 react-native link react-native-svg
 react-native link react-native-svg
+npm install @react-native-async-storage/async-storage
 npm install react-native-datepicker --save
-
-cd ios/
-pod install
-cd ..
+npm install --save react-native-push-notification
+npm install @react-native-community/push-notification-ios
 
 pip install Flask
 pip install requests
