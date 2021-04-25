@@ -5,8 +5,8 @@
 # Xcode
 #
 Shelf-Life-Native/build/
-Shelf-Life-Native/ios/
-!Shelf-Life-Native/ios/ShelfLifeNative/
+Shelf-Life-Native/ios/Pods/
+Shelf-Life-Native/ios/ShelfLifeNative.xcworkspace/
 
 # Android/IntelliJ
 #
