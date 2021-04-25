@@ -129,11 +129,28 @@ export default function SettingsScreen({ navigation, route }) {
     }
   }
 
-  const updateDisplayNameDb = (value) => {
-    console.log(value)
+  const updateDisplayNameDb = async (value) => {
+    if (GLOBAL.LOGIN_TOKEN) {
+      await fetch(GLOBAL.BASE_URL + '/api/user/update/name/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          "key": GLOBAL.LOGIN_TOKEN,
+          "new_name": value
+        })    
+      }).then((response) => response.json()).then((json) => {
+        status = json["Status"]
+        if (status == "OK") { // successful sign up            
+          GLOBAL.DISPLAY_NAME = value
+        }          
+      });
+    }
   }
 
-  const updatePantryIdDb = (value) => {
+  const updatePantryIdDb = async (value) => {
     const pantryId = parseInt(value);
     if (isNaN(pantryId)) {
       Alert.alert('ERROR: Invalid Pantry ID', '\"' + value + '\" is not valid. Please enter a different pantry id.', [
@@ -141,18 +158,24 @@ export default function SettingsScreen({ navigation, route }) {
       ]);
     }
     else {
-      console.log(pantryId)
-      /*
-      if (pantryId exists in db) {
-        update users pantryID in db;
-        reload items in pantry;
+      if (GLOBAL.LOGIN_TOKEN) {
+        await fetch(GLOBAL.BASE_URL + '/api/user/pantry/join/', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            "key": GLOBAL.LOGIN_TOKEN,
+            "new_id": pantryId
+          })    
+        }).then((response) => response.json()).then((json) => {
+          status = json["Status"]
+          if (status == "OK") { // successful sign up            
+            GLOBAL.pantryItemChange = true
+          }          
+        });
       }
-      else {
-        Alert.alert('ERROR: Unknown Pantry ID', '\"' + pantryId + '\" does not exist. Please enter a different pantry id.', [
-          {text: 'OK'}
-        ]);
-      }
-      */
     }
   }
 

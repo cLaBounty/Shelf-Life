@@ -140,6 +140,7 @@ def userinfo():
         if user:
             response["Status"] = "OK"
             response["Display Name"] = user["display_name"]
+            response["pantry_id"] = user["pantry_id"]
         else:
             response["Status"] = "INVALID TOKEN"
     except:
@@ -331,7 +332,10 @@ def getPantryNutritionInfo():
     response_dict = {}
     if user:        
         response_dict["Status"] = "OK"
-        response_dict["Nutrition Info"] = dbConnector.getPantryNutritionInfo(user["pantry_id"])
+        try:
+            response_dict["Nutrition Info"] = dbConnector.getPantryNutritionInfo(user["pantry_id"])
+        except:
+            response_dict["Status"] = "ERROR"            
     else:
         response_dict["Status"] = "INVALID TOKEN"
     return response_dict
@@ -348,6 +352,41 @@ def getPantryPriceInfo():
     else:
         response_dict["Status"] = "INVALID TOKEN"
     return response_dict
+
+@app.route('/api/user/update/name/', methods=['POST'])
+def changeName():
+    info_dict = request.json
+    key = info_dict["key"]
+    response = {}
+    response["Status"] = "OK"
+    user = dbConnector.getUserInfoFromKey(key)
+    if user:
+        try:            
+            new_name = info_dict["new_name"]        
+            print(new_name)    
+            dbConnector.changeName(new_name, key)
+        except:
+            pass                
+    else:
+        response["Status"] = "INVALID TOKEN"
+    return response
+
+@app.route('/api/user/pantry/join/', methods=['POST'])
+def changePantry():
+    info_dict = request.json
+    key = info_dict["key"]
+    response = {}
+    response["Status"] = "OK"
+    user = dbConnector.getUserInfoFromKey(key)
+    if user:
+        try:            
+            new_pantry_id = info_dict["new_id"]            
+            dbConnector.changePantry(new_pantry_id, key)
+        except:
+            pass                
+    else:
+        response["Status"] = "INVALID TOKEN"
+    return response
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0")

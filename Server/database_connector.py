@@ -25,10 +25,30 @@ def commitToDB(db):
         db.commit()
         closeDatabase(db)
 
+def changeName(new_name, login_token):
+    db = getDatabase()
+    cursor = db.cursor()    
+    pantry_update_query = ('''UPDATE Users SET display_name = "{0}" WHERE login_token ={1};'''.format(new_name, login_token))
+    cursor.execute(pantry_update_query, params=None)            
+    commitToDB(db)    
+    closeDatabase(db)
+
+def changePantry(new_pantry_id, login_token):
+    db = getDatabase()
+    cursor = db.cursor()    
+    pantry_update_query = ('''UPDATE Users SET pantry_id = {0} WHERE login_token ={1};'''.format(new_pantry_id, login_token))
+    cursor.execute(pantry_update_query, params=None)            
+    commitToDB(db)    
+    closeDatabase(db)
+
 def addNewUser(email, password, display_name):
     db = getDatabase()
-    cursor = db.cursor()
-    pantry_id = 1
+    cursor = db.cursor()    
+    pantry_id_query = ('''SELECT MAX(pantry_id) FROM Users;''')
+    cursor.execute(pantry_id_query, params=None)    
+    pantry_id = cursor.fetchone()[0] + 1
+
+
     query = ('''INSERT INTO Users(email, password, display_name, pantry_id) 
     VALUES ("{0}", "{1}", "{2}", {3})'''.format(
         email,

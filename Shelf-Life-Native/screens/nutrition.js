@@ -52,7 +52,11 @@ export default function NutritionScreen({ navigation }) {
 						{ name: currentValue, percentage: json["Nutrition Info"][currentValue]/total, color: colors[index], legendFontColor: '#FFFFFF', legendFontSize: 15 }
 					) } )				
 					setGraphData(new_data)	
-				}				
+				}	
+				else if(status == "ERROR")			
+				{
+					console.log("graph data error")
+				}
 				else {
 					alert("Expired login token")
 				}

@@ -230,6 +230,7 @@ async function getCookableRecipes()
 	  else if(status == "NO MATCHES")
 	  {
 		  alert("No cookable recipes")
+		  recipes = []
 	  }
       else{
         alert("Expired login token")    
