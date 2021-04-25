@@ -250,7 +250,7 @@ def getUserPantryItems():
             item_dict = {}
             item_dict["name"] = item[4]
             item_dict["dispName"] = item[4]
-            item_dict["quantity"] = "1"
+            item_dict["quantity"] = item[9]
             try:                
                 exp_date_str = item[2]                                                
                 formatted_date = exp_date_str.strftime('%B %dth, %Y')                                

@@ -7,7 +7,7 @@ const GLOBAL = require('../Globals')
 export default function ItemEntryPage(params) {
 	let name = ""
 	let dispName = ""
-	let quantity = ""
+	let amount = ""
 	let price = ""
 	let mode = "new" //set to "edit" for editing an ingredient	
 	let exp_date = ""
@@ -25,7 +25,7 @@ export default function ItemEntryPage(params) {
 	if (params.item) { //Check data for existing item in if one is passed
 		name = params.item.name
 		dispName = params.item.dispName
-		quantity = params.item.quantity
+		amount = params.item.quantity
 		mode = "edit"
 		price = params.item.price
 	}
@@ -38,7 +38,7 @@ export default function ItemEntryPage(params) {
 	}
 
 	const handleSubmit = () => {
-		console.log(price)
+		console.log(amount)
 		GLOBAL.pantryItemChange = true
 		setItemAddingState("SENDING_TO_SERVER")
 		if (mode == "new") {
@@ -57,7 +57,8 @@ export default function ItemEntryPage(params) {
 					"nutrition_info": nutritionInfo,
 					"category": category,
 					"price": price,
-					"exp_date": expDate
+					"exp_date": expDate,
+					"quantity": amount
 				})
 
 			}).then((response) => response.json()).then((json) => {
@@ -121,8 +122,8 @@ export default function ItemEntryPage(params) {
 					placeholder="Quantity"
 					placeholderTextColor="#9E9791"
 					keyboardType="numeric"
-					defaultValue={quantity}
-					onChangeText={(value) => quantity = value}
+					defaultValue={amount.toString()}
+					onChangeText={(value) => amount = value}
 				/>
 				<TextInput
 					style={styles.inputField}

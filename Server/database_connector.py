@@ -151,6 +151,15 @@ def addItem(pantry_id, item_info):
             price = int(price)
         else:
             price = -1
+    
+    quantity = item_info["quantity"]    
+    print(quantity)
+    if type(quantity) != int:
+        if type(quantity) == str and len(quantity) > 0:
+            quantity = int(price)
+        else:
+            quantity = 1
+    
 
     try:
         exp_date = item_info["exp_date"]
@@ -159,9 +168,9 @@ def addItem(pantry_id, item_info):
         exp_date = "April 30th, 2100"
         expiration_date_sql_format = datetime.strptime(exp_date, '%B %dth, %Y')
         pass
-    query = ('''INSERT INTO pantries_ingredients_xref(pantry_id, ingredient_id, item_official_name, item_id, barcode, category, price, exp_date)
-    VALUES ({0}, {1}, "{2}", {3}, {4}, "{5}", {6}, '{7}')'''
-    .format(pantry_id, ingredient_id, item_official_name, item_id, barcode, category, price, expiration_date_sql_format))
+    query = ('''INSERT INTO pantries_ingredients_xref(pantry_id, ingredient_id, item_official_name, item_id, barcode, category, price, exp_date, quantity)
+    VALUES ({0}, {1}, "{2}", {3}, {4}, "{5}", {6}, '{7}', {8})'''
+    .format(pantry_id, ingredient_id, item_official_name, item_id, barcode, category, price, expiration_date_sql_format, quantity))
     cursor.execute(query, params=None)    
     commitToDB(db)
     closeDatabase(db)
