@@ -1,24 +1,29 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, View, TouchableOpacity, Alert } from 'react-native';
+import DatePicker from 'react-native-datepicker';
 import styles from '../Style';
 const GLOBAL = require('../Globals')
 
 export default function ItemEntryPage(params) {
-	name = ""
-	dispName = ""
-	quantity = ""
-	price = ""
-	expDate = ""
-	mode = "new" //set to "edit" for editing an ingredient
+	let name = ""
+	let dispName = ""
+	let quantity = ""
+	let price = ""
+	let mode = "new" //set to "edit" for editing an ingredient	
+	let exp_date = ""
+	if (params.item)
+	{
+		exp_date = params.item.expDate
+	}
+	const [expDate, setExpDate] = useState(exp_date);
 	const [itemAddingState, setItemAddingState] = useState("EDITING_VALUES")
 
 	if (params.item) { //Check data for existing item in if one is passed
 		name = params.item.name
 		dispName = params.item.dispName
 		quantity = params.item.quantity
-		price = params.item.price.toString()
-		expDate = params.item.expDate
-		mode = "edit"
+		price = params.item.price.toString()		
+		mode = "edit"		
 	}
 	else if (params.itemName) { //Adding a new pantry item
 		name=params.itemNameOfficial
@@ -26,7 +31,7 @@ export default function ItemEntryPage(params) {
 		category=params.category
 	}
 
-	handleSubmit = () => {
+	const handleSubmit = () => {
 		GLOBAL.pantryItemChange = true
 		setItemAddingState("SENDING_TO_SERVER")
 		if (mode == "new") {
@@ -62,7 +67,7 @@ export default function ItemEntryPage(params) {
 			}
 		}
 
-	handleCancel = () => {
+	const handleCancel = () => {
 		params.goBack(params.itemUnitPrice)
 	}
 
@@ -99,14 +104,38 @@ export default function ItemEntryPage(params) {
 					defaultValue={price}
 					onChangeText={(value) => price=value}
 				/>
-				<TextInput
-					style={styles.inputField}
+				<DatePicker
+					style={itemInfoStyles.datePicker}
+					date={expDate}
+					mode="date"
 					placeholder="Expiration Date"
-					placeholderTextColor="#9E9791"
-					keyboardType="numbers-and-punctuation"
-					defaultValue={expDate}
-					onChangeText={(value) => expDate=value}
-				/>	
+					format="MMMM Do, YYYY"
+					minDate={new Date()}
+					confirmBtnText="Confirm"
+					cancelBtnText="Cancel"
+					customStyles={{
+						dateIcon: {
+							position: 'absolute',
+							left: 0,
+							top: 4,
+							marginLeft: 0
+						},
+						dateInput: {
+							borderWidth: 0,
+							alignItems: 'flex-start',
+							marginLeft: 36,
+						},
+						placeholderText: {
+							color: '#9E9791',
+							fontSize: 22
+						},
+						dateText: {
+							color: '#fff',
+							fontSize: 22
+						}
+					}}
+					onDateChange={(value) => setExpDate(value)}
+				/>
 			</View>
 
 			<View style={itemInfoStyles.button_container}>
@@ -157,5 +186,12 @@ const itemInfoStyles = StyleSheet.create({
 		color: '#fff',
 		padding: 8,
 		letterSpacing: 2
+	},
+	datePicker: {
+		width: 300,
+		margin: 20,
+		marginTop: 10,
+		borderColor: '#fff',
+		borderBottomWidth: 1
 	}
 });
