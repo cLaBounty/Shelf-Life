@@ -6,9 +6,7 @@ const GLOBAL = require('../Globals')
 
 export default function ItemEntryPage(params) {
 	let name = ""
-	let dispName = ""
-	let amount = ""
-	let price = ""
+	let dispName = ""		
 	let mode = "new" //set to "edit" for editing an ingredient	
 	let exp_date = ""
 	let barcode = -1
@@ -16,18 +14,23 @@ export default function ItemEntryPage(params) {
 	let nutritionInfo = {
 		Status: "ERROR"
 	}
+	let q = ""
+	let p = ""
 	if (params.item) {
 		exp_date = params.item.expDate
+		q = params.item.quantity
+		p = params.item.price
 	}
+	const [amount, setAmount] = useState(q);
+	const [price, setPrice] = useState(p);
 	const [expDate, setExpDate] = useState(exp_date);
 	const [itemAddingState, setItemAddingState] = useState("EDITING_VALUES")
 
 	if (params.item) { //Check data for existing item in if one is passed
 		name = params.item.name
 		dispName = params.item.dispName
-		amount = params.item.quantity
-		mode = "edit"
-		price = params.item.price
+		
+		mode = "edit"		
 	}
 	else if (params.itemName) { //Adding a new pantry item
 		name = params.itemNameOfficial
@@ -123,7 +126,7 @@ export default function ItemEntryPage(params) {
 					placeholderTextColor="#9E9791"
 					keyboardType="numeric"
 					defaultValue={amount.toString()}
-					onChangeText={(value) => amount = value}
+					onChangeText={(amount_value) => setAmount(amount_value)}
 				/>
 				<TextInput
 					style={styles.inputField}
@@ -131,7 +134,7 @@ export default function ItemEntryPage(params) {
 					placeholderTextColor="#9E9791"
 					keyboardType="numeric"
 					defaultValue={price.toString()}
-					onChangeText={(value) => price = value}
+					onChangeText={(price_value) => setPrice(price_value)}
 				/>
 				<DatePicker
 					style={itemInfoStyles.datePicker}
