@@ -50,7 +50,7 @@ export default function ExpensesScreen({ navigation }) {
 					const new_data = []
 					colours = ['#FF7F0E', '#FFBB78', '#1F77B4', '#AEC7E8', '#2CA02C', '#98DF8A']
 					chart_categories.forEach((currentValue, index) => { new_data.push( 
-						{ name: currentValue.replaceAll('-', ' '), percentage: chart_data[currentValue], color: colours[index % colours.length], legendFontColor: '#FFFFFF', legendFontSize: 15 }
+						{ name: currentValue, percentage: chart_data[currentValue], color: colours[index % colours.length], legendFontColor: '#FFFFFF', legendFontSize: 15 }
 					) } )				
 					setGraphData(new_data)	
 				}				

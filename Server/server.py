@@ -7,7 +7,7 @@ import mysql.connector
 import database_connector as dbConnector
 import urllib.parse
 import random
-
+from datetime import datetime   
 # ref: https://programminghistorian.org/en/lessons/creating-apis-with-python-and-flask
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -236,7 +236,7 @@ def login():
 
 @app.route('/api/user/pantry/get/', methods=['POST'])
 def getUserPantryItems():
-    # curl -d '{"key":594730}' -H "Content-Type: application/json" -X POST http://127.0.0.1:5000/api/user/pantry/get
+    # curl -d '{"key":868911}' -H "Content-Type: application/json" -X POST http://127.0.0.1:5000/api/user/pantry/get
     info_dict = request.json
     key = info_dict["key"]
     response = {}
@@ -250,9 +250,14 @@ def getUserPantryItems():
             item_dict = {}
             item_dict["name"] = item[4]
             item_dict["dispName"] = item[4]
-            item_dict["quantity"] = "32"
-            item_dict["expDate"] = "November 3, 2015"
-            item_dict["price"] = 1.52
+            item_dict["quantity"] = "1"
+            try:                
+                exp_date_str = item[2]                                                
+                formatted_date = exp_date_str.strftime('%B %dth, %Y')                                
+                item_dict["expDate"] = formatted_date                
+            except:
+                item_dict["expDate"] = ""
+            item_dict["price"] = item[6]
             item_dict["id"] = item[5]
             items.append(item_dict)
         if len(items) != 0:
