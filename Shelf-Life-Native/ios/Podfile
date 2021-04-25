@@ -23,4 +23,6 @@ target 'ShelfLifeNative' do
   #  end
   pod 'RNFastImage', :path => '../node_modules/react-native-fast-image'
 
+  pod 'RNSVG', :path => '../node_modules/react-native-svg'
+
 end
