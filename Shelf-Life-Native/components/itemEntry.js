@@ -38,6 +38,7 @@ export default function ItemEntryPage(params) {
 	}
 		
 	const handleSubmit = () => {
+		console.log(expDate)
 		GLOBAL.pantryItemChange = true
 		setItemAddingState("SENDING_TO_SERVER")
 		if (mode == "new") {
@@ -55,7 +56,8 @@ export default function ItemEntryPage(params) {
 				"barcode": barcode,
 				"nutrition_info": nutritionInfo,
 				"category": category,
-				"price": price
+				"price": price,
+				"exp_date": expDate
             })
     
         }).then((response) => response.json()).then((json) => {
@@ -90,14 +92,7 @@ export default function ItemEntryPage(params) {
 					placeholderTextColor="#9E9791"
 					defaultValue={name}
 					onChangeText={(value) => name=value}
-				/>
-				<TextInput
-					style={styles.inputField}
-					placeholder="Common Item Name"
-					placeholderTextColor="#9E9791"
-					defaultValue={dispName}
-					onChangeText={(value) => dispName=value}
-				/>
+				/>				
 				<TextInput
 					style={styles.inputField}
 					placeholder="Quantity"

@@ -2,6 +2,7 @@ import mysql.connector
 import os
 from dotenv import load_dotenv
 from ingredient_matcher import convertIDtoName
+from datetime import datetime   
 # TODO: Wrap all this in a class?
 # https://dev.mysql.com/doc/connector-python/en/connector-python-example-connecting.html
 
@@ -150,9 +151,17 @@ def addItem(pantry_id, item_info):
             price = int(price)
         else:
             price = -1
-    query = ('''INSERT INTO pantries_ingredients_xref(pantry_id, ingredient_id, item_official_name, item_id, barcode, category, price)
-    VALUES ({0}, {1}, "{2}", {3}, {4}, "{5}", {6})'''
-    .format(pantry_id, ingredient_id, item_official_name, item_id, barcode, category, price))
+
+    try:
+        exp_date = item_info["exp_date"]
+        expiration_date_sql_format = datetime.strptime(exp_date, '%B %dth, %Y')
+    except:
+        exp_date = "April 30th, 2100"
+        expiration_date_sql_format = datetime.strptime(exp_date, '%B %dth, %Y')
+        pass
+    query = ('''INSERT INTO pantries_ingredients_xref(pantry_id, ingredient_id, item_official_name, item_id, barcode, category, price, exp_date)
+    VALUES ({0}, {1}, "{2}", {3}, {4}, "{5}", {6}, '{7}')'''
+    .format(pantry_id, ingredient_id, item_official_name, item_id, barcode, category, price, expiration_date_sql_format))
     cursor.execute(query, params=None)    
     commitToDB(db)
     closeDatabase(db)
