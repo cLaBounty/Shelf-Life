@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, TextInput, View, TouchableOpacity, Alert } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -10,10 +10,19 @@ const GLOBAL = require('../Globals');
 export default function ItemEntryPage(params) {
 	let name = ""
 	let dispName = ""
-	let quantity = "1"
-	let price = "1"
+	let quantity = ""
+	let price = ""
 	let mode = "new" //set to "edit" for editing an ingredient	
 	let exp_date = ""
+
+	// get settings from AsyncStorage
+	const [allowNotifications, setAllowNotifications] = useState();
+	const [allowNotifications_dayAfter, setAllowNotifications_dayAfter] = useState();
+	const [allowNotifications_expDate, setAllowNotifications_expDate] = useState();
+	const [allowNotifications_3daysBefore, setAllowNotifications_3daysBefore] = useState();
+	const [allowNotifications_weekBefore, setAllowNotifications_weekBefore] = useState();
+	const [allowNotifications_2weeksBefore, setAllowNotifications_2weeksBefore] = useState();
+
 	if (params.item)
 	{
 		exp_date = params.item.expDate
@@ -81,57 +90,46 @@ export default function ItemEntryPage(params) {
 			}
 
 			// schedule notifications
-			// try individually
-			let data = [];
-			loadData(data);
-			console.log(data)
-
-			let data2 = [true, true, false, true, true, false]
-			console.log(data2)
-
-
-
-			if (data[0]) {
+			if (allowNotifications) {
 				let date = new Date(expDate);
-				date.setHours(9); // send at 9:00am
+				//date.setHours(9); // send at 9:00am
+
+				date.setHours(16);
+				date.setMinutes(0);
 				
-				if (data[1]) {
-					let dayAfter = new Date(date.getTime());
-					dayAfter.setDate(date.getDate() + 1);
-					if (!isPastDate(dayAfter)) {
-						scheduleNotification("Expired: " + name, name + " expired yesterday", dayAfter);
-					}
-				}
-				if (data[2]) {
-					if (!isPastDate(date)) {
+				// if (allowNotifications_dayAfter) {
+				// 	let dayAfter = new Date(date.getTime());
+				// 	dayAfter.setDate(date.getDate() + 1);
+				// 	if (isFutureDate(dayAfter)) {
+				// 		scheduleNotification("Expired: " + name, name + " expired yesterday", dayAfter);
+				// 	}
+				// }
+				if (allowNotifications_expDate) {
+					if (isFutureDate(date)) {
 						scheduleNotification("Expiring Soon: " + name, name + " expires today", date);
 					}
 				}
-				if (data[3]) {
-					let threeDaysBefore = new Date(date.getTime());
-					threeDaysBefore.setDate(date.getDate() - 3);
-					if (!isPastDate(threeDaysBefore)) {
-						scheduleNotification("Expiring Soon: " + name, name + " expires in 3 days", threeDaysBefore);
-					}
-				}
-				if (data[4]) {
-					let weekBefore = new Date(date.getTime());
-					weekBefore.setDate(date.getDate() - 7);
-					if (!isPastDate(weekBefore)) {
-						scheduleNotification("Expiring Soon: " + name, name + " expires in 1 week", weekBefore);
-					}
-				}
-				if (data[5]) {
-					let twoWeeksBefore = new Date(date.getTime());
-					twoWeeksBefore.setDate(date.getDate() - 14);
-					if (!isPastDate(twoWeeksBefore)) {
-						scheduleNotification("Expiring Soon: " + name, name + " expires in 2 weeks", twoWeeksBefore);
-					}
-				}
-				console.log("Allowed")
-			}
-			else {
-				console.log("Not Allowed")
+				// if (allowNotifications_3daysBefore) {
+				// 	let threeDaysBefore = new Date(date.getTime());
+				// 	threeDaysBefore.setDate(date.getDate() - 3);
+				// 	if (isFutureDate(threeDaysBefore)) {
+				// 		scheduleNotification("Expiring Soon: " + name, name + " expires in 3 days", threeDaysBefore);
+				// 	}
+				// }
+				// if (allowNotifications_weekBefore) {
+				// 	let weekBefore = new Date(date.getTime());
+				// 	weekBefore.setDate(date.getDate() - 7);
+				// 	if (isFutureDate(weekBefore)) {
+				// 		scheduleNotification("Expiring Soon: " + name, name + " expires in 1 week", weekBefore);
+				// 	}
+				// }
+				// if (allowNotifications_2weeksBefore) {
+				// 	let twoWeeksBefore = new Date(date.getTime());
+				// 	twoWeeksBefore.setDate(date.getDate() - 14);
+				// 	if (isFutureDate(twoWeeksBefore)) {
+				// 		scheduleNotification("Expiring Soon: " + name, name + " expires in 2 weeks", twoWeeksBefore);
+				// 	}
+				// }
 			}
 		}
 	}
@@ -140,45 +138,58 @@ export default function ItemEntryPage(params) {
 		params.goBack(params.itemUnitPrice)
 	}
 
-	function isPastDate(date) {
+	function isFutureDate(date) {
 		const now = new Date();
-		if (date < now) return true;
+		if (date > now) return true;
 		return false;
 	}
 
 	// get setting preferences from AsyncStorage
-	const loadData = async (data) => {
-		let allowNotifications = true;
-		let allowNotifications_dayAfter = true;
-		let allowNotifications_expDate = true;
-		let allowNotifications_3daysBefore = true;
-		let allowNotifications_weekBefore = true;
-		let allowNotifications_2weeksBefore = true;
-
+	const loadSettings = async () => {
 		try {
-			if(await AsyncStorage.getItem('@allowNotifications') == "false")
-				allowNotifications = false;
-			if(await AsyncStorage.getItem('@allowNotifications_dayAfter') == "false")
-				allowNotifications_dayAfter = false;
-			if(await AsyncStorage.getItem('@allowNotifications_expDate') == "false")
-				allowNotifications_expDate = false;
-			if(await AsyncStorage.getItem('@allowNotifications_3daysBefore') == "false")
-				allowNotifications_3daysBefore = false;
-			if(await AsyncStorage.getItem('@allowNotifications_weekBefore') == "false")
-				allowNotifications_weekBefore = false;
-			if(await AsyncStorage.getItem('@allowNotifications_2weeksBefore') == "false")
-				allowNotifications_2weeksBefore = false;
+		  const keys = [
+			'@allowNotifications',
+			'@allowNotifications_dayAfter',
+			'@allowNotifications_expDate',
+			'@allowNotifications_3daysBefore',
+			'@allowNotifications_weekBefore',
+			'@allowNotifications_2weeksBefore'
+		  ];
+	
+		  for (let i = 0; i < keys.length; i++) {
+			let settingValue = true;
+			if(await AsyncStorage.getItem(keys[i]) == "false")
+			  settingValue = false;
+	
+			switch (i) {
+			  case 0:
+				setAllowNotifications(settingValue);
+				break;
+			  case 1:
+				setAllowNotifications_dayAfter(settingValue);
+				break;
+			  case 2:
+				setAllowNotifications_expDate(settingValue);
+				break;
+			  case 3:
+				setAllowNotifications_3daysBefore(settingValue);
+				break;
+			  case 4:
+				setAllowNotifications_weekBefore(settingValue);
+				break;
+			  case 5:
+				setAllowNotifications_2weeksBefore(settingValue);
+				break;
+			}
+		  }
 		} catch(err) {
-			console.error(err);
+		  console.error(err);
 		}
+	  }
 
-		data.push(allowNotifications);
-		data.push(allowNotifications_dayAfter);
-		data.push(allowNotifications_expDate);
-		data.push(allowNotifications_3daysBefore);
-		data.push(allowNotifications_weekBefore);
-		data.push(allowNotifications_2weeksBefore);
-	}
+	useEffect(() => {
+		loadSettings();
+	}, []);
 
 	return (
 		<View style={styles.transparent_container}>
@@ -188,14 +199,14 @@ export default function ItemEntryPage(params) {
 					placeholder="Official Item Name"
 					placeholderTextColor="#9E9791"
 					defaultValue={name}
-					onChangeText={(value) => name=value}
+					onEndEditing={(value) => name=value}
 				/>
 				<TextInput
 					style={styles.inputField}
 					placeholder="Common Item Name"
 					placeholderTextColor="#9E9791"
 					defaultValue={dispName}
-					onChangeText={(value) => dispName=value}
+					onEndEditing={(value) => dispName=value}
 				/>
 				<TextInput
 					style={styles.inputField}
@@ -203,7 +214,7 @@ export default function ItemEntryPage(params) {
 					placeholderTextColor="#9E9791"
 					keyboardType="numeric"
 					defaultValue={quantity}
-					onChangeText={(value) => quantity=value}
+					onEndEditing={(value) => quantity=value}
 				/>
 				<TextInput
 					style={styles.inputField}
@@ -211,7 +222,7 @@ export default function ItemEntryPage(params) {
 					placeholderTextColor="#9E9791"
 					keyboardType="numeric"
 					defaultValue={price}
-					onChangeText={(value) => price=value}
+					onEndEditing={(value) => price=value}
 				/>
 				<DatePicker
 					style={itemInfoStyles.datePicker}
