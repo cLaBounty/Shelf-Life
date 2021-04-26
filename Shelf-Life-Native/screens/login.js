@@ -137,7 +137,7 @@ export default function LoginScreen({ navigation }) {
 }
 
 const login = (email, password, navigation) => {
-	fetch(GLOBAL.BASE_URL+'/api/user/login', {
+	fetch(GLOBAL.BASE_URL+'/api/user/login/', {
 		method: 'POST',
 		headers: {
 			Accept: 'application/json',
@@ -153,10 +153,10 @@ const login = (email, password, navigation) => {
 		if (status == "OK") { // successful sign up
 			const displayName = json["display_name"]; // from database
 			GLOBAL.LOGIN_TOKEN = json["login_token"]
-			GLOBAL.PANTRY_ID = data["pantry_id"]
+			GLOBAL.PANTRY_ID = json["pantry_id"]
+			GLOBAL.DISPLAY_NAME = json["display_name"]
 			navigation.navigate('mainNav', { name: displayName });
 		}
-
 		else if(status == "ERROR") {
 			Alert.alert('ERROR', 'Something went wrong. Please try again later.', [
 			{text: 'OK'}
@@ -198,8 +198,8 @@ const signUp = (email, displayName, password, navigation) => {
 
 		if (status == "OK") { // successful sign up
 			GLOBAL.LOGIN_TOKEN = json["login_token"]
-			GLOBAL.PANTRY_ID = data["pantry_id"]
-			GLOBAL.DISPLAY_NAME = data["Display Name"]
+			GLOBAL.PANTRY_ID = json["pantry_id"]
+			GLOBAL.DISPLAY_NAME = json["Display Name"]
 			navigation.navigate('mainNav', { name: displayName });
 		}
 		else if (status == "ERROR") {	

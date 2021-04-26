@@ -219,19 +219,16 @@ def login():
     user_info = dbConnector.getUserInformation(email)
 
     response_dict = {}
-    response_dict["Status"] = "ERROR"
-
+    response_dict["Status"] = "ERROR"    
     try:
-        server_password = user_info[
-            2]  # TODO Split up into specific password call? Indexing directly is ugly and insecure
-        display_name = user_info[3]
+        server_password = user_info[2]  # TODO Split up into specific password call? Indexing directly is ugly and insecure
+        display_name = user_info[3]        
         if server_password == password:
             response_dict["display_name"] = display_name
             response_dict["Status"] = "OK"
-            response_dict["pantry_id"] = user_info["pantry_id"]
-            login_token = random.randrange(
-                0, 1000000
-            )  # TODO: Generate on client? Encrypt before sending back?
+            response_dict["pantry_id"] = user_info[5]
+            
+            login_token = random.randrange(0, 1000000)  # TODO: Generate on client? Encrypt before sending back?            
             while (dbConnector.checkIfTokenIsInUse(login_token)):
                 login_token = random.randrange(0, 1000000)
 
