@@ -108,7 +108,7 @@ export default function PantryScreen({ navigation }) {
 							inputContainerStyle={styles.searchInput}
 							platform={"ios"}
 							cancelButtonTitle=""
-							cancleButtonProps={{disabled: true}} //Doesn't seem to be working
+							cancleButtonProps={{disabled: true}}
 						/>
 						<DropDownPicker
 							items={orderings}
@@ -148,12 +148,12 @@ export default function PantryScreen({ navigation }) {
 	}
 
 	function filterPantry(data, index) {
-		if (data.dispName.toLowerCase().indexOf(searchQ.toLowerCase()) > -1) {
+		if (data.name.toLowerCase().indexOf(searchQ.toLowerCase()) > -1) {
 			if (order == "alpha") {
 				return ({dispName: data.dispName, name: data.name, quantity: data.quantity, expDate: data.expDate, price: data.price, value: data.name, key: data.id, id: data.id})
 			}
 			else if (order == "quantity") {
-				return ({dispName: data.dispName, name: data.name, quantity: data.quantity, expDate: data.expDate, price: data.price, value: data.quantity, key: data.id,  id: data.id})
+				return ({dispName: data.dispName, name: data.name, quantity: data.quantity, expDate: data.expDate, price: data.price, value: data.quantity.toString(), key: data.id, id: data.id})
 			}
 		}
 		return null
@@ -183,7 +183,7 @@ export default function PantryScreen({ navigation }) {
 		}
 		
 		function deleteItem(item_id) {
-			GLOBAL.pantryItemChange = true					
+			GLOBAL.pantryItemChange = true
         	fetch(GLOBAL.BASE_URL + '/api/user/pantry/remove', {
             method: 'POST',
             headers: {
@@ -192,18 +192,18 @@ export default function PantryScreen({ navigation }) {
             },
             body: JSON.stringify({
                 "key": GLOBAL.LOGIN_TOKEN,
-                "item_id": item_id,                
+                "item_id": item_id,
             })
     
         }).then((response) => response.json()).then((json) => {
             status = json["Status"]
-            if (status == "OK") { // successful sign up        
+            if (status == "OK") { // successful sign up
                 getRemotePantry()
             }
             else if (status == "INVALID TOKEN")
             {
                 alert("Invalid login token, log in again")
-            }else if(status == "INVALID ITEM ID")			
+            }else if(status == "INVALID ITEM ID")
 			{
 				alert("Item ID not found in database")
 			}
@@ -288,9 +288,7 @@ export default function PantryScreen({ navigation }) {
 			return ( data )
 		}))
 	}
-	
-	
-	
+
 }
 const pantryStyles = StyleSheet.create({
 	searchView: {
