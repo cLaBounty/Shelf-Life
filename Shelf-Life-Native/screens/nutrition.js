@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ImageBackground, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, Image, SafeAreaView } from 'react-native';
 import styles from '../Style';
 import { PieChart } from 'react-native-chart-kit'
 import { Dimensions } from 'react-native'
+import FastImage from 'react-native-fast-image'
+
 const screenWidth = Dimensions.get('window').width
 
 const chartConfig = {
@@ -81,7 +83,9 @@ export default function NutritionScreen({ navigation }) {
 	<SafeAreaView style={styles.safeArea}>
 	    <View style={styles.container}>
 			<StatusBar style="auto" />
-			<ImageBackground source={require('../assets/background.jpg')} style={styles.background}/>
+	  <FastImage style={styles.background} 
+	  					source = {Image.resolveAssetSource(require('../assets/background.jpg'))}
+	  				/>
 			<Text style={styles.text}>Nutrition Information</Text>
 			<PieChart
 				data={graph_data}

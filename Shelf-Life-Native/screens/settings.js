@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View, ScrollView, ImageBackground, Switch, SafeAreaView, Alert } from 'react-native';
+import { StyleSheet, Text, TextInput, View, ScrollView, ImageBackground, Switch, SafeAreaView, Image, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import FastImage from 'react-native-fast-image'
 import styles from '../Style';
 const GLOBAL = require('../Globals');
 
@@ -187,7 +188,9 @@ export default function SettingsScreen({ navigation, route }) {
 	  	<SafeAreaView style={styles.safeArea}>
     <View style={settingsStyles.container}>
       <StatusBar style="auto" />
-      <ImageBackground source={require('../assets/background.jpg')} style={styles.background}/>
+	  <FastImage style={styles.background} 
+	  					source = {Image.resolveAssetSource(require('../assets/background.jpg'))}
+	  				/>
 
       <ScrollView>
         <Text style={settingsStyles.settingName}>Display Name</Text>

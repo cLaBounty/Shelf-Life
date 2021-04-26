@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View, ImageBackground, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, Text, TextInput, View, ImageBackground, TouchableOpacity, Image, Alert } from 'react-native';
+import FastImage from 'react-native-fast-image'
 import styles from '../Style';
 const GLOBAL = require('../Globals')
 
@@ -60,7 +61,9 @@ export default function LoginScreen({ navigation }) {
 		return (
 			<View style={styles.container}>
 			<StatusBar style="auto" />
-			<ImageBackground source={require('../assets/background.jpg')} style={styles.background}/>
+	 	  <FastImage style={styles.background} 
+	 	  					source = {Image.resolveAssetSource(require('../assets/background.jpg'))}
+	 	  				/>
 			<Text style={loginStyles.title}>Shelf Life</Text>
 			<TextInput
 				style={styles.inputField}
@@ -95,7 +98,9 @@ export default function LoginScreen({ navigation }) {
 		return (
 			<View style={styles.container}>
 			<StatusBar style="auto" />
-			<ImageBackground source={require('../assets/background.jpg')} style={styles.background}/>
+			<FastImage style={styles.background} 
+								source = {Image.resolveAssetSource(require('../assets/background.jpg'))}
+							/>
 			<Text style={loginStyles.title}>Shelf Life</Text>
 			<TextInput
 				style={styles.inputField}

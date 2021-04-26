@@ -81,11 +81,9 @@ export default function RecipesScreen({ navigation }) {
 	function masterTab(filterFunc, { navigation }, tag) { // A single func that dictates how the favorites and recipe screens are rendered
 		return (
 		    <View style={recipeStyles.page}>
-				<CachedImage
-          		source = {Image.resolveAssetSource(require('../assets/background.jpg'))}          		
-				cacheKey = {`background`}
-          		style={styles.background}
-        		/>				
+			<FastImage style={styles.background} 
+								source = {Image.resolveAssetSource(require('../assets/background.jpg'))}
+							/>
 
 		        <ScrollView style={recipeStyles.scrollable}>
 		            {getRecipes({ navigation })}
