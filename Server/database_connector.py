@@ -320,20 +320,27 @@ def getRecipesByIDs(ids):
     recipes = cursor.fetchall()        
     converted_recipes = []
     ingredients = getIngredientsOfIDs(ids)
+    
     searchable_ingredients = getSearchableIngredientsOfIDs(ids)
+    
+    
     for recipe in recipes:
+        print(recipe[0])
         recipe_info = convertCursorOutputToJSON(recipe)                
         recipe_ings = []
         recipe_amounts = []
-        for entry in ingredients[str(recipe[0])]:
-            recipe_ings.append(entry)
-            recipe_amounts.append(0)
-        for entry in searchable_ingredients[str(recipe[0])]:
-            recipe_ings.append(entry)
-            recipe_amounts.append(0)
-        recipe_info["quantity"] = recipe_amounts
-        recipe_info["ingredients"] = recipe_ings        
-        converted_recipes.append(recipe_info)
+        try:
+            for entry in ingredients[str(recipe[0])]:
+                recipe_ings.append(entry)
+                recipe_amounts.append(0)
+            for entry in searchable_ingredients[str(recipe[0])]:
+                recipe_ings.append(entry)
+                recipe_amounts.append(0)
+            recipe_info["quantity"] = recipe_amounts
+            recipe_info["ingredients"] = recipe_ings        
+            converted_recipes.append(recipe_info)
+        except:
+            pass
     closeDatabase(db)       
     return converted_recipes
 
@@ -456,7 +463,9 @@ def getMatchingRecipes(pantry_id, min_number_matched_ingredients=1):
     return result
     
 def getNameFromID(id):
-    if onlineIDs:
+    try:
+        return convertIDtoName(id)
+    except:
         db = getDatabase()
         cursor = db.cursor()
         query = ('''SELECT name FROM Ingredients WHERE ingredient_id={0};'''.format(id))
@@ -464,14 +473,12 @@ def getNameFromID(id):
         output = cursor.fetchone()            
         closeDatabase(db)
         return output[0]
-    else:
-        return convertIDtoName(id)
 
 if __name__ == '__main__':
     #print(getNameFromID(3))
     #getIngredientsOfIDs([1,2])
     #getSearchableIngredientsOfIDs([1,2,3])
-    getRecipesByIDs([1,2])
+    #getRecipesByIDs([1,2])
     #getMatchingRecipes(1)
     #print(getRecipeByID(43))
     #print(convertIDtoName(1072))
@@ -484,7 +491,11 @@ if __name__ == '__main__':
     #addItem(pantry_id, item_info)
     #deleteItemFromPantry(pantry_id, 3)
     #getPantryNutritionInfo(1)
-    getPantryPriceInfo(1)
+    #getPantryPriceInfo(1)
     #print(getAllItemsInPantry(pantry_id))
     #print(checkIfTokenIsInUse(233))
     #print(getNameFromID(4))
+    ids = getMatchingRecipes(1, min_number_matched_ingredients=3)
+    print(ids)
+    ids = [x[1] for x in ids]
+    print(getRecipesByIDs(ids))
