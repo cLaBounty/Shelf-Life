@@ -22,9 +22,9 @@ export default function RecipesScreen({ navigation }) {
 	[recipesJSON, setRecipesJSON] = useState(require('../assets/recipeTest.json'))
 	useEffect(() => {
 		(async () => {
-		  const data = await getCookableRecipes()     
-		  if (data.length > 0)
-		  	setRecipesJSON(data)
+		  const data = await getCookableRecipes()    		  
+		  setRecipesJSON(data)
+		  	
 		})();
 	  }, []);
 
@@ -218,7 +218,7 @@ async function getCookableRecipes()
       })
 
     }).then((response) => response.json()).then((json) => {
-      status = json["Status"]
+      status = json["Status"]	  
       if (status == "OK") { // successful sign up        
         recipes = json        
       }

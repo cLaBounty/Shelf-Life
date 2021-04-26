@@ -324,8 +324,7 @@ def getRecipesByIDs(ids):
     searchable_ingredients = getSearchableIngredientsOfIDs(ids)
     
     
-    for recipe in recipes:
-        print(recipe[0])
+    for recipe in recipes:        
         recipe_info = convertCursorOutputToJSON(recipe)                
         recipe_ings = []
         recipe_amounts = []
