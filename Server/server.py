@@ -198,6 +198,16 @@ def makeNewUser():
     response_dict = {}
     response_dict["login_token"] = login_token
     response_dict["Status"] = "OK"
+
+    try:
+        user = dbConnector.getUserInfoFromKey(login_token)
+        if user:            
+            response_dict["Display Name"] = user["display_name"]
+            response_dict["pantry_id"] = user["pantry_id"]        
+    except:
+        print("No database connection")
+        pass
+
     return response_dict
 
 @app.route('/api/user/login/', methods=['POST'])
@@ -218,7 +228,7 @@ def login():
         if server_password == password:
             response_dict["display_name"] = display_name
             response_dict["Status"] = "OK"
-
+            response_dict["pantry_id"] = user_info["pantry_id"]
             login_token = random.randrange(
                 0, 1000000
             )  # TODO: Generate on client? Encrypt before sending back?

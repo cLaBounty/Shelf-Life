@@ -153,6 +153,7 @@ const login = (email, password, navigation) => {
 		if (status == "OK") { // successful sign up
 			const displayName = json["display_name"]; // from database
 			GLOBAL.LOGIN_TOKEN = json["login_token"]
+			GLOBAL.PANTRY_ID = data["pantry_id"]
 			navigation.navigate('mainNav', { name: displayName });
 		}
 
@@ -197,6 +198,8 @@ const signUp = (email, displayName, password, navigation) => {
 
 		if (status == "OK") { // successful sign up
 			GLOBAL.LOGIN_TOKEN = json["login_token"]
+			GLOBAL.PANTRY_ID = data["pantry_id"]
+			GLOBAL.DISPLAY_NAME = data["Display Name"]
 			navigation.navigate('mainNav', { name: displayName });
 		}
 		else if (status == "ERROR") {	
