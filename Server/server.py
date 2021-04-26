@@ -313,18 +313,21 @@ def removeUserPantryItem():
 
 @app.route('/api/user/pantry/recipes/matching', methods=['POST'])
 def getMatchingRecipes():
-    # curl -d '{"key":'868911'}' -H "Content-Type: application/json" -X POST http://127.0.0.1:5000/api/user/pantry/recipes/matching
+    # curl -d '{"key":'685309'}' -H "Content-Type: application/json" -X POST http://127.0.0.1:5000/api/user/pantry/recipes/matching
     info_dict = request.json
     key = info_dict["key"]
     user = dbConnector.getUserInfoFromKey(key)
     response_dict = {}
     if user:
         try:
-            recipe_matches = dbConnector.getMatchingRecipes(user["pantry_id"], min_number_matched_ingredients=4)
+            recipe_matches = dbConnector.getMatchingRecipes(user["pantry_id"], min_number_matched_ingredients=3)
             response_dict["Status"] = "OK"
             recipe_ids = [x[1] for x in recipe_matches]
         
-            response_dict["recipes"] = dbConnector.getRecipesByIDs(recipe_ids)
+            mat = dbConnector.getRecipesByIDs(recipe_ids)
+            if len(mat) > 10:
+                mat = mat[:9]
+            response_dict["recipes"] = mat
         except:
             response_dict["Status"] = "NO MATCHES"
     else:
