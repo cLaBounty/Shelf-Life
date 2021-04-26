@@ -83,7 +83,7 @@ export default function LoginScreen({ navigation }) {
 				<Text style={loginStyles.btnText}>Login</Text>
 			</TouchableOpacity>
 			<View style={loginStyles.switchTextView}>
-				<Text style={loginStyles.switchText}>Don''t have an account?</Text>
+				<Text style={loginStyles.switchText}>Don't have an account?</Text>
 				<TouchableOpacity onPress={() => setTab("Sign Up")}>
 					<Text style={loginStyles.link}> Sign up</Text>
 				</TouchableOpacity>
