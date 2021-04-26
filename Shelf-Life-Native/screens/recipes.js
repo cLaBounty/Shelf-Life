@@ -78,26 +78,40 @@ export default function RecipesScreen({ navigation }) {
 	</SafeAreaView>
 	);
 
-	function masterTab(filterFunc, { navigation }, tag) { // A single func that dictates how the favorites and recipe screens are rendered
+	function masterTab(filterFunc, { navigation }, type) { // A single func that dictates how the favorites and recipe screens are rendered
 		return (
-		    <View style={recipeStyles.page}>
-			<FastImage style={styles.background} 
-								source = {Image.resolveAssetSource(require('../assets/background.jpg'))}
-							/>
+			<View style={recipeStyles.page}>
+				<FastImage 
+					style={styles.background} 
+					source = {Image.resolveAssetSource(require('../assets/background.jpg'))}
+				/>
 
-		        <ScrollView style={recipeStyles.scrollable}>
-		            {getRecipes({ navigation })}
-		        </ScrollView>
-		    </View>
+				<ScrollView style={recipeStyles.scrollable}>
+					{dataCheck(type, {navigation})}
+				</ScrollView>
+			</View>
 		)
 	}
 
+	function dataCheck(type, { navigation }) {
+		if (recipesJSON == "") {
+			return (
+				<Text style={recipeStyles.noData}>Downloading recipes...</Text>
+			)
+		}
+		else {
+			return (
+				getRecipes(type, { navigation })
+			)
+		}
+	}
+
 	function recipeTab() {
-		return masterTab(getRecipes, {navigation}, "Search recipes")
+		return masterTab(getRecipes, {navigation}, "all")
 	}
 
 	function favoriteTab() {
-		return masterTab(getFavorites, {navigation}, "Search favorites")
+		return masterTab(getRecipes, {navigation}, "favorites")
 	}
 	
 	function updateSearch(query) {
@@ -107,38 +121,26 @@ export default function RecipesScreen({ navigation }) {
 	function goToScreen(data, index, {navigation}) {
 		var indexStr = index.toString()
 		navigation.navigate(
-			'Recipe Info', { data: data, index: indexStr },
+			'Recipe Info', { data: data, index: indexStr, mode: "view"},
 		)
 	}
 
 	// Combines all recipes into a list
-	function getRecipes({ navigation }) {
+	function getRecipes(type, { navigation }) {
 		return recipesJSON.recipes.map((data, index) => {
 			return (
 				retVal = [],
 				retVal.concat(
-					recipeSeperator("recipes", data, index, { navigation })
+					recipeSeperator(type, data, index, { navigation })
 				)
 			)
 		})
 	}
 
-	// Combines all favorites into a list
-	function getFavorites({ navigation }) {
-		return recipesJSON.recipes.map((data, index) => {
-			return (
-				retVal = [],
-				retVal.concat(
-					recipeSeperator("favorites", data, index, { navigation })
-				)
-			)
-		})
-	}
-
-	function recipeSeperator(check, data, index, { navigation }) {
+	function recipeSeperator(type, data, index, { navigation }) {
 		// Filter out all recipes not wanted before it gets to compiling the output
-		if (check == "favorites") {
-			if (data.favorite == "false") //Filter out all non-favorites
+		if (type == "favorites") {
+			if (data.favorite !== "true") //Filter out all non-favorites
 			{
 				return null
 			}
@@ -154,8 +156,8 @@ export default function RecipesScreen({ navigation }) {
 		return (
 			<View style={styleFavorite(data.favorite)} key={data.name}>
 				<TouchableOpacity 
-				onPress={() => goToScreen(data, index, {navigation})}
-				onLongPress={() => toggleFavorite(data, index)}
+					onPress={() => goToScreen(data, index, {navigation})}
+					onLongPress={() => toggleFavorite(data, index)}
 				>
 				<Text style={recipeStyles.listItemName} numberOfLines={2} ellipsizeMode='tail'>{data.dispName}</Text>
 					<View style={recipeStyles.listItemText, recipeStyles.listLower}>
@@ -197,7 +199,7 @@ export default function RecipesScreen({ navigation }) {
 		}
 		setFavorite({...favorite,[index]:data.favorite})
 		
-		// TODO: Sync with server
+		// TODO: Sync with server for favoriting
 	}
 }
 
