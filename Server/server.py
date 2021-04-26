@@ -324,7 +324,10 @@ def getMatchingRecipes():
             response_dict["Status"] = "OK"
             recipe_ids = [x[1] for x in recipe_matches]
         
-            response_dict["recipes"] = dbConnector.getRecipesByIDs(recipe_ids)
+            recipe_matches = dbConnector.getRecipesByIDs(recipe_ids)
+            if len(recipe_matches) > 10:
+                recipe_matches = recipe_matches[:10]
+            response_dict["recipes"] = recipe_matches
         except:
             response_dict["Status"] = "NO MATCHES"
     else:
