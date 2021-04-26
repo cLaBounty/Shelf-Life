@@ -43,15 +43,24 @@ export default function NutritionScreen({ navigation }) {
 			}).then((response) => response.json()).then((json) => {
 				status = json["Status"]
 				if (status == "OK") { // Successful sign up
+					console.log(json)
 					nutrition_categories = ["fat","carbohydrates","cholesterol","proteins","sodium"]
 					colors = ['#FF7F0E', '#FFBB78', '#1F77B4', '#AEC7E8', '#2CA02C', '#98DF8A']
 					total = 0
 					nutrition_categories.forEach((currentValue, index) => { total += json["Nutrition Info"][currentValue] } )
-					const new_data = []
-					nutrition_categories.forEach((currentValue, index) => { new_data.push( 
-						{ name: currentValue, percentage: json["Nutrition Info"][currentValue]/total, color: colors[index], legendFontColor: '#FFFFFF', legendFontSize: 15 }
-					) } )				
-					setGraphData(new_data)	
+					if(total != 0)
+					{
+						const new_data = []
+						nutrition_categories.forEach((currentValue, index) => { new_data.push( 
+							{ name: currentValue, percentage: json["Nutrition Info"][currentValue]/total, color: colors[index], legendFontColor: '#FFFFFF', legendFontSize: 15 }
+						) } )				
+						setGraphData(new_data)	
+					}
+					else
+					{
+						setGraphData([])
+					}
+					
 				}	
 				else if(status == "ERROR")			
 				{

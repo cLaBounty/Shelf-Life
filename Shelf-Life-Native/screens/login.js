@@ -47,6 +47,7 @@ export default function LoginScreen({ navigation }) {
 		async () => {
 			const data = await getUserInformation()
 			if (data) {
+				console.log(data)
 				const displayName = data["Display Name"]; // from database
 				GLOBAL.DISPLAY_NAME = displayName
 				GLOBAL.PANTRY_ID = data["pantry_id"]
