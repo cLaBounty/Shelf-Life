@@ -10,6 +10,7 @@ const Stack = createStackNavigator();
 
 
 export default function App() {
+	console.disableYellowBox = true;
 	return (
 		<NavigationContainer>
 			<Stack.Navigator>

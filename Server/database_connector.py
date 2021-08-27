@@ -2,6 +2,7 @@ import mysql.connector
 import os
 from dotenv import load_dotenv
 from ingredient_matcher import convertIDtoName
+from datetime import datetime   
 # TODO: Wrap all this in a class?
 # https://dev.mysql.com/doc/connector-python/en/connector-python-example-connecting.html
 
@@ -24,10 +25,30 @@ def commitToDB(db):
         db.commit()
         closeDatabase(db)
 
+def changeName(new_name, login_token):
+    db = getDatabase()
+    cursor = db.cursor()    
+    pantry_update_query = ('''UPDATE Users SET display_name = "{0}" WHERE login_token ={1};'''.format(new_name, login_token))
+    cursor.execute(pantry_update_query, params=None)            
+    commitToDB(db)    
+    closeDatabase(db)
+
+def changePantry(new_pantry_id, login_token):
+    db = getDatabase()
+    cursor = db.cursor()    
+    pantry_update_query = ('''UPDATE Users SET pantry_id = {0} WHERE login_token ={1};'''.format(new_pantry_id, login_token))
+    cursor.execute(pantry_update_query, params=None)            
+    commitToDB(db)    
+    closeDatabase(db)
+
 def addNewUser(email, password, display_name):
     db = getDatabase()
-    cursor = db.cursor()
-    pantry_id = 1
+    cursor = db.cursor()    
+    pantry_id_query = ('''SELECT MAX(pantry_id) FROM Users;''')
+    cursor.execute(pantry_id_query, params=None)    
+    pantry_id = cursor.fetchone()[0] + 1
+
+
     query = ('''INSERT INTO Users(email, password, display_name, pantry_id) 
     VALUES ("{0}", "{1}", "{2}", {3})'''.format(
         email,
@@ -110,10 +131,66 @@ def addItem(pantry_id, item_info):
     except:
         ingredient_id = -1
 
+    try:
+        barcode = int(item_info["barcode"])
+    except:
+        barcode = -1
+    
+    try:
+        barcode_already_exists_query = ('''SELECT * FROM barcode_nutrition_xref WHERE barcode={0}'''.format(barcode))
+        cursor.execute(barcode_already_exists_query, params=None)    
+        output = cursor.fetchall()
+        if len(output) == 0:
+            nutrition_info = item_info["nutrition_info"]        
+            if nutrition_info["Status"] == 'OK':            
+                fields = "barcode, "
+                values = "{0}, ".format(barcode)            
+                nutrition_fields = ["fat","carbohydrates","cholesterol","proteins","sodium" ]
+                for i in range(len(nutrition_fields)):                
+                    field = nutrition_fields[i]
+                    try:
+                        val = nutrition_info[field]
+                    except:
+                        continue
+                    values += str(val)
+                    fields += field
 
-    query = ('''INSERT INTO pantries_ingredients_xref(pantry_id, ingredient_id, item_official_name, item_id)
-    VALUES ({0}, {1}, "{2}", {3})'''
-    .format(pantry_id, ingredient_id, item_official_name, item_id))
+                    if i != len(nutrition_fields)-1:
+                        fields += ',' 
+                        values += ','            
+                    
+                nutrition_query = ('''INSERT INTO barcode_nutrition_xref({0}) VALUES ({1})'''.format(fields, values))            
+                cursor.execute(nutrition_query, params=None)            
+    except:
+        pass
+    
+    category = item_info["category"]
+    price = item_info["price"]    
+    if type(price) != int:
+        if type(price) == str and len(price) > 0:
+            price = int(price)
+        else:
+            price = -1
+    
+    quantity = item_info["quantity"]    
+    print(quantity)
+    if type(quantity) != int:
+        if type(quantity) == str and len(quantity) > 0:
+            quantity = int(quantity)
+        else:
+            quantity = 1
+    
+
+    try:
+        exp_date = item_info["exp_date"]
+        expiration_date_sql_format = datetime.strptime(exp_date, '%B %dth, %Y')
+    except:
+        exp_date = "April 30th, 2100"
+        expiration_date_sql_format = datetime.strptime(exp_date, '%B %dth, %Y')
+        pass
+    query = ('''INSERT INTO pantries_ingredients_xref(pantry_id, ingredient_id, item_official_name, item_id, barcode, category, price, exp_date, quantity)
+    VALUES ({0}, {1}, "{2}", {3}, {4}, "{5}", {6}, '{7}', {8})'''
+    .format(pantry_id, ingredient_id, item_official_name, item_id, barcode, category, price, expiration_date_sql_format, quantity))
     cursor.execute(query, params=None)    
     commitToDB(db)
     closeDatabase(db)
@@ -135,6 +212,64 @@ def generateNewPantry():
     commitToDB(db)    
     closeDatabase(db)
 
+def getPantryNutritionInfo(pantry_id):
+    db = getDatabase()
+    cursor = db.cursor()
+    barcode_query = ('''SELECT barcode FROM pantries_ingredients_xref WHERE barcode > 0 AND pantry_id = {0};'''.format(pantry_id))
+    cursor.execute(barcode_query, params=None)
+    output = cursor.fetchall()           
+    barcodes = [x[0] for x in output]
+    where_clause = generateWhereClauseForIDs(barcodes)
+    nutrition_query = ('''SELECT * FROM barcode_nutrition_xref WHERE barcode IN ({0})'''.format(where_clause))    
+    cursor.execute(nutrition_query, params=None)
+    all_nutrition_info = cursor.fetchall()     
+
+    
+    nutrition_fields = ["fat","carbohydrates","cholesterol","proteins","sodium" ]
+    pantry_nutrition = {}
+    for field in nutrition_fields:
+        pantry_nutrition[field] = 0
+         
+    for nutrition_info in all_nutrition_info:     
+        for i in range(len(nutrition_fields)):
+            field = nutrition_fields[i]
+            if nutrition_info[i+1] != None:
+                pantry_nutrition[field] += nutrition_info[i+1]    
+    return pantry_nutrition
+
+def getPantryPriceInfo(pantry_id):
+    db = getDatabase()
+    cursor = db.cursor()
+    pricing_query = ('''
+    SELECT price, category FROM pantries_ingredients_xref WHERE pantry_id={0} AND category IS NOT NULL AND price IS NOT NULL AND price > 0
+    '''.format(pantry_id))
+    cursor.execute(pricing_query, params=None)
+    output = cursor.fetchall()           
+    all_categories = []
+    chart_dict = {}
+    total = 0
+    for entry in output:
+        amount = entry[0]
+        category = entry[1]        
+        total += amount        
+        if not(category in all_categories):
+            all_categories.append(category)
+            chart_dict[category] = amount
+        else:
+            chart_dict[category] += amount
+    
+    for category in all_categories:
+        chart_dict[category] = chart_dict[category] / total
+    response_dict = {}
+    if len(all_categories) > 0:
+        response_dict["success"] = "OK"
+    else:
+        response_dict["success"] = "ERROR"
+    response_dict["all_categories"] = all_categories
+    response_dict["data"] = chart_dict
+    return response_dict
+    
+    
 """
 
 RECIPE STUFF
@@ -185,20 +320,26 @@ def getRecipesByIDs(ids):
     recipes = cursor.fetchall()        
     converted_recipes = []
     ingredients = getIngredientsOfIDs(ids)
+    
     searchable_ingredients = getSearchableIngredientsOfIDs(ids)
-    for recipe in recipes:
+    
+    
+    for recipe in recipes:        
         recipe_info = convertCursorOutputToJSON(recipe)                
         recipe_ings = []
         recipe_amounts = []
-        for entry in ingredients[str(recipe[0])]:
-            recipe_ings.append(entry)
-            recipe_amounts.append(0)
-        for entry in searchable_ingredients[str(recipe[0])]:
-            recipe_ings.append(entry)
-            recipe_amounts.append(0)
-        recipe_info["quantity"] = recipe_amounts
-        recipe_info["ingredients"] = recipe_ings        
-        converted_recipes.append(recipe_info)
+        try:
+            for entry in ingredients[str(recipe[0])]:
+                recipe_ings.append(entry)
+                recipe_amounts.append(0)
+            for entry in searchable_ingredients[str(recipe[0])]:
+                recipe_ings.append(entry)
+                recipe_amounts.append(0)
+            recipe_info["quantity"] = recipe_amounts
+            recipe_info["ingredients"] = recipe_ings        
+            converted_recipes.append(recipe_info)
+        except:
+            pass
     closeDatabase(db)       
     return converted_recipes
 
@@ -321,7 +462,9 @@ def getMatchingRecipes(pantry_id, min_number_matched_ingredients=1):
     return result
     
 def getNameFromID(id):
-    if onlineIDs:
+    try:
+        return convertIDtoName(id)
+    except:
         db = getDatabase()
         cursor = db.cursor()
         query = ('''SELECT name FROM Ingredients WHERE ingredient_id={0};'''.format(id))
@@ -329,8 +472,6 @@ def getNameFromID(id):
         output = cursor.fetchone()            
         closeDatabase(db)
         return output[0]
-    else:
-        return convertIDtoName(id)
 
 if __name__ == '__main__':
     #print(getNameFromID(3))
@@ -342,12 +483,18 @@ if __name__ == '__main__':
     #print(convertIDtoName(1072))
     #getMatchingRecipes()    
     #print(getUserSearchableIngredients())
-    info = getUserInformation("rhys")    
-    pantry_id = info[5]
-    item_info = {}
-    item_info["item_official_name"] = "roscco spaghetti"
+    #info = getUserInformation("rhys")    
+    #pantry_id = info[5]
+    #item_info = {}
+    #item_info["item_official_name"] = "roscco spaghetti"
     #addItem(pantry_id, item_info)
-    deleteItemFromPantry(pantry_id, 3)
+    #deleteItemFromPantry(pantry_id, 3)
+    #getPantryNutritionInfo(1)
+    #getPantryPriceInfo(1)
     #print(getAllItemsInPantry(pantry_id))
     #print(checkIfTokenIsInUse(233))
     #print(getNameFromID(4))
+    ids = getMatchingRecipes(1, min_number_matched_ingredients=3)
+    print(ids)
+    ids = [x[1] for x in ids]
+    print(getRecipesByIDs(ids))

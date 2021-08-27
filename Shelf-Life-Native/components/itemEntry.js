@@ -6,66 +6,105 @@ const GLOBAL = require('../Globals')
 
 export default function ItemEntryPage(params) {
 	let name = ""
-	let dispName = ""
-	let quantity = ""
-	let price = ""
+	let dispName = ""		
 	let mode = "new" //set to "edit" for editing an ingredient	
 	let exp_date = ""
-	if (params.item)
-	{
-		exp_date = params.item.expDate
+	let barcode = -1
+	let category = "Misc"
+	let nutritionInfo = {
+		Status: "ERROR"
 	}
+	let q = ""
+	let p = ""
+	if (params.item) {
+		exp_date = params.item.expDate
+		q = params.item.quantity
+		p = params.item.price
+	}
+	const [amount, setAmount] = useState(q);
+	const [price, setPrice] = useState(p);
 	const [expDate, setExpDate] = useState(exp_date);
 	const [itemAddingState, setItemAddingState] = useState("EDITING_VALUES")
 
 	if (params.item) { //Check data for existing item in if one is passed
 		name = params.item.name
 		dispName = params.item.dispName
-		quantity = params.item.quantity
-		price = params.item.price.toString()		
+		
 		mode = "edit"		
 	}
 	else if (params.itemName) { //Adding a new pantry item
-		name=params.itemNameOfficial
-		dispName=params.itemName
-		category=params.category
+		name = params.itemNameOfficial
+		dispName = params.itemName
+		category = params.category
+		barcode = params.barcode
+		nutritionInfo = params.nutritionInfo
 	}
 
 	const handleSubmit = () => {
+		console.log(amount)
 		GLOBAL.pantryItemChange = true
 		setItemAddingState("SENDING_TO_SERVER")
 		if (mode == "new") {
 			setItemAddingState("SENDING_TO_SERVER")
-        fetch(GLOBAL.BASE_URL + '/api/user/pantry/add', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                "key": GLOBAL.LOGIN_TOKEN,
-                "item_official_name": name,
-                "ingredient_id": params.id,                
-            })
-    
-        }).then((response) => response.json()).then((json) => {
-            status = json["Status"]
-            if (status == "OK") { // successful sign up        
-                setItemAddingState("ADDED")
-            }
-            else if (status = "INVALID TOKEN")
-            {
-                alert("Invalid login token, log in again")
-            }
-        }
-        );
+			fetch(GLOBAL.BASE_URL + '/api/user/pantry/add', {
+				method: 'POST',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					"key": GLOBAL.LOGIN_TOKEN,
+					"item_official_name": name,
+					"ingredient_id": params.id,
+					"barcode": barcode,
+					"nutrition_info": nutritionInfo,
+					"category": category,
+					"price": price,
+					"exp_date": expDate,
+					"quantity": amount
+				})
+
+			}).then((response) => response.json()).then((json) => {
+				status = json["Status"]
+				if (status == "OK") { // successful sign up        
+					setItemAddingState("ADDED")
+				}
+				else if (status = "INVALID TOKEN") {
+					alert("Invalid login token, log in again")
+				}
 			}
-			if (mode == "edit") {
-				//TODO: Add pantry server code
-				setItemAddingState("UPDATED")
-				Alert.alert("Sure...", "Let's say that the pantry item was actually updated. It was detected, but the server code is TBD.")
-			}
+			);
 		}
+		if (mode == "edit") {
+			//TODO: Add pantry server code
+			setItemAddingState("UPDATED")
+			fetch(GLOBAL.BASE_URL + '/api/user/pantry/remove', {
+				method: 'POST',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					"key": GLOBAL.LOGIN_TOKEN,
+					"item_id": params.item.id,
+				})
+
+			}).then((response) => response.json()).then((json) => {
+				status = json["Status"]
+				if (status == "OK") { // successful sign up     
+					mode = "new"
+					handleSubmit()
+				}
+				else if (status == "INVALID TOKEN") {
+					alert("Invalid login token, log in again")
+				} else if (status == "INVALID ITEM ID") {
+					alert("Item ID not found in database")
+				}
+			}
+			);
+		}
+	}
+
 
 	const handleCancel = () => {
 		params.goBack(params.itemUnitPrice)
@@ -73,36 +112,29 @@ export default function ItemEntryPage(params) {
 
 	return (
 		<View style={styles.transparent_container}>
-			<View style={[{ flex: 2, justifyContent:'flex-end'}]}>
+			<View style={[{ flex: 2, justifyContent: 'flex-end' }]}>
 				<TextInput
 					style={styles.inputField}
 					placeholder="Official Item Name"
 					placeholderTextColor="#9E9791"
 					defaultValue={name}
-					onChangeText={(value) => name=value}
-				/>
-				<TextInput
-					style={styles.inputField}
-					placeholder="Common Item Name"
-					placeholderTextColor="#9E9791"
-					defaultValue={dispName}
-					onChangeText={(value) => dispName=value}
+					onChangeText={(value) => name = value}
 				/>
 				<TextInput
 					style={styles.inputField}
 					placeholder="Quantity"
 					placeholderTextColor="#9E9791"
 					keyboardType="numeric"
-					defaultValue={quantity}
-					onChangeText={(value) => quantity=value}
+					defaultValue={amount.toString()}
+					onChangeText={(amount_value) => setAmount(amount_value)}
 				/>
 				<TextInput
 					style={styles.inputField}
 					placeholder="Unit Price"
 					placeholderTextColor="#9E9791"
 					keyboardType="numeric"
-					defaultValue={price}
-					onChangeText={(value) => price=value}
+					defaultValue={price.toString()}
+					onChangeText={(price_value) => setPrice(price_value)}
 				/>
 				<DatePicker
 					style={itemInfoStyles.datePicker}
@@ -139,7 +171,7 @@ export default function ItemEntryPage(params) {
 			</View>
 
 			<View style={itemInfoStyles.button_container}>
-				{params.resetScanner && 
+				{params.resetScanner &&
 					<TouchableOpacity style={itemInfoStyles.submitBtn} onPress={() => params.resetScanner()}>
 						<Text style={itemInfoStyles.submitBtnText}>Scan Again</Text>
 					</TouchableOpacity>
@@ -170,7 +202,7 @@ const itemInfoStyles = StyleSheet.create({
 		justifyContent: 'center',
 	},
 	button_container: {
-		flex: 1,		
+		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'center',
 		flexDirection: "row"

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View, ImageBackground, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, Text, TextInput, View, ImageBackground, TouchableOpacity, Image, Alert } from 'react-native';
+import FastImage from 'react-native-fast-image'
 import styles from '../Style';
 const GLOBAL = require('../Globals')
 
@@ -47,7 +48,10 @@ export default function LoginScreen({ navigation }) {
 		async () => {
 			const data = await getUserInformation()
 			if (data) {
+				console.log(data)
 				const displayName = data["Display Name"]; // from database
+				GLOBAL.DISPLAY_NAME = displayName
+				GLOBAL.PANTRY_ID = data["pantry_id"]
 				navigation.navigate('mainNav', { name: displayName });
 			}
 		})();
@@ -57,7 +61,9 @@ export default function LoginScreen({ navigation }) {
 		return (
 			<View style={styles.container}>
 			<StatusBar style="auto" />
-			<ImageBackground source={require('../assets/background.jpg')} style={styles.background}/>
+	 	  <FastImage style={styles.background} 
+	 	  					source = {Image.resolveAssetSource(require('../assets/background.jpg'))}
+	 	  				/>
 			<Text style={loginStyles.title}>Shelf Life</Text>
 			<TextInput
 				style={styles.inputField}
@@ -80,7 +86,7 @@ export default function LoginScreen({ navigation }) {
 				<Text style={loginStyles.btnText}>Login</Text>
 			</TouchableOpacity>
 			<View style={loginStyles.switchTextView}>
-				<Text style={loginStyles.switchText}>Don''t have an account?</Text>
+				<Text style={loginStyles.switchText}>Don't have an account?</Text>
 				<TouchableOpacity onPress={() => setTab("Sign Up")}>
 					<Text style={loginStyles.link}> Sign up</Text>
 				</TouchableOpacity>
@@ -92,7 +98,9 @@ export default function LoginScreen({ navigation }) {
 		return (
 			<View style={styles.container}>
 			<StatusBar style="auto" />
-			<ImageBackground source={require('../assets/background.jpg')} style={styles.background}/>
+			<FastImage style={styles.background} 
+								source = {Image.resolveAssetSource(require('../assets/background.jpg'))}
+							/>
 			<Text style={loginStyles.title}>Shelf Life</Text>
 			<TextInput
 				style={styles.inputField}
@@ -134,7 +142,7 @@ export default function LoginScreen({ navigation }) {
 }
 
 const login = (email, password, navigation) => {
-	fetch(GLOBAL.BASE_URL+'/api/user/login', {
+	fetch(GLOBAL.BASE_URL+'/api/user/login/', {
 		method: 'POST',
 		headers: {
 			Accept: 'application/json',
@@ -150,9 +158,10 @@ const login = (email, password, navigation) => {
 		if (status == "OK") { // successful sign up
 			const displayName = json["display_name"]; // from database
 			GLOBAL.LOGIN_TOKEN = json["login_token"]
+			GLOBAL.PANTRY_ID = json["pantry_id"]
+			GLOBAL.DISPLAY_NAME = json["display_name"]
 			navigation.navigate('mainNav', { name: displayName });
 		}
-
 		else if(status == "ERROR") {
 			Alert.alert('ERROR', 'Something went wrong. Please try again later.', [
 			{text: 'OK'}
@@ -194,6 +203,8 @@ const signUp = (email, displayName, password, navigation) => {
 
 		if (status == "OK") { // successful sign up
 			GLOBAL.LOGIN_TOKEN = json["login_token"]
+			GLOBAL.PANTRY_ID = json["pantry_id"]
+			GLOBAL.DISPLAY_NAME = json["Display Name"]
 			navigation.navigate('mainNav', { name: displayName });
 		}
 		else if (status == "ERROR") {	
