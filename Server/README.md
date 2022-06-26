@@ -1,14 +1,13 @@
-# Shelf Life Server Code
+# Shelf Life - Server
 
 ## Setup Instructions
+```properties
 pip install Flask
 pip install mysql-connector-python
 pip install python-dotenv
-
-Make a file called .env
-Inside the file put this (Do not include the 1. or 2. those are line numbers):
-
-1. # .env
-2. DB_PASSOWRD=password
-
-
+```
+2. Create a file called `.env` and add the following...
+```properties
+# .env
+DB_PASSOWRD=password
+```
